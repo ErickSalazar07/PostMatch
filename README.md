@@ -1,10 +1,10 @@
 # PostMatch
 
-![Android](https://img.shields.io/badge/platform-Android-green)
-![Java](https://img.shields.io/badge/language-Java-blue)
-![Kotlin](https://img.shields.io/badge/language-Kotlin-purple)
-![SQLite](https://img.shields.io/badge/database-SQLite-lightgrey)
-![Status](https://img.shields.io/badge/status-in%20development-yellow)
+<img width="200px" alt="Static Badge" src="https://img.shields.io/badge/platform-android%20studio-ligthgreen?logo=androidstudio&logoColor=ligthgreen">
+<img width="140px" alt="Static Badge" src="https://img.shields.io/badge/language-kotlin-%23b042ff?logo=kotlin&logoColor=%23b042ff">
+<img width="157px" alt="Static Badge" src="https://img.shields.io/badge/database-firebase-red?logo=firebase&logoColor=red">
+<img width="157px" alt="Static Badge" src="https://img.shields.io/badge/database-fireship-red?logo=fireship&logoColor=red">
+<img width="185px" alt="Static Badge" src="https://img.shields.io/badge/status-in%20development-yellow?logo=git">
 
 ## Integrantes del Proyecto
 - Juan Eduardo Diaz Rojas
@@ -26,5 +26,5 @@ Esta app está diseñada para fanáticos del fútbol que desean compartir su per
 ## 🗃️ Diagrama Entidad-Relación
 
 
-📎 [Ver diagrama entidad-relación](docs/entidad-relacion.png)
+![Ver diagrama entidad-relación](docs/entidad-relacion.png)
 
