@@ -22,7 +22,10 @@
 
 ## Descripción del proyecto
 
-<img src="assets/logo-postmatch.png" alt="Logo de PostMatch" width="200"/>
+#Logo
+<p align="center">
+  <img src="assets/logo-postmatch.png" alt="Logo de PostMatch" width="200"/>
+</p>
 
 **PostMatch** es una aplicación móvil desarrollada en Android Studio que permite a los usuarios realizar reseñas (reviews) de partidos de fútbol. La aplicación no solo se enfoca en capturar opiniones sobre eventos deportivos, sino que también incorpora funcionalidades propias de una red social:
 
