@@ -32,6 +32,17 @@
 
 Esta app está diseñada para fanáticos del fútbol que desean compartir su perspectiva de los encuentros, generar discusión, y construir comunidad a través de la experiencia deportiva.
 
+## Paleta de Colores
+
+| Nombre        | HEX      | Muestra |
+|---------------|----------|---------|
+| Persian Red   | `#D32F2F`| ![#D32F2F](https://via.placeholder.com/15/D32F2F/000000?text=+) |
+| Pigment Green | `#43A047`| ![#43A047](https://via.placeholder.com/15/43A047/000000?text=+) |
+| Slate Gray    | `#607D8B`| ![#607D8B](https://via.placeholder.com/15/607D8B/000000?text=+) |
+| Amber         | `#FBC02D`| ![#FBC02D](https://via.placeholder.com/15/FBC02D/000000?text=+) |
+| Eerie Black   | `#212121`| ![#212121](https://via.placeholder.com/15/212121/000000?text=+) |
+
+
 ## Diagrama Entidad Relación
 
 ![Ver diagrama entidad-relación](docs/entidad-relacion.png)
