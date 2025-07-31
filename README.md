@@ -22,7 +22,7 @@
 
 ## Descripción del proyecto
 
-# Logo
+### Logo
 <p align="center">
   <img src="assets/logo-postmatch.png" alt="Logo de PostMatch" width="200"/>
 </p>
