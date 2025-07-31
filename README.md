@@ -62,4 +62,8 @@ comunidad a través de la experiencia deportiva.
 
 ## Diagrama Clases
 
-![Diagrama clases](docs/diagramas/clases.png)
+![Diagrama clases](docs/diagramas/clases.png)  
+
+## Mockup figma  
+[Figma - POSTMATCH](https://www.figma.com/design/cbYEQF8F6TdDw2u7fZiOyx/POSTMATCH?node-id=0-1&t=eO4BWRzCNMAYYWjQ-1)
+
