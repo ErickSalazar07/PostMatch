@@ -1,18 +1,22 @@
 # PostMatch
 
 ## Tecnologias
-<img width="200px" alt="Static Badge" src="https://img.shields.io/badge/platform-android%20studio-ligthgreen?logo=androidstudio&logoColor=ligthgreen">
+<img width="150px" alt="Static Badge" src="https://img.shields.io/badge/platform-android-ligthgreen?logo=android&logoColor=ligthgreen">
 <img width="140px" alt="Static Badge" src="https://img.shields.io/badge/language-kotlin-%23b042ff?logo=kotlin&logoColor=%23b042ff">
 <img width="160px" alt="Static Badge" src="https://img.shields.io/badge/framework-flutter-%2304bade?logo=flutter&logoColor=%2304bade">
 <img width="157px" alt="Static Badge" src="https://img.shields.io/badge/database-firebase-red?logo=firebase&logoColor=red">
 <img width="157px" alt="Static Badge" src="https://img.shields.io/badge/database-fireship-red?logo=fireship&logoColor=red">
 <img width="185px" alt="Static Badge" src="https://img.shields.io/badge/project-in%20development-yellow?logo=git">
+<img width="165px" alt="Static Badge"
+    src="https://img.shields.io/badge/SDK-android%20studio-ligthgreen?logo=androidstudio&logoColor=%2304bade"
+>
 
 
 ## Indice
 - [Integrantes del Proyecto](#integrantes-del-proyecto)
 - [Descripción del Proyecto](#descripción-del-proyecto)
 - [Diagrama Entidad Relación](#diagrama-entidad-relación)
+- [Diagrama de Clases](#diagrama-clases)
 - [Requerimientos funcionales](docs/requerimientos_funcionales.pdf)
 
 ## Integrantes del proyecto
@@ -27,7 +31,9 @@
   <img src="assets/logo-postmatch.png" alt="Logo de PostMatch" width="200"/>
 </p>
 
-**PostMatch** es una aplicación móvil desarrollada en Android Studio que permite a los usuarios realizar reseñas (reviews) de partidos de fútbol. La aplicación no solo se enfoca en capturar opiniones sobre eventos deportivos, sino que también incorpora funcionalidades propias de una red social:
+**PostMatch** es una aplicación móvil desarrollada en Android Studio que permite a los usuarios realizar reseñas (reviews) de partidos de
+fútbol. La aplicación no solo se enfoca en capturar opiniones sobre eventos deportivos, sino que también incorpora funcionalidades propias
+de una red social:
 
 - Publicar y comentar reseñas de partidos.
 - Puntuar partidos de acuerdo a la experiencia del usuario.
@@ -35,7 +41,8 @@
 - Notificaciones de nuevas interacciones.
 - Historial de partidos reseñados y publicaciones.
 
-Esta app está diseñada para fanáticos del fútbol que desean compartir su perspectiva de los encuentros, generar discusión, y construir comunidad a través de la experiencia deportiva.
+Esta app está diseñada para fanáticos del fútbol que desean compartir su perspectiva de los encuentros, generar discusión, y construir
+comunidad a través de la experiencia deportiva.
 
 ## Paleta de Colores
 
@@ -51,5 +58,8 @@ Esta app está diseñada para fanáticos del fútbol que desean compartir su per
 
 ## Diagrama Entidad Relación
 
-![Ver diagrama entidad-relación](docs/entidad-relacion.png)
+![Diagrama entidad-relación](docs/diagramas/entidad-relacion.png)
 
+## Diagrama Clases
+
+![Diagrama clases](docs/diagramas/clases.png)
