@@ -22,6 +22,8 @@
 
 ## Descripción del proyecto
 
+![Logo de PostMatch](assets/logo-postmatch.png)
+
 **PostMatch** es una aplicación móvil desarrollada en Android Studio que permite a los usuarios realizar reseñas (reviews) de partidos de fútbol. La aplicación no solo se enfoca en capturar opiniones sobre eventos deportivos, sino que también incorpora funcionalidades propias de una red social:
 
 - Publicar y comentar reseñas de partidos.
@@ -36,11 +38,12 @@ Esta app está diseñada para fanáticos del fútbol que desean compartir su per
 
 | Nombre        | HEX      | Muestra |
 |---------------|----------|---------|
-| Persian Red   | `#D32F2F`| ![#D32F2F](https://via.placeholder.com/15/D32F2F/000000?text=+) |
-| Pigment Green | `#43A047`| ![#43A047](https://via.placeholder.com/15/43A047/000000?text=+) |
-| Slate Gray    | `#607D8B`| ![#607D8B](https://via.placeholder.com/15/607D8B/000000?text=+) |
-| Amber         | `#FBC02D`| ![#FBC02D](https://via.placeholder.com/15/FBC02D/000000?text=+) |
-| Eerie Black   | `#212121`| ![#212121](https://via.placeholder.com/15/212121/000000?text=+) |
+| Persian Red   | `#D32F2F` | ![#D32F2F](https://singlecolorimage.com/get/D32F2F/20x20) |
+| Pigment Green | `#43A047` | ![#43A047](https://singlecolorimage.com/get/43A047/20x20) |
+| Slate Gray    | `#607D8B` | ![#607D8B](https://singlecolorimage.com/get/607D8B/20x20) |
+| Amber         | `#FBC02D` | ![#FBC02D](https://singlecolorimage.com/get/FBC02D/20x20) |
+| Eerie Black   | `#212121` | ![#212121](https://singlecolorimage.com/get/212121/20x20) |
+
 
 
 ## Diagrama Entidad Relación
