@@ -52,6 +52,9 @@ comunidad a través de la experiencia deportiva.
 | Pigment Green | `#43A047` | ![#43A047](https://singlecolorimage.com/get/43A047/20x20) |
 | Slate Gray    | `#607D8B` | ![#607D8B](https://singlecolorimage.com/get/607D8B/20x20) |
 | Eerie Black   | `#212121` | ![#212121](https://singlecolorimage.com/get/212121/20x20) |
+| white         | `#FFFFFF` | ![#212121](https://singlecolorimage.com/get/212121/20x20) |
+
+
 
 
 
