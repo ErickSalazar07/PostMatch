@@ -51,7 +51,6 @@ comunidad a través de la experiencia deportiva.
 | Persian Red   | `#D32F2F` | ![#D32F2F](https://singlecolorimage.com/get/D32F2F/20x20) |
 | Pigment Green | `#43A047` | ![#43A047](https://singlecolorimage.com/get/43A047/20x20) |
 | Slate Gray    | `#607D8B` | ![#607D8B](https://singlecolorimage.com/get/607D8B/20x20) |
-| Amber         | `#FBC02D` | ![#FBC02D](https://singlecolorimage.com/get/FBC02D/20x20) |
 | Eerie Black   | `#212121` | ![#212121](https://singlecolorimage.com/get/212121/20x20) |
 
 
