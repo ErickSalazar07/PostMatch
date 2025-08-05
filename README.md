@@ -46,13 +46,14 @@ comunidad a través de la experiencia deportiva.
 
 ## Paleta de Colores
 
-| Nombre        | HEX      | Muestra |
-|---------------|----------|---------|
-| Persian Red   | `#D32F2F` | ![#D32F2F](https://singlecolorimage.com/get/D32F2F/20x20) |
-| Pigment Green | `#43A047` | ![#43A047](https://singlecolorimage.com/get/43A047/20x20) |
-| Slate Gray    | `#607D8B` | ![#607D8B](https://singlecolorimage.com/get/607D8B/20x20) |
-| Eerie Black   | `#212121` | ![#212121](https://singlecolorimage.com/get/212121/20x20) |
-| white         | `#FFFFFF` | ![#212121](https://singlecolorimage.com/get/212121/20x20) |
+| Nombre           | HEX      | Muestra |
+|------------------|----------|---------|
+| Verde O.         | `#121712` | ![#121712](https://singlecolorimage.com/get/121712/20x20) |
+| Verde Pigmentado | `#1F241F` | ![#1F241F](https://singlecolorimage.com/get/1F241F/20x20) |
+| Verde O2         | `#404F40` | ![#404F40](https://singlecolorimage.com/get/404F40/20x20) |
+| Verde            | `#2B362B` | ![#2B362B](https://singlecolorimage.com/get/2B362B/20x20) |
+| Verde Claro      | `#38AB3D` | ![#38AB3D](https://singlecolorimage.com/get/38AB3D/20x20) |
+| Blanco           | `#FFFFFF` | ![#FFFFFF](https://singlecolorimage.com/get/FFFFFF/20x20) |
 
 
 
