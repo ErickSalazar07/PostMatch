@@ -34,7 +34,6 @@ import com.example.postmatch.R
 
 
 @Composable
-@Preview
 fun HeaderLogin() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Image(

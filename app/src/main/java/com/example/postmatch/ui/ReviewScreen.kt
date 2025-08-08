@@ -1,2 +1,192 @@
-package com.example.postmatch.ui
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.postmatch.R
 
+
+@Composable
+fun ReviewScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF0D0F0D))
+            .padding(16.dp)
+    ) {
+        Encabezado()
+        Spacer(modifier = Modifier.height(20.dp))
+        SeleccionarPartidoCard()
+        Spacer(modifier = Modifier.height(30.dp))
+        CalificacionRow()
+        Spacer(modifier = Modifier.height(35.dp))
+        ResenhaInput()
+        Spacer(modifier = Modifier.weight(2f))
+        BotonPublicar()
+    }
+}
+
+@Composable
+fun Encabezado() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.Default.Close,
+            contentDescription = "Cerrar",
+            tint = Color.White
+        )
+        Text(
+            text = "Escribir reseña",
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.width(24.dp))
+    }
+}
+
+@Composable
+fun SeleccionarPartidoCard() {
+    Column {
+        Spacer(modifier = Modifier.height(30.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF0D0F0D)),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text("20 de mayo", color = Color.Gray, fontSize = 14.sp)
+                Text(
+                    "Real Madrid vs. FC Barcelona",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    fontSize = 16.sp
+                )
+                Text(
+                    "Santiago Bernabéu",
+                    color = Color.Gray,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(25.dp))
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF1E2E1F)
+                    ),
+                    shape = RoundedCornerShape(50)
+                ) {
+                    Text("VS", color = Color.White)
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
+            }
+            Image(
+                painter = painterResource(id = R.drawable.real_madrid_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xFFF5E1C5)),
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
+}
+
+@Composable
+fun CalificacionRow() {
+    Text(
+        text = "Calificación",
+        fontWeight = FontWeight.Bold,
+        color = Color.White,
+        fontSize = 16.sp
+    )
+    Spacer(modifier = Modifier.height(25.dp))
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        repeat(5) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .border(1.dp, Color.White, RoundedCornerShape(8.dp))
+            )
+        }
+    }
+}
+
+@Composable
+fun ResenhaInput() {
+    Text(
+        text = "Reseña",
+        fontWeight = FontWeight.Bold,
+        color = Color.White,
+        fontSize = 16.sp
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(120.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color(0xFF2A322B))
+    )
+}
+
+@Composable
+fun BotonPublicar() {
+    Button(
+        onClick = {},
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1DB954)),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text(
+            text = "Publicar",
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ReviewScreenPreview() {
+    ReviewScreen()
+}
