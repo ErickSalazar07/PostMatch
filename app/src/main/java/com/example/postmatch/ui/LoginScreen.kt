@@ -34,15 +34,16 @@ import com.example.postmatch.R
 
 
 @Composable
+@Preview
 fun HeaderLogin() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
-            painter = painterResource(id = R.drawable.logo_postmatch),
+            painter = painterResource(id = R.drawable.fondo_estadio),
             contentDescription = "Fondo Estadio",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
+                .height(300.dp)
         )
         Spacer(modifier = Modifier.height(12.dp))
         Box(
@@ -51,27 +52,24 @@ fun HeaderLogin() {
                     color = colorResource(R.color.verde),
                     shape = RoundedCornerShape(20.dp)
                 )
-                .padding(horizontal = 24.dp, vertical = 10.dp)
+                .padding(8.dp)
+                .width(200.dp)
+                .height(40.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_postmatch),
-                    contentDescription = "Logo PostMatch",
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "PostMatch",
-                    color = colorResource(R.color.verde_claro),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-            }
+            Image(
+                painter = painterResource(id = R.drawable.logo_postmatch_nobackg),
+                contentDescription = "Logo PostMatch",
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(70.dp),
+                contentScale = ContentScale.Fit
+            )
         }
+
     }
 }
+
 
 
 
