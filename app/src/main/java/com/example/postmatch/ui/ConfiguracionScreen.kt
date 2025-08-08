@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun ConfiguracionScreen() {
 
         // Sección Cuenta
         SeccionConfiguracion(
-            titulo = "Cuenta",
+            titulo = stringResource(R.string.cuenta),
             opciones = listOf(
                 OpcionData("Modificar perfil", "Modifica tu nombre, foto de perfil y más", R.drawable.user_icon),
                 OpcionData("Gestionar notificaciones", "Gestiona tus notificaciones", R.drawable.notification_icon),
@@ -82,10 +83,14 @@ fun ConfiguracionScreen() {
 }
 
 @Composable
-fun SeccionConfiguracion(titulo: String, opciones: List<OpcionData>) {
+fun SeccionConfiguracion(
+    titulo: String,
+    opciones: List<OpcionData>,
+    modifier: Modifier = Modifier
+) {
 
     Column(
-
+        modifier = modifier
     ) {
         Text(
             text = titulo,
@@ -106,9 +111,12 @@ fun SeccionConfiguracion(titulo: String, opciones: List<OpcionData>) {
 }
 
 @Composable
-fun ItemOpcion(opcion: OpcionData) {
+fun ItemOpcion(
+    opcion: OpcionData,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { /* Acción */ }
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -147,9 +155,11 @@ fun ItemOpcion(opcion: OpcionData) {
 }
 
 @Composable
-fun ImagenPerfil() {
+fun ImagenPerfil(
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(colorResource(id = R.color.verde_oscuro))
             .padding(vertical = 24.dp),

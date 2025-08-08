@@ -1,3 +1,5 @@
+package com.example.postmatch.ui
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,9 +58,11 @@ fun ReviewScreen() {
 }
 
 @Composable
-fun Encabezado() {
+fun Encabezado(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -77,9 +82,11 @@ fun Encabezado() {
 }
 
 @Composable
-fun SeleccionarPartidoCard() {
+fun SeleccionarPartidoCard(
+    modifier: Modifier = Modifier
+) {
     Column {
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = modifier.height(30.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -130,48 +137,64 @@ fun SeleccionarPartidoCard() {
 }
 
 @Composable
-fun CalificacionRow() {
-    Text(
-        text = "Calificación",
-        fontWeight = FontWeight.Bold,
-        color = Color.White,
-        fontSize = 16.sp
-    )
-    Spacer(modifier = Modifier.height(25.dp))
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        repeat(5) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .border(1.dp, Color.White, RoundedCornerShape(8.dp))
-            )
+fun CalificacionRow(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = "Calificación",
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.height(25.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            repeat(5) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .border(1.dp, Color.White, RoundedCornerShape(8.dp))
+                )
+            }
         }
     }
 }
 
 @Composable
-fun ResenhaInput() {
-    Text(
-        text = "Reseña",
-        fontWeight = FontWeight.Bold,
-        color = Color.White,
-        fontSize = 16.sp
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFF2A322B))
-    )
+fun ResenhaInput(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = stringResource(R.string.resenha),
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(Color(0xFF2A322B))
+        )
+    }
 }
 
 @Composable
-fun BotonPublicar() {
+fun BotonPublicar(
+    modifier: Modifier = Modifier
+) {
     Button(
         onClick = {},
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1DB954)),

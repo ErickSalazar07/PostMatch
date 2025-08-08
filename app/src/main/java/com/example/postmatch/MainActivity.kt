@@ -4,22 +4,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.postmatch.ui.ConfiguracionScreen
-import com.example.postmatch.ui.theme.PostMatchTheme
+import com.example.postmatch.ui.LoginScreen
+import com.example.postmatch.ui.ReviewScreen
+import com.example.postmatch.ui.PublicacionesScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
+    //        ConfiguracionScreen()
+    //       LoginScreen()
+    //        ReviewScreen()
+            PublicacionesScreen()
         }
     }
 }

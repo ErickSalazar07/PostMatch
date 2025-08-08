@@ -38,7 +38,7 @@ import com.example.postmatch.R
 
 
 @Composable
-fun PostMatchScreen() {
+fun PublicacionesScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,58 +46,73 @@ fun PostMatchScreen() {
             .padding(16.dp)
     ) {
         // Encabezado
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "PostMatch",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Settings",
-                tint = Color.White
-            )
-        }
-
+        PublicacionesHeader()
         Spacer(modifier = Modifier.height(16.dp))
-
         // Lista de tarjetas
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            MatchCard(
-                author = "Alex Ramirez",
-                title = "Real Madrid vs. FC Barcelona",
-                description = "An intense match with a stunning goal by Leo Messi. The defense was solid, but the midfield struggled at times.",
-                likes = "5",
-                comments = "3",
-                imageRes = R.drawable.estadio_bernabeu
+        PublicacionesSection()
+    }
+}
 
-            )
+@Composable
+fun PublicacionesHeader(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "PostMatch",
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+        Icon(
+            imageVector = Icons.Default.Settings,
+            contentDescription = "Settings",
+            tint = Color.White
+        )
+    }
+}
 
-            MatchCard(
-                author = "Sofia Martinez",
-                title = "Liverpool vs. Manchester United",
-                description = "A thrilling game with a late equalizer by Mohamed Salah. Both teams showed great attacking prowess.",
-                likes = "4.5",
-                comments = "3",
-                imageRes = R.drawable.estadio_bernabeu
+@Composable
+fun PublicacionesSection(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
+    ) {
+        MatchCard(
+            author = "Alex Ramirez",
+            title = "Real Madrid vs. FC Barcelona",
+            description = "An intense match with a stunning goal by Leo Messi. The defense was solid, but the midfield struggled at times.",
+            likes = "5",
+            comments = "3",
+            imageRes = R.drawable.estadio_bernabeu
 
-            )
+        )
 
-            MatchCard(
-                author = "Carlos Lopez",
-                title = "Bayern Munich vs. Borussia Dortmund",
-                description = "A dominant performance by Bayern, with Robert Lewandowski scoring a hat-trick. Dortmund's defense couldn’t handle the pressure.",
-                likes = "31",
-                comments = "7",
-                imageRes = R.drawable.estadio_bernabeu
+        MatchCard(
+            author = "Sofia Martinez",
+            title = "Liverpool vs. Manchester United",
+            description = "A thrilling game with a late equalizer by Mohamed Salah. Both teams showed great attacking prowess.",
+            likes = "4.5",
+            comments = "3",
+            imageRes = R.drawable.estadio_bernabeu
 
-            )
-        }
+        )
+
+        MatchCard(
+            author = "Carlos Lopez",
+            title = "Bayern Munich vs. Borussia Dortmund",
+            description = "A dominant performance by Bayern, with Robert Lewandowski scoring a hat-trick. Dortmund's defense couldn’t handle the pressure.",
+            likes = "31",
+            comments = "7",
+            imageRes = R.drawable.estadio_bernabeu
+
+        )
     }
 }
 
@@ -108,10 +123,11 @@ fun MatchCard(
     description: String,
     likes: String,
     comments: String,
-    imageRes: Int
+    imageRes: Int,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(Color(0xFF1C1F1E))
@@ -178,7 +194,6 @@ fun MatchCard(
 @Composable
 @Preview (showBackground = true)
 
-fun Postmatch_screen_preview(){
-    PostMatchScreen()
-
+fun PublicacionesScreenPreview(){
+    PublicacionesScreen()
 }

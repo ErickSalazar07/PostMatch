@@ -34,8 +34,13 @@ import com.example.postmatch.R
 
 
 @Composable
-fun HeaderLogin() {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun HeaderLogin(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
         Image(
             painter = painterResource(id = R.drawable.fondo_estadio),
             contentDescription = "Fondo Estadio",
@@ -73,10 +78,12 @@ fun HeaderLogin() {
 
 
 @Composable
-fun CamposLogin() {
+fun CamposLogin(
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
@@ -108,10 +115,12 @@ fun CamposLogin() {
 }
 
 @Composable
-fun BotonesLogin() {
+fun BotonesLogin(
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 20.dp)
     ) {
@@ -138,13 +147,15 @@ fun BotonesLogin() {
 }
 
 @Composable
-fun TextoLegal() {
+fun TextoLegal(
+    modifier: Modifier = Modifier
+) {
     Text(
         text = "By continuing, you agree to our Terms of Service and Privacy Policy",
         color = colorResource(R.color.white),
         fontSize = 13.sp,
         textAlign = TextAlign.Center,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 12.dp)
     )
