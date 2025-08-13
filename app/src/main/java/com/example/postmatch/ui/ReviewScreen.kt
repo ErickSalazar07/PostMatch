@@ -23,6 +23,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +43,8 @@ import com.example.postmatch.R
 
 @Composable
 fun ReviewScreen() {
+    var resenha by remember { mutableStateOf("") }
+    var calificacion by remember { mutableStateOf(0)}
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +57,10 @@ fun ReviewScreen() {
         Spacer(modifier = Modifier.height(30.dp))
         CalificacionRow()
         Spacer(modifier = Modifier.height(35.dp))
-        ResenhaInput()
+        ResenhaInput(
+            resenha = resenha,
+            onResenhaChange = {resenha = it},
+        )
         Spacer(modifier = Modifier.weight(2f))
         BotonPublicar()
     }
@@ -154,11 +163,15 @@ fun CalificacionRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             repeat(5) {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .border(1.dp, Color.White, RoundedCornerShape(8.dp))
-                )
+                Button(
+                    onClick = {}
+                ){
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .border(1.dp, Color.White, RoundedCornerShape(8.dp))
+                    )
+                }
             }
         }
     }
@@ -166,7 +179,9 @@ fun CalificacionRow(
 
 @Composable
 fun ResenhaInput(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    resenha: String,
+    onResenhaChange: (String) -> Unit
 ) {
     Column(
         modifier = modifier
