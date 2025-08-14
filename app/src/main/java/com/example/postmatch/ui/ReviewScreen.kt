@@ -19,9 +19,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -162,18 +166,45 @@ fun CalificacionRow(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            repeat(5) {
-                Button(
-                    onClick = {}
-                ){
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .border(1.dp, Color.White, RoundedCornerShape(8.dp))
-                    )
-                }
-            }
+            ReviewCalificacionButton()
+            ReviewCalificacionButton()
+            ReviewCalificacionButton()
+            ReviewCalificacionButton()
+            ReviewCalificacionButton()
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReviewCalificacionButtonPreview() {
+    ReviewCalificacionButton()
+}
+
+@Composable
+fun ReviewCalificacionButton(
+    modifier: Modifier = Modifier
+) {
+    val shape = RoundedCornerShape(8.dp) // reutilizamos la misma forma
+
+    Button(
+        onClick = {},
+        modifier = modifier
+            .width(65.dp)
+            .padding(horizontal = 1.dp)
+            .border(1.dp, Color.White, shape), // borde con esquinas redondeadas
+        shape = shape, // misma forma para el botón
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent, // fondo transparente
+            contentColor = Color.White          // texto blanco
+        )
+    ) {
+        Text(
+            text = "⭐",
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            fontSize = 12.sp
+        )
     }
 }
 
@@ -199,7 +230,23 @@ fun ResenhaInput(
                 .height(120.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(Color(0xFF2A322B))
-        )
+        ) {
+            TextField(
+                value = resenha,
+                onValueChange = onResenhaChange,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = colorResource(R.color.verde_oscuro2),
+                    unfocusedContainerColor = colorResource(R.color.verde_oscuro2),
+                    disabledContainerColor = colorResource(R.color.verde_oscuro2),
+                    cursorColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                )
+            )
+        }
     }
 }
 

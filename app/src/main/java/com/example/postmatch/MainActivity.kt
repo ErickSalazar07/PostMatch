@@ -16,9 +16,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
     //        ConfiguracionScreen()
-    //       LoginScreen()
+           LoginScreen()
     //        ReviewScreen()
-            PublicacionesScreen()
+    // PublicacionesScreen()
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.postmatch.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,11 +17,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.res.colorResource
@@ -75,10 +84,14 @@ fun HeaderLogin(
 }
 
 
-
-
 @Composable
-fun CamposLogin(
+fun FormLogin(
+    correo: String,
+    usuario: String,
+    password: String,
+    onCorreoChange: (String) -> Unit,
+    onUsuarioChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -87,35 +100,54 @@ fun CamposLogin(
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
-        OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Correo") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(R.color.verde), RoundedCornerShape(12.dp))
+        FieldLogin(
+            label = "Usuario",
+            textDataField = usuario,
+            onTextDataFieldChange = onUsuarioChange
         )
-        OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Contraseña") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(R.color.verde), RoundedCornerShape(12.dp))
+
+        FieldLogin(
+            label = "Correo",
+            textDataField = correo,
+            onTextDataFieldChange = onCorreoChange
         )
-        OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Usuario") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(R.color.verde), RoundedCornerShape(12.dp))
+
+        FieldLogin(
+            label = "Password",
+            textDataField = password,
+            onTextDataFieldChange = onPasswordChange
         )
     }
 }
 
 @Composable
+fun FieldLogin(
+    label: String,
+    textDataField: String,
+    onTextDataFieldChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TextField(
+        value = textDataField,
+        onValueChange = onTextDataFieldChange,
+        label = { Text(text = label, color = Color.White) },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = colorResource(R.color.verde),
+            unfocusedContainerColor = colorResource(R.color.verde),
+            cursorColor = Color.White,
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White
+        ),
+        shape = RoundedCornerShape(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+    )
+}
+
+@Composable
 fun BotonesLogin(
+    onLogInChange: () -> Unit,
+    onSignUpChange: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -125,7 +157,7 @@ fun BotonesLogin(
             .padding(horizontal = 24.dp, vertical = 20.dp)
     ) {
         Button(
-            onClick = {},
+            onClick = onLogInChange,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.verde_claro)
             ),
@@ -135,7 +167,7 @@ fun BotonesLogin(
         }
 
         Button(
-            onClick = {},
+            onClick = onSignUpChange,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.verde)
             ),
@@ -163,17 +195,51 @@ fun TextoLegal(
 
 @Composable
 fun LoginScreen() {
-    Column(
+    var usuario by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.verde_oscuro))
     ) {
-        HeaderLogin()
-        Spacer(modifier = Modifier.height(16.dp))
-        CamposLogin()
-        BotonesLogin()
-        Spacer(modifier = Modifier.weight(1f))
-        TextoLegal()
+        Image(
+            painter = painterResource(R.drawable.fondo_login),
+            contentDescription = "Fondo de pantalla login",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp) // para que no pegue tanto a los bordes
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            FormLogin(
+                correo = correo,
+                usuario = usuario,
+                password = password,
+                onCorreoChange = { correo = it },
+                onUsuarioChange = { usuario = it },
+                onPasswordChange = { password = it }
+            )
+            BotonesLogin(
+                onLogInChange = {
+                    Log.d("LoginScreen", "BOTON LOG IN desde el padre valores:")
+                    Log.d("LoginScreen", "usuario: $usuario")
+                    Log.d("LoginScreen", "correo: $correo")
+                    Log.d("LoginScreen", "password: $password")
+                },
+                onSignUpChange = {
+                    Log.d("LoginScreen", "BOTON SIGN UP desde el padre valores:")
+                    Log.d("LoginScreen", "usuario: $usuario")
+                    Log.d("LoginScreen", "correo: $correo")
+                    Log.d("LoginScreen", "password: $password")
+                }
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            TextoLegal()
+        }
     }
 }
 

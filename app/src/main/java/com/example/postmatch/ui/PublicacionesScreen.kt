@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -32,13 +33,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.postmatch.R
+import com.example.postmatch.data.ReviewInfo
+import com.example.postmatch.data.local.LocalReviewProvider
 
 
 @Composable
 fun PublicacionesScreen() {
+    val reviews = LocalReviewProvider.reviews
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +55,9 @@ fun PublicacionesScreen() {
         PublicacionesHeader()
         Spacer(modifier = Modifier.height(16.dp))
         // Lista de tarjetas
-        PublicacionesSection()
+        PublicacionesSection(
+            reviews = reviews
+        )
     }
 }
 
@@ -78,52 +86,25 @@ fun PublicacionesHeader(
 
 @Composable
 fun PublicacionesSection(
+    reviews: List<ReviewInfo>,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
     ) {
-        MatchCard(
-            author = "Alex Ramirez",
-            title = "Real Madrid vs. FC Barcelona",
-            description = "An intense match with a stunning goal by Leo Messi. The defense was solid, but the midfield struggled at times.",
-            likes = "5",
-            comments = "3",
-            imageRes = R.drawable.estadio_bernabeu
-
-        )
-
-        MatchCard(
-            author = "Sofia Martinez",
-            title = "Liverpool vs. Manchester United",
-            description = "A thrilling game with a late equalizer by Mohamed Salah. Both teams showed great attacking prowess.",
-            likes = "4.5",
-            comments = "3",
-            imageRes = R.drawable.estadio_bernabeu
-
-        )
-
-        MatchCard(
-            author = "Carlos Lopez",
-            title = "Bayern Munich vs. Borussia Dortmund",
-            description = "A dominant performance by Bayern, with Robert Lewandowski scoring a hat-trick. Dortmund's defense couldn’t handle the pressure.",
-            likes = "31",
-            comments = "7",
-            imageRes = R.drawable.estadio_bernabeu
-
-        )
+        items(reviews.size) {
+            index ->
+            MatchCard(
+                reviewInfo = reviews[index]
+            )
+        }
     }
 }
 
 @Composable
 fun MatchCard(
-    author: String,
-    title: String,
-    description: String,
-    likes: String,
-    comments: String,
-    imageRes: Int,
+    reviewInfo: ReviewInfo,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -137,18 +118,18 @@ fun MatchCard(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = author,
+                text = "${reviewInfo.usuarioNombre} - ${reviewInfo.usuarioEmail}",
                 color = Color.Gray,
                 fontSize = 12.sp
             )
             Text(
-                text = title,
+                text = reviewInfo.titulo,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
             Text(
-                text = description,
+                text = reviewInfo.descripcion,
                 color = Color.Gray,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
@@ -162,25 +143,25 @@ fun MatchCard(
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = likes, color = Color.White, fontSize = 12.sp)
+                Text(text = "5", color = Color.White, fontSize = 12.sp)
 
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
+                    imageVector = Icons.Default.Person,
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = comments, color = Color.White, fontSize = 12.sp)
+                Text(text = "4", color = Color.White, fontSize = 12.sp)
             }
         }
 
         Spacer(modifier = Modifier.width(8.dp))
 
         Image(
-            painter = painterResource(id = imageRes),
+            painter = painterResource(id = R.drawable.estadio_bernabeu),
             contentDescription = null,
             modifier = Modifier
                 .size(80.dp)
@@ -189,7 +170,6 @@ fun MatchCard(
         )
     }
 }
-
 
 @Composable
 @Preview (showBackground = true)
