@@ -5,8 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import com.example.postmatch.ui.ConfiguracionScreen
 import com.example.postmatch.ui.LoginScreen
 import com.example.postmatch.ui.ReviewScreen
@@ -29,3 +32,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+/*@Composable
+fun PostMatchTopBa(){
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = "PostMatch",
+                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography
+            )
+        }
+    )
+}
+*/
