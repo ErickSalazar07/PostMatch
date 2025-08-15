@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -35,6 +36,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,55 +46,15 @@ import com.example.postmatch.R
 
 
 @Composable
-fun HeaderLogin(
-    modifier: Modifier = Modifier
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.fondo_estadio),
-            contentDescription = "Fondo Estadio",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Box(
-            modifier = Modifier
-                .background(
-                    color = colorResource(R.color.verde),
-                    shape = RoundedCornerShape(20.dp)
-                )
-                .padding(8.dp)
-                .width(200.dp)
-                .height(40.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo_postmatch_nobackg),
-                contentDescription = "Logo PostMatch",
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(70.dp),
-                contentScale = ContentScale.Fit
-            )
-        }
-
-    }
-}
-
-
-@Composable
 fun FormLogin(
     correo: String,
     usuario: String,
     password: String,
+    passwordVisible: Boolean,
     onCorreoChange: (String) -> Unit,
     onUsuarioChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onPasswordVisibleChange: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -112,12 +75,57 @@ fun FormLogin(
             onTextDataFieldChange = onCorreoChange
         )
 
-        FieldLogin(
+        PasswordField(
             label = "Password",
             textDataField = password,
-            onTextDataFieldChange = onPasswordChange
+            passwordVisible = passwordVisible,
+            onTextDataFieldChange = onPasswordChange,
+            onPasswordVisibleChange = onPasswordVisibleChange
         )
     }
+}
+
+@Composable
+fun PasswordField(
+    label: String,
+    textDataField: String,
+    passwordVisible: Boolean,
+    onPasswordVisibleChange: () -> Unit,
+    onTextDataFieldChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TextField(
+        value = textDataField,
+        onValueChange = onTextDataFieldChange,
+        label = { Text(text = label, color = Color.White) },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = colorResource(R.color.verde),
+            unfocusedContainerColor = colorResource(R.color.verde),
+            cursorColor = Color.White,
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White
+        ),
+        shape = RoundedCornerShape(8.dp),
+        modifier = modifier.fillMaxWidth(),
+        visualTransformation = if(passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            Button(
+                onClick = onPasswordVisibleChange,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent
+                )
+            ) {
+                Icon(painter = painterResource(
+                    id = if(passwordVisible) R.drawable.eye_password_icon_show
+                    else R.drawable.eye_password_icon_hide
+                ),
+                    contentDescription = "Icono ocultar/mostrar password",
+                    tint = Color.White,
+                    modifier = Modifier.size(33.dp)
+                )
+            }
+        }
+    )
 }
 
 @Composable
@@ -139,8 +147,7 @@ fun FieldLogin(
             unfocusedTextColor = Color.White
         ),
         shape = RoundedCornerShape(8.dp),
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     )
 }
 
@@ -200,6 +207,7 @@ fun LoginScreen(
     var usuario by remember { mutableStateOf("") }
     var correo by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     
     Box(
         modifier = modifier
@@ -221,9 +229,11 @@ fun LoginScreen(
                 correo = correo,
                 usuario = usuario,
                 password = password,
+                passwordVisible = passwordVisible,
                 onCorreoChange = { correo = it },
                 onUsuarioChange = { usuario = it },
-                onPasswordChange = { password = it }
+                onPasswordChange = { password = it },
+                onPasswordVisibleChange = { passwordVisible = !passwordVisible}
             )
             BotonesLogin(
                 onLogInChange = {

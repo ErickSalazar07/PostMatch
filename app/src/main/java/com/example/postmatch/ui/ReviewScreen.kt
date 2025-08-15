@@ -52,7 +52,7 @@ import com.example.postmatch.data.local.LocalPartidoProvider
 fun ReviewScreen() {
     var resenha by remember { mutableStateOf("") }
     val partido = LocalPartidoProvider.partidos[0]
-    var calificacion by remember { mutableStateOf(0)}
+    var calificacion by remember { mutableStateOf(1)}
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +63,7 @@ fun ReviewScreen() {
         Spacer(modifier = Modifier.height(20.dp))
         MostrarPartidoCard(partido)
         Spacer(modifier = Modifier.height(30.dp))
-        CalificacionRow()
+        CalificacionInput(calificacion, {calificacion = it})
         Spacer(modifier = Modifier.height(35.dp))
         ResenhaInput(
             resenha = resenha,
@@ -71,7 +71,11 @@ fun ReviewScreen() {
         )
         Spacer(modifier = Modifier.weight(2f))
         BotonPublicar(
-            onChange = { Log.d("ReviewScreen","publicar reseña:\nreseña: $resenha")}
+            onChange = {
+                Log.d("ReviewScreen","datos obtenidos:")
+                Log.d("ReviewScreen","resenha: $resenha")
+                Log.d("ReviewScreen","calificacion: $calificacion")
+            }
         )
     }
 }
@@ -161,9 +165,14 @@ fun MostrarPartidoCard(
 }
 
 @Composable
-fun CalificacionRow(
+fun CalificacionInput(
+    calificacion: Int,
+    onCalificacionChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val MAX_CALIFICACION: Int = 5
+    var i:Int = 1
+
     Column(
         modifier = modifier
     ) {
@@ -177,30 +186,37 @@ fun CalificacionRow(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ReviewCalificacionButton()
-            ReviewCalificacionButton()
-            ReviewCalificacionButton()
-            ReviewCalificacionButton()
-            ReviewCalificacionButton()
+            while(i <= MAX_CALIFICACION) {
+                ReviewCalificacionButton(
+                    calificacion = calificacion,
+                    valorCalificacion = i,
+                    onCalificacionChange = onCalificacionChange
+                )
+                i++
+            }
         }
     }
 }
 
 @Composable
 fun ReviewCalificacionButton(
+    calificacion: Int,
+    valorCalificacion: Int,
+    onCalificacionChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shape = RoundedCornerShape(8.dp) // reutilizamos la misma forma
 
     Button(
-        onClick = {},
+        onClick = { onCalificacionChange(valorCalificacion)},
         modifier = modifier
             .width(65.dp)
             .padding(horizontal = 1.dp)
             .border(1.dp, Color.White, shape), // borde con esquinas redondeadas
         shape = shape, // misma forma para el botón
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent, // fondo transparente
+            containerColor = if(valorCalificacion <= calificacion) colorResource(R.color.verde_claro)
+            else Color.Transparent,
             contentColor = Color.White          // texto blanco
         )
     ) {
@@ -249,6 +265,8 @@ fun ResenhaInput(
                     cursorColor = Color.White,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White
                 )
             )
         }
