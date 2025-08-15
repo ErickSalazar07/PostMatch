@@ -39,11 +39,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.postmatch.R
-
-data class NotificacionData(val nombreUsuario : String, val descripcion : String, val nSemanas : Int, val fotoPerfil : Int)
+import com.example.postmatch.data.NotificacionInfo
+import com.example.postmatch.data.local.LocalNotificacionProvider
 
 @Composable
-fun notificacionesScreen() {
+fun NotificacionesScreen(
+    modifier: Modifier = Modifier
+) {
+    val notificaciones = LocalNotificacionProvider.notificaciones
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,23 +55,7 @@ fun notificacionesScreen() {
         notificacionesHeader()
 
         SeccionNotificaciones(
-            listaNotificaciones = listOf(
-                NotificacionData("Juan Pérez", "Le dio like a tu publicación", 2, R.drawable.user_icon),
-                NotificacionData("María Gómez", "Le dio like a tu publicación", 1, R.drawable.user_icon),
-                NotificacionData("Pedro López", "Le dio like a tu publicación", 3, R.drawable.user_icon),
-                NotificacionData("Lucía Martínez", "Le dio like a tu publicación", 1, R.drawable.user_icon),
-                NotificacionData("Carlos Ramírez", "Le dio like a tu publicación", 4, R.drawable.user_icon),
-                NotificacionData("Andrea Torres", "Le dio like a tu publicación", 2, R.drawable.user_icon),
-                NotificacionData("Luis Hernández", "Le dio like a tu publicación", 5, R.drawable.user_icon),
-                NotificacionData("Camila Rojas", "Le dio like a tu publicación", 3, R.drawable.user_icon),
-                NotificacionData("Felipe Morales", "Le dio like a tu publicación", 1, R.drawable.user_icon),
-                NotificacionData("Paola García", "Le dio like a tu publicación", 2, R.drawable.user_icon),
-                NotificacionData("Mateo Fernández", "Le dio like a tu publicación", 1, R.drawable.user_icon),
-                NotificacionData("Sofía Castro", "Le dio like a tu publicación", 4, R.drawable.user_icon),
-                NotificacionData("David Ortiz", "Le dio like a tu publicación", 2, R.drawable.user_icon),
-                NotificacionData("Isabella Ruiz", "Le dio like a tu publicación", 3, R.drawable.user_icon),
-                NotificacionData("Jorge Navarro", "Le dio like a tu publicación", 1, R.drawable.user_icon)
-            )
+            listaNotificaciones = notificaciones
         )
 
     }
@@ -109,7 +96,7 @@ fun notificacionesHeader(
 @Composable
 fun SeccionNotificaciones(
     modifier: Modifier = Modifier,
-    listaNotificaciones: List<NotificacionData> // Define el tipo correctamente aquí
+    listaNotificaciones: List<NotificacionInfo> // Define el tipo correctamente aquí
 ) {
     // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
@@ -126,7 +113,7 @@ fun SeccionNotificaciones(
 @Composable
 //@Preview()
 fun itemNotificacion(
-    notificacionData: NotificacionData,
+    notificacionData: NotificacionInfo,
     modifier: Modifier = Modifier
 ){
     Row(
@@ -144,7 +131,7 @@ fun itemNotificacion(
             contentAlignment = Alignment.Center
         ){
             Icon(
-                painter = painterResource(id = notificacionData.fotoPerfil),
+                painter = painterResource(id = notificacionData.idFotoPerfil),
                 contentDescription = notificacionData.descripcion,
                 tint = Color.Black,
                 modifier = Modifier.size(40.dp)
@@ -163,6 +150,6 @@ fun itemNotificacion(
 @Composable
 @Preview//(showBackground= true)
 fun NotificacionesScreenPreview(){
-    notificacionesScreen()
+    NotificacionesScreen()
 }
 

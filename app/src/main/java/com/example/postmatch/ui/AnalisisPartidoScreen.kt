@@ -48,10 +48,12 @@ import com.example.postmatch.R
 data class ReseniaAnalisisPartido(val fotoPerfil:Int, val nSemanas:Int, val nombreReseniador:String, val nEstrellas: Int, val nLikes:Int, val resenia:String)
 
 @Composable
-fun AnalisisPartidoScreen()
+fun AnalisisPartidoScreen(
+    modifier: Modifier = Modifier
+)
 {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ){

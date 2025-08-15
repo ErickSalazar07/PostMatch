@@ -44,7 +44,9 @@ import com.example.postmatch.R
 data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: String, val descripcionReseniaPerfil: String, val idFoto: Int)
 
 @Composable
-fun PerfilScreen(){
+fun PerfilScreen(
+    modifier: Modifier = Modifier
+){
     Column(
         modifier = Modifier
             .fillMaxSize()

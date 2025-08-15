@@ -46,7 +46,9 @@ import com.example.postmatch.R
 data class ReseniaFollowData(val idFoto: Int, val partido:String, val descripcion:String)
 
 @Composable
-fun FollowScreen(){
+fun FollowScreen(
+    modifier: Modifier = Modifier
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
