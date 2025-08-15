@@ -144,7 +144,7 @@ fun MatchCard(
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "5", color = Color.White, fontSize = 12.sp)
+                Text(text = "${reviewInfo.numLikes}", color = Color.White, fontSize = 12.sp)
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -155,7 +155,7 @@ fun MatchCard(
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "4", color = Color.White, fontSize = 12.sp)
+                Text(text = "${reviewInfo.numComentarios}", color = Color.White, fontSize = 12.sp)
             }
         }
 

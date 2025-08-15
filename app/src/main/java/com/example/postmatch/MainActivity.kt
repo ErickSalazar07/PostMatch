@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
     //       ConfiguracionScreen()
     //       LoginScreen()
-    //       ReviewScreen()
+           ReviewScreen()
     //       PublicacionesScreen()
         }
     }
