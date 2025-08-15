@@ -107,6 +107,23 @@ object LocalReviewProvider {
             partidoGolesVisitante = 1,
             partidoGolesLocal = 0,
             partidoFecha = "13/08/2025"
+        ),
+        ReviewInfo(
+            idReview = 6,
+            titulo = "Real Madrid sólido en defensa",
+            descripcion = "Partido cerrado, pero Real Madrid supo aguantar y ganar con un golazo. Me alegro que gano el RM. Viva España. 🛡️",
+            fecha = "14/08/2025",
+            usuarioNombre = "Sofía",
+            usuarioEmail = "s@noemail",
+            usuarioPassword = "111",
+            usuarioFotoPerfil = "usuario6.png",
+            partidoNombre = "Real Madrid vs Sevilla",
+            partidoCategoria = "LaLiga",
+            partidoVisitante = "Real Madrid",
+            partidoLocal = "Sevilla",
+            partidoGolesVisitante = 1,
+            partidoGolesLocal = 0,
+            partidoFecha = "13/08/2025"
         )
     )
 }

@@ -1,5 +1,6 @@
 package com.example.postmatch.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,21 +44,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.postmatch.R
+import com.example.postmatch.data.PartidoInfo
+import com.example.postmatch.data.local.LocalPartidoProvider
 
 
 @Composable
 fun ReviewScreen() {
     var resenha by remember { mutableStateOf("") }
+    val partido = LocalPartidoProvider.partidos[0]
     var calificacion by remember { mutableStateOf(0)}
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF0D0F0D))
+            .background(Color.Black)
             .padding(16.dp)
     ) {
         Encabezado()
         Spacer(modifier = Modifier.height(20.dp))
-        SeleccionarPartidoCard()
+        MostrarPartidoCard(partido)
         Spacer(modifier = Modifier.height(30.dp))
         CalificacionRow()
         Spacer(modifier = Modifier.height(35.dp))
@@ -66,7 +70,9 @@ fun ReviewScreen() {
             onResenhaChange = {resenha = it},
         )
         Spacer(modifier = Modifier.weight(2f))
-        BotonPublicar()
+        BotonPublicar(
+            onChange = { Log.d("ReviewScreen","publicar reseña:\nreseña: $resenha")}
+        )
     }
 }
 
@@ -85,7 +91,7 @@ fun Encabezado(
             tint = Color.White
         )
         Text(
-            text = "Escribir reseña",
+            text = stringResource(R.string.escribir_rese_a),
             fontWeight = FontWeight.Bold,
             color = Color.White,
             fontSize = 18.sp
@@ -95,7 +101,8 @@ fun Encabezado(
 }
 
 @Composable
-fun SeleccionarPartidoCard(
+fun MostrarPartidoCard(
+    partido: PartidoInfo,
     modifier: Modifier = Modifier
 ) {
     Column {
@@ -103,14 +110,18 @@ fun SeleccionarPartidoCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF0D0F0D)),
+                .background(Color.Black),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text("20 de mayo", color = Color.Gray, fontSize = 14.sp)
                 Text(
-                    "Real Madrid vs. FC Barcelona",
+                    text = partido.fecha,
+                    color = Color.Gray,
+                    fontSize = 14.sp
+                )
+                Text(
+                    text = partido.nombre,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     fontSize = 16.sp
@@ -124,7 +135,7 @@ fun SeleccionarPartidoCard(
                 Button(
                     onClick = {},
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF1E2E1F)
+                        containerColor = colorResource(R.color.verde)
                     ),
                     shape = RoundedCornerShape(50)
                 ) {
@@ -142,7 +153,7 @@ fun SeleccionarPartidoCard(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFF5E1C5)),
+                    .background(colorResource(R.color.color_piel)),
                 contentScale = ContentScale.Crop
             )
         }
@@ -173,12 +184,6 @@ fun CalificacionRow(
             ReviewCalificacionButton()
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ReviewCalificacionButtonPreview() {
-    ReviewCalificacionButton()
 }
 
 @Composable
@@ -252,14 +257,15 @@ fun ResenhaInput(
 
 @Composable
 fun BotonPublicar(
+    onChange: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = {},
+        onClick = onChange,
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1DB954)),
+        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.verde_claro)),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(

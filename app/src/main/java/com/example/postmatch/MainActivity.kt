@@ -15,10 +15,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-    //        ConfiguracionScreen()
-           LoginScreen()
-    //        ReviewScreen()
-    // PublicacionesScreen()
+    //       ConfiguracionScreen()
+    //       LoginScreen()
+    //       ReviewScreen()
+    //       PublicacionesScreen()
         }
     }
 }

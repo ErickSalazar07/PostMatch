@@ -2,4 +2,6 @@
     <string name="app_name">PostMatch</string>
     <string name="cuenta">Cuenta</string>
     <string name="resenha">Reseña</string>
+    <string name="cerrar_sesi_n">Cerrar sesión</string>
+    <string name="escribir_rese_a">Escribir reseña</string>
 </resources>

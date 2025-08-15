@@ -3,7 +3,7 @@ package com.example.postmatch.data.local
 import com.example.postmatch.data.UsuarioInfo
 
 object LocalUsuarioProvider {
-    var usuario = listOf(
+    var usuarios = listOf(
         UsuarioInfo(
         idUsuario = 1,
         nombre = "Pedro",
