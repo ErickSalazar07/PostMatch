@@ -49,12 +49,14 @@ import com.example.postmatch.data.local.LocalPartidoProvider
 
 
 @Composable
-fun ReviewScreen() {
+fun ReviewScreen(
+    modifier: Modifier = Modifier
+) {
     var resenha by remember { mutableStateOf("") }
     val partido = LocalPartidoProvider.partidos[0]
     var calificacion by remember { mutableStateOf(1)}
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Color.Black)
             .padding(16.dp)
@@ -91,7 +93,7 @@ fun Encabezado(
     ) {
         Icon(
             imageVector = Icons.Default.Close,
-            contentDescription = "Cerrar",
+            contentDescription = stringResource(R.string.cerrar),
             tint = Color.White
         )
         Text(
@@ -177,7 +179,7 @@ fun CalificacionInput(
         modifier = modifier
     ) {
         Text(
-            text = "Calificación",
+            text = stringResource(R.string.calificaci_n),
             fontWeight = FontWeight.Bold,
             color = Color.White,
             fontSize = 16.sp
@@ -192,6 +194,8 @@ fun CalificacionInput(
                     valorCalificacion = i,
                     onCalificacionChange = onCalificacionChange
                 )
+                if(0 < i && i < MAX_CALIFICACION)
+                    Spacer(Modifier.width(5.dp))
                 i++
             }
         }
@@ -210,21 +214,21 @@ fun ReviewCalificacionButton(
     Button(
         onClick = { onCalificacionChange(valorCalificacion)},
         modifier = modifier
-            .width(65.dp)
-            .padding(horizontal = 1.dp)
-            .border(1.dp, Color.White, shape), // borde con esquinas redondeadas
+            //.width(65.dp)
+            .size(55.dp)
+            .border(1.dp, Color.White, shape),
         shape = shape, // misma forma para el botón
         colors = ButtonDefaults.buttonColors(
-            containerColor = if(valorCalificacion <= calificacion) colorResource(R.color.verde_claro)
+            containerColor = if(valorCalificacion <= calificacion) colorResource(R.color.verde_pigmentado)
             else Color.Transparent,
             contentColor = Color.White          // texto blanco
-        )
+        ),
     ) {
         Text(
             text = "⭐",
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            fontSize = 12.sp
+            fontSize = 10.sp,
         )
     }
 }
@@ -287,7 +291,7 @@ fun BotonPublicar(
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
-            text = "Publicar",
+            text = stringResource(R.string.publicar),
             fontWeight = FontWeight.Bold,
             color = Color.White
         )

@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,10 +45,12 @@ import com.example.postmatch.data.local.LocalReviewProvider
 
 
 @Composable
-fun PublicacionesScreen() {
+fun PublicacionesScreen(
+    modifier: Modifier = Modifier
+) {
     val reviews = LocalReviewProvider.reviews
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(R.color.verde_oscuro))
             .padding(16.dp)
@@ -72,14 +75,14 @@ fun PublicacionesHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "PostMatch",
+            text = stringResource(R.string.postmatch),
             color = Color.White,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
         Icon(
             imageVector = Icons.Default.Settings,
-            contentDescription = "Settings",
+            contentDescription = stringResource(R.string.settings),
             tint = Color.White
         )
     }

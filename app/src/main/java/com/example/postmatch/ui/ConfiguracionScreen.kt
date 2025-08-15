@@ -44,11 +44,13 @@ import com.example.postmatch.data.local.LocalUsuarioProvider
 
 
 @Composable
-fun ConfiguracionScreen() {
+fun ConfiguracionScreen(
+    modifier: Modifier = Modifier
+) {
     val usuario = LocalUsuarioProvider.usuarios[0]
     val secciones = LocalSeccionConfiguracionProvider.seccionesConfiguracion
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ) {
@@ -152,7 +154,7 @@ fun ItemOpcion(
             // Flecha
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "Ir",
+                contentDescription = stringResource(R.string.ir),
                 tint = Color.White
             )
         }
@@ -174,7 +176,7 @@ fun ImagenPerfil(
         // Imagen de perfil circular
         Image(
             painter = painterResource(id = R.drawable.ricardo_icon), // pon aquí tu imagen de perfil mock
-            contentDescription = "Foto de perfil",
+            contentDescription = stringResource(R.string.foto_de_perfil),
             modifier = Modifier
                 .size(100.dp)
                 .clip(CircleShape)

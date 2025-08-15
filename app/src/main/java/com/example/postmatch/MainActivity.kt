@@ -24,9 +24,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             PostMatchTheme {
                 Scaffold (){
-                    LoginScreen(
-                        modifier = Modifier.padding(it)
-                    )
+                    // LoginScreen(modifier = Modifier.padding(it))
+                    ReviewScreen(modifier = Modifier.padding(it))
+                    // ConfiguracionScreen(modifier = Modifier.padding(it))
+                    // PublicacionesScreen(modifier = Modifier.padding(it))
                 }
             }
         }

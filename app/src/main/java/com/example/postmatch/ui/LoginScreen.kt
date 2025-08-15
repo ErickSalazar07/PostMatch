@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -64,19 +65,19 @@ fun FormLogin(
             .padding(horizontal = 24.dp)
     ) {
         FieldLogin(
-            label = "Usuario",
+            label = stringResource(R.string.usuario),
             textDataField = usuario,
             onTextDataFieldChange = onUsuarioChange
         )
 
         FieldLogin(
-            label = "Correo",
+            label = stringResource(R.string.correo),
             textDataField = correo,
             onTextDataFieldChange = onCorreoChange
         )
 
         PasswordField(
-            label = "Password",
+            label = stringResource(R.string.password),
             textDataField = password,
             passwordVisible = passwordVisible,
             onTextDataFieldChange = onPasswordChange,
@@ -119,7 +120,7 @@ fun PasswordField(
                     id = if(passwordVisible) R.drawable.eye_password_icon_show
                     else R.drawable.eye_password_icon_hide
                 ),
-                    contentDescription = "Icono ocultar/mostrar password",
+                    contentDescription = stringResource(R.string.icono_ocultar_mostrar_password),
                     tint = Color.White,
                     modifier = Modifier.size(33.dp)
                 )
@@ -170,7 +171,7 @@ fun BotonesLogin(
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Log In")
+            Text(stringResource(R.string.log_in))
         }
 
         Button(
@@ -180,7 +181,7 @@ fun BotonesLogin(
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Sign Up", color = colorResource(R.color.white))
+            Text(stringResource(R.string.sign_up), color = colorResource(R.color.white))
         }
     }
 }
@@ -190,7 +191,7 @@ fun TextoLegal(
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = "By continuing, you agree to our Terms of Service and Privacy Policy",
+        text = stringResource(R.string.by_continuing_you_agree_to_our_terms_of_service_and_privacy_policy),
         color = colorResource(R.color.white),
         fontSize = 13.sp,
         textAlign = TextAlign.Center,
