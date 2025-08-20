@@ -67,17 +67,18 @@ fun ConfiguracionScreen(
                 index ->
                 SeccionConfiguracion(secciones[index])
             }
-        }
-
-        // Botón Cerrar sesión
-        Button(
-            onClick = { /* Acción logout */ },
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.verde_claro)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(stringResource(R.string.cerrar_sesi_n), color = Color.White)
+            item {
+                // Botón Cerrar sesión
+                Button(
+                    onClick = { /* Acción logout */ },
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.verde_claro)),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(stringResource(R.string.cerrar_sesi_n), color = Color.White)
+                }
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ fun NotificacionesScreen(
 ) {
     val notificaciones = LocalNotificacionProvider.notificaciones
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ) {

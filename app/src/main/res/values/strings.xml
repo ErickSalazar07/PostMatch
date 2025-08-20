@@ -33,4 +33,11 @@
     <string name="notificaciones">Notificaciones</string>
     <string name="estrella">Estrella</string>
     <string name="imagen_rese_a">Imagen reseña</string>
+    <string name="nombre">Nombre</string>
+    <string name="email">Email</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="foto_de_perfil_url">Foto de perfil (URL)</string>
+    <string name="registro_de_usuario">Registro de Usuario</string>
+    <string name="logo_postmatch">Logo PostMatch</string>
+    <string name="empieza_a_postear">Empieza a postear</string>
 </resources>

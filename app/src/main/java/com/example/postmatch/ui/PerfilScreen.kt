@@ -34,6 +34,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +49,7 @@ fun PerfilScreen(
     modifier: Modifier = Modifier
 ){
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ){
@@ -175,6 +176,36 @@ fun TextoIzquierda(
 }
 
 @Composable
+fun CajaInfoNumFollow(
+    numFollow: Int,
+    idLabelFollow: Int,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .size(100.dp)
+            .border(1.dp, Color.White, RoundedCornerShape(8.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = numFollow.toString(),
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = stringResource(idLabelFollow),
+                color = Color.White,
+                fontSize = 12.sp
+            )
+        }
+    }
+}
+
+@Composable
 fun InformacionCuenta(
     seguidores: Int,
     seguidos: Int,
@@ -186,54 +217,17 @@ fun InformacionCuenta(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Caja de Seguidores
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .border(1.dp, Color.White, RoundedCornerShape(8.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = seguidores.toString(),
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = stringResource(R.string.seguidores),
-                    color = Color.White,
-                    fontSize = 12.sp
-                )
-            }
-        }
 
+        CajaInfoNumFollow(
+            numFollow = seguidores,
+            idLabelFollow = R.string.seguidores
+        )
         Spacer(modifier = Modifier.width(24.dp))
-
         // Caja de Seguidos
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .border(1.dp, Color.White, RoundedCornerShape(8.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = seguidos.toString(),
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = stringResource(R.string.seguidos),
-                    color = Color.White,
-                    fontSize = 12.sp
-                )
-            }
-        }
+        CajaInfoNumFollow(
+            numFollow = seguidos,
+            idLabelFollow = R.string.seguidos
+        )
     }
 }
 
@@ -251,7 +245,7 @@ fun PerfilHeader(
     ) {
         // Icono de volver a la izquierda
         Icon(
-            imageVector = Icons.Default.ArrowBack,
+            imageVector = Icons.Rounded.ArrowBackIosNew,
             contentDescription = stringResource(R.string.volver),
             tint = Color.White,
             modifier = Modifier

@@ -50,7 +50,7 @@ fun FollowScreen(
     modifier: Modifier = Modifier
 ){
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
             .padding(horizontal = 24.dp, vertical = 20.dp),

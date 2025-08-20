@@ -221,7 +221,7 @@ fun ReviewCalificacionButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = if(valorCalificacion <= calificacion) colorResource(R.color.verde_pigmentado)
             else Color.Transparent,
-            contentColor = Color.White          // texto blanco
+            contentColor = Color.White  // texto blanco
         ),
     ) {
         Text(

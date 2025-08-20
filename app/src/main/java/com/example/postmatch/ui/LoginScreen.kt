@@ -154,8 +154,8 @@ fun FieldLogin(
 
 @Composable
 fun BotonesLogin(
-    onLogInChange: () -> Unit,
-    onSignUpChange: () -> Unit,
+    onLogInButtonClick: () -> Unit,
+    onSignUpButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -165,7 +165,7 @@ fun BotonesLogin(
             .padding(horizontal = 24.dp, vertical = 20.dp)
     ) {
         Button(
-            onClick = onLogInChange,
+            onClick = onLogInButtonClick,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.verde_claro)
             ),
@@ -175,7 +175,7 @@ fun BotonesLogin(
         }
 
         Button(
-            onClick = onSignUpChange,
+            onClick = onSignUpButtonClick,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.verde)
             ),
@@ -203,6 +203,8 @@ fun TextoLegal(
 
 @Composable
 fun LoginScreen(
+    loginButtonClick: () -> Unit,
+    signUpButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var usuario by remember { mutableStateOf("") }
@@ -237,17 +239,19 @@ fun LoginScreen(
                 onPasswordVisibleChange = { passwordVisible = !passwordVisible}
             )
             BotonesLogin(
-                onLogInChange = {
+                onLogInButtonClick = {
                     Log.d("LoginScreen", "BOTON LOG IN desde el padre valores:")
                     Log.d("LoginScreen", "usuario: $usuario")
                     Log.d("LoginScreen", "correo: $correo")
                     Log.d("LoginScreen", "password: $password")
+                    loginButtonClick()
                 },
-                onSignUpChange = {
+                onSignUpButtonClick = {
                     Log.d("LoginScreen", "BOTON SIGN UP desde el padre valores:")
                     Log.d("LoginScreen", "usuario: $usuario")
                     Log.d("LoginScreen", "correo: $correo")
                     Log.d("LoginScreen", "password: $password")
+                    signUpButtonClick()
                 }
             )
             Spacer(modifier = Modifier.height(25.dp))
@@ -259,5 +263,8 @@ fun LoginScreen(
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        loginButtonClick = {},
+        signUpButtonClick = {}
+    )
 }

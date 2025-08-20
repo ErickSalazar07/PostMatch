@@ -19,15 +19,19 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -46,6 +50,8 @@ import com.example.postmatch.data.local.LocalReviewProvider
 
 @Composable
 fun PublicacionesScreen(
+    notificacionesButtonClick: () -> Unit,
+    settingsButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val reviews = LocalReviewProvider.reviews
@@ -56,7 +62,10 @@ fun PublicacionesScreen(
             .padding(16.dp)
     ) {
         // Encabezado
-        PublicacionesHeader()
+        PublicacionesHeader(
+            onNotificacionesButtonClick = notificacionesButtonClick,
+            onSettingsButtonClick = settingsButtonClick
+        )
         Spacer(modifier = Modifier.height(16.dp))
         // Lista de tarjetas
         PublicacionesSection(
@@ -67,6 +76,8 @@ fun PublicacionesScreen(
 
 @Composable
 fun PublicacionesHeader(
+    onNotificacionesButtonClick: () -> Unit,
+    onSettingsButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -80,9 +91,51 @@ fun PublicacionesHeader(
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
+
+        BotonesAccionHeader(
+            onNotificacionesButtonClick = onNotificacionesButtonClick,
+            onSettingsButtonClick = onSettingsButtonClick
+        )
+    }
+}
+
+@Composable
+fun BotonesAccionHeader(
+    onSettingsButtonClick: () -> Unit,
+    onNotificacionesButtonClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+    ) {
+        AccionButtonHeader(
+            imageVector = Icons.Filled.Notifications,
+            idContentDescription = R.string.notificaciones,
+            onClick = onNotificacionesButtonClick
+        )
+
+        AccionButtonHeader(
+            imageVector = Icons.Filled.Settings,
+            idContentDescription = R.string.settings,
+            onClick = onSettingsButtonClick
+        )
+    }
+}
+
+@Composable
+fun AccionButtonHeader(
+    imageVector: ImageVector,
+    idContentDescription: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
         Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = stringResource(R.string.settings),
+            imageVector = imageVector,
+            contentDescription = stringResource(idContentDescription),
             tint = Color.White
         )
     }
@@ -179,5 +232,8 @@ fun MatchCard(
 @Preview (showBackground = true)
 
 fun PublicacionesScreenPreview(){
-    PublicacionesScreen()
+    PublicacionesScreen(
+        notificacionesButtonClick = {},
+        settingsButtonClick = {}
+    )
 }
