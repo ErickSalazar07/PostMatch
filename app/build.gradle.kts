@@ -52,6 +52,9 @@ dependencies {
 
     implementation("androidx.compose.ui:ui-text-google-fonts:1.8.1")
 
+    implementation("androidx.compose.material:material-icons-extended:$2024.04.01") // iconos embebidos
+    implementation("androidx.navigation:navigation-compose:2.7.2") // navigation compose
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

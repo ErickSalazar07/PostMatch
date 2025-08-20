@@ -27,31 +27,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PostMatchTheme {
-                Scaffold (){
-                    // LoginScreen(modifier = Modifier.padding(it))
-                    ReviewScreen(modifier = Modifier.padding(it))
-                    // ConfiguracionScreen(modifier = Modifier.padding(it))
-                    // PublicacionesScreen(modifier = Modifier.padding(it))
-                    // AnalisisPartidoScreen(modifier = Modifier.padding(it))
-                    // FollowScreen(modifier = Modifier.padding(it))
-                    // NotificacionesScreen(modifier = Modifier.padding(it))
-                    // PerfilScreen(modifier = Modifier.padding(it))
-                }
+                PostMatchApp()
             }
         }
     }
 }
 
-/*@Composable
-fun PostMatchTopBa(){
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = "PostMatch",
-                fontWeight = FontWeight.Bold
-                style = MaterialTheme.typography
-            )
-        }
-    )
-}
-*/
