@@ -40,4 +40,6 @@
     <string name="registro_de_usuario">Registro de Usuario</string>
     <string name="logo_postmatch">Logo PostMatch</string>
     <string name="empieza_a_postear">Empieza a postear</string>
+    <string name="agregar_comentario">Agregar comentario</string>
+    <string name="agregar_like">Agregar like</string>
 </resources>
