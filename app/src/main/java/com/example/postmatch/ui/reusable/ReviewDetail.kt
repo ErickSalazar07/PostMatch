@@ -1,11 +1,9 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.reusable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,14 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -37,24 +33,25 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.postmatch.R
+import com.example.postmatch.data.ComentarioInfo
 import com.example.postmatch.data.ReviewInfo
+import com.example.postmatch.data.local.LocalComentarioProvider
 import com.example.postmatch.data.local.LocalReviewProvider
-
+import com.example.postmatch.ui.PublicacionesHeader
+import com.example.postmatch.ui.PublicacionesSection
 
 @Composable
-fun PublicacionesScreen(
+fun ReviewDetail(
+    reviewInfo: ReviewInfo,
     notificacionesButtonClick: () -> Unit,
     settingsButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val reviews = LocalReviewProvider.reviews
+    val comentarios = LocalComentarioProvider.comentarios
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -67,9 +64,134 @@ fun PublicacionesScreen(
             onSettingsButtonClick = settingsButtonClick
         )
         Spacer(modifier = Modifier.height(16.dp))
+        // Tarjeta de revisión
+        ReviewCard(
+            reviewInfo = reviewInfo
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         // Lista de tarjetas
-        PublicacionesSection(
-            reviews = reviews
+        ComentariosSection(
+            comentarios = comentarios
+        )
+    }
+}
+
+@Composable
+fun ComentarioCard(
+    comentarioInfo: ComentarioInfo,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color(0xFF1C1F1E))
+            .padding(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = "${comentarioInfo.usuarioNombre} - ${comentarioInfo.usuarioEmail}",
+                color = Color.Gray,
+                fontSize = 12.sp
+            )
+            Text(
+                text = "Respuesta a review: \"${comentarioInfo.reviewTitulo}\"",
+                color = Color.Gray,
+                fontSize = 12.sp
+            )
+            Text(
+                text = "Realizado el: ${comentarioInfo.fecha}",
+                color = Color.Gray,
+                fontSize = 12.sp
+            )
+            Text(
+                text = comentarioInfo.descripcion,
+                color = Color.Gray,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Icon(
+            imageVector = Icons.Default.Person,
+            contentDescription = stringResource(R.string.foto_de_perfil),
+            tint = Color.White,
+            modifier = Modifier
+                .size(80.dp)
+                .background(Color.Transparent, RoundedCornerShape(8.dp)),
+        )
+    }
+}
+
+@Composable
+fun ReviewCard(
+    reviewInfo: ReviewInfo,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color(0xFF1C1F1E))
+            .padding(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = "${reviewInfo.usuarioNombre} - ${reviewInfo.usuarioEmail}",
+                color = Color.Gray,
+                fontSize = 12.sp
+            )
+            Text(
+                text = reviewInfo.titulo,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+            Text(
+                text = reviewInfo.descripcion,
+                color = Color.Gray,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+            )
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.FavoriteBorder,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = "${reviewInfo.numLikes}", color = Color.White, fontSize = 12.sp)
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = "${reviewInfo.numComentarios}", color = Color.White, fontSize = 12.sp)
+            }
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.estadio_bernabeu),
+            contentDescription = null,
+            modifier = Modifier
+                .size(80.dp)
+                .clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Crop
         )
     }
 }
@@ -142,98 +264,28 @@ fun AccionButtonHeader(
 }
 
 @Composable
-fun PublicacionesSection(
-    reviews: List<ReviewInfo>,
+fun ComentariosSection(
+    comentarios: List<ComentarioInfo>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
     ) {
-        items(reviews.size) {
-            index ->
-            ReviewCard(
-                reviewInfo = reviews[index]
+        items(comentarios.size) {
+                index ->
+            ComentarioCard(
+                comentarioInfo = comentarios[index]
             )
         }
     }
 }
 
 @Composable
-fun ReviewCard(
-    reviewInfo: ReviewInfo,
-    modifier: Modifier = Modifier
-) {
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFF1C1F1E))
-            .padding(12.dp)
-    ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = "${reviewInfo.usuarioNombre} - ${reviewInfo.usuarioEmail}",
-                color = Color.Gray,
-                fontSize = 12.sp
-            )
-            Text(
-                text = reviewInfo.titulo,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-            Text(
-                text = reviewInfo.descripcion,
-                color = Color.Gray,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
-            )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "${reviewInfo.numLikes}", color = Color.White, fontSize = 12.sp)
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "${reviewInfo.numComentarios}", color = Color.White, fontSize = 12.sp)
-            }
-        }
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.estadio_bernabeu),
-            contentDescription = null,
-            modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
-        )
-    }
-}
-
-
-@Composable
-@Preview (showBackground = true)
-fun PublicacionesScreenPreview(){
-    PublicacionesScreen(
+@Preview(showBackground = true)
+fun ReviewDetailPreview() {
+    ReviewDetail(
+        reviewInfo = LocalReviewProvider.reviews[0],
         notificacionesButtonClick = {},
         settingsButtonClick = {}
     )

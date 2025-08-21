@@ -14,6 +14,17 @@ import com.example.postmatch.ui.PerfilScreen
 import com.example.postmatch.ui.PublicacionesScreen
 import com.example.postmatch.ui.RegistroScreen
 
+sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
+    object Login : Screen(route = "login")
+    object AnalisisPartido : Screen(route = "analisisPartido")
+    object Configuracion : Screen(route = "configuracion")
+    object Follow : Screen(route = "follow")
+    object Notificaciones : Screen(route = "notificaciones")
+    object Perfil : Screen(route = "perfil")
+    object Publicaciones : Screen(route = "publicaciones")
+    object Registro : Screen(route = "registro")
+}
+
 @Composable
 fun AppNavigation(
     navController: NavHostController,
@@ -21,44 +32,50 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = Screen.Login.route,
         modifier = modifier
     ) {
-        composable(route = "analisisPartido") {
+        composable(route = Screen.AnalisisPartido.route) {
             AnalisisPartidoScreen()
         }
 
-        composable(route = "configuracion") {
+        composable(route = Screen.Configuracion.route) {
             ConfiguracionScreen()
         }
 
-        composable(route = "follow") {
+        composable(route = Screen.Follow.route) {
             FollowScreen()
         }
 
-        composable(route = "login") {
+        composable(route = Screen.Login.route) {
             LoginScreen(
-                loginButtonClick = { navController.navigate("publicaciones") },
-                signUpButtonClick = { navController.navigate("registro") }
+                loginButtonClick = {
+                    navController.navigate(Screen.Publicaciones.route) {
+                        popUpTo(id = 0) {
+                            inclusive = true
+                        }
+                    }
+                },
+                signUpButtonClick = { navController.navigate(Screen.Registro.route) }
             )
         }
 
-        composable(route = "notificaciones") {
+        composable(route = Screen.Notificaciones.route) {
             NotificacionesScreen()
         }
 
-        composable(route = "perfil") {
+        composable(route = Screen.Perfil.route) {
             PerfilScreen()
         }
 
-        composable(route = "publicaciones") {
+        composable(route = Screen.Publicaciones.route) {
             PublicacionesScreen(
-                notificacionesButtonClick = { navController.navigate("notificaciones") },
-                settingsButtonClick = { navController.navigate("configuracion") }
+                notificacionesButtonClick = { navController.navigate(Screen.Notificaciones.route) },
+                settingsButtonClick = { navController.navigate(Screen.Configuracion.route) }
             )
         }
 
-        composable(route = "registro") {
+        composable(route = Screen.Registro.route) {
             RegistroScreen()
         }
     }
