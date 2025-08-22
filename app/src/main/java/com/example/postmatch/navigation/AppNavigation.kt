@@ -140,7 +140,9 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Perfil.route) {
-            PerfilScreen()
+            PerfilScreen(
+                configuracionButtonClick = { navController.navigate(Screen.Configuracion.route) }
+            )
         }
 
         composable(route = Screen.Publicaciones.route) {

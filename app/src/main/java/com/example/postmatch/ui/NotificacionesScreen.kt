@@ -81,14 +81,6 @@ fun notificacionesHeader(
         )
 
         // Icono a la derecha
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = stringResource(R.string.settings),
-            tint = Color.White,
-            modifier = Modifier
-                .size(28.dp)
-                .align(Alignment.CenterEnd)
-        )
     }
 }
 

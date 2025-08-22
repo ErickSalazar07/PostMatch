@@ -35,6 +35,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +47,7 @@ data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: Strin
 
 @Composable
 fun PerfilScreen(
+    configuracionButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Column(
@@ -53,7 +55,9 @@ fun PerfilScreen(
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ){
-        PerfilHeader()
+        PerfilHeader(
+            onConfiguracionButtonClick = configuracionButtonClick
+        )
         ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardo", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
         InformacionCuenta(1002, 1293)
         TextoIzquierda(stringResource(R.string.rese_as))
@@ -235,6 +239,7 @@ fun InformacionCuenta(
 
 @Composable
 fun PerfilHeader(
+    onConfiguracionButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -261,6 +266,18 @@ fun PerfilHeader(
             fontSize = 22.sp,
             modifier = Modifier.align(Alignment.Center)
         )
+        IconButton(
+            onClick = onConfiguracionButtonClick,
+            modifier = Modifier.align(Alignment.CenterEnd)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(R.string.settings),
+                tint = Color.White,
+                modifier = Modifier
+                    .size(28.dp)
+            )
+        }
     }
 }
 
@@ -273,45 +290,51 @@ fun ImagenPerfil(
     oficioPerfil: String,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .background(colorResource(id = R.color.verde_oscuro))
-            .padding(vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(vertical = 24.dp)
     ) {
-        // Imagen de perfil circular
-        Image(
-            painter = painterResource(id = fotoPerfil), // pon aquí tu imagen de perfil mock
-            contentDescription = stringResource(R.string.foto_de_perfil),
+        Column(
             modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .background(Color.White), // fondo blanco por si la imagen no llena el círculo
-            contentScale = ContentScale.Crop
-        )
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Imagen de perfil circular
+            Image(
+                painter = painterResource(id = fotoPerfil), // pon aquí tu imagen de perfil mock
+                contentDescription = stringResource(R.string.foto_de_perfil),
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
+                    .background(Color.White), // fondo blanco por si la imagen no llena el círculo
+                contentScale = ContentScale.Crop
+            )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        // Nombre
-        Text(
-            text = nombrePerfil,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            color = Color.White
-        )
+            // Nombre
+            Text(
+                text = nombrePerfil,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color.White
+            )
 
-        // Usuario
-        Text(
-            text = arrobaPerfil,
-            fontSize = 14.sp,
-            color = Color.LightGray
-        )
-        Text(
-            text = oficioPerfil,
-            fontSize = 14.sp,
-            color = Color.LightGray
-        )
+            // Usuario
+            Text(
+                text = arrobaPerfil,
+                fontSize = 14.sp,
+                color = Color.LightGray
+            )
+            Text(
+                text = oficioPerfil,
+                fontSize = 14.sp,
+                color = Color.LightGray
+            )
+        }
     }
 }
 
@@ -321,5 +344,7 @@ fun PerfilScreenPreview(
     modifier : Modifier = Modifier
 ){
     //ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardito", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
-    PerfilScreen()
+    PerfilScreen(
+        configuracionButtonClick = {}
+    )
 }
