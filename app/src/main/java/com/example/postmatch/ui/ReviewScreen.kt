@@ -58,7 +58,7 @@ fun ReviewScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(colorResource(id = R.color.verde_oscuro))
             .padding(16.dp)
     ) {
         Encabezado()

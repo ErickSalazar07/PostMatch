@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.postmatch.data.local.LocalPartidoProvider
@@ -114,7 +115,7 @@ fun PartidoScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(colorResource(id = R.color.verde_oscuro))
             .padding(8.dp)
     ) {
         Text(
