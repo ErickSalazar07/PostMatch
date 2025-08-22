@@ -50,8 +50,10 @@ data class ReseniaAnalisisPartido(val fotoPerfil:Int, val nSemanas:Int, val nomb
 @Composable
 fun AnalisisPartidoScreen(
     modifier: Modifier = Modifier
+
 )
 {
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -59,6 +61,8 @@ fun AnalisisPartidoScreen(
     ){
         AnalisisPartidoHeader()
     }
+
+
 }
 
 @Composable
