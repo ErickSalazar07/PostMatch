@@ -116,7 +116,7 @@ fun MostrarPartidoCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black),
+                .background(Color.Transparent),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
