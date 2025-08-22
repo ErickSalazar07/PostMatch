@@ -1,6 +1,7 @@
 package com.example.postmatch.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -50,8 +52,7 @@ import com.example.postmatch.data.local.LocalReviewProvider
 
 @Composable
 fun PublicacionesScreen(
-    notificacionesButtonClick: () -> Unit,
-    settingsButtonClick: () -> Unit,
+    reviewClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val reviews = LocalReviewProvider.reviews
@@ -62,22 +63,18 @@ fun PublicacionesScreen(
             .padding(16.dp)
     ) {
         // Encabezado
-        PublicacionesHeader(
-            onNotificacionesButtonClick = notificacionesButtonClick,
-            onSettingsButtonClick = settingsButtonClick
-        )
+        PublicacionesHeader()
         Spacer(modifier = Modifier.height(16.dp))
         // Lista de tarjetas
         PublicacionesSection(
-            reviews = reviews
+            reviews = reviews,
+            onReviewClick = reviewClick
         )
     }
 }
 
 @Composable
 fun PublicacionesHeader(
-    onNotificacionesButtonClick: () -> Unit,
-    onSettingsButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -90,34 +87,6 @@ fun PublicacionesHeader(
             color = Color.White,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
-        )
-
-        BotonesAccionHeader(
-            onNotificacionesButtonClick = onNotificacionesButtonClick,
-            onSettingsButtonClick = onSettingsButtonClick
-        )
-    }
-}
-
-@Composable
-fun BotonesAccionHeader(
-    onSettingsButtonClick: () -> Unit,
-    onNotificacionesButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-    ) {
-        AccionButtonHeader(
-            imageVector = Icons.Filled.Notifications,
-            idContentDescription = R.string.notificaciones,
-            onClick = onNotificacionesButtonClick
-        )
-
-        AccionButtonHeader(
-            imageVector = Icons.Filled.Settings,
-            idContentDescription = R.string.settings,
-            onClick = onSettingsButtonClick
         )
     }
 }
@@ -143,6 +112,7 @@ fun AccionButtonHeader(
 
 @Composable
 fun PublicacionesSection(
+    onReviewClick: (Int) -> Unit,
     reviews: List<ReviewInfo>,
     modifier: Modifier = Modifier
 ) {
@@ -153,7 +123,8 @@ fun PublicacionesSection(
         items(reviews.size) {
             index ->
             ReviewCard(
-                reviewInfo = reviews[index]
+                reviewInfo = reviews[index],
+                onReviewClick = onReviewClick
             )
         }
     }
@@ -161,6 +132,7 @@ fun PublicacionesSection(
 
 @Composable
 fun ReviewCard(
+    onReviewClick: (Int) -> Unit,
     reviewInfo: ReviewInfo,
     modifier: Modifier = Modifier
 ) {
@@ -169,64 +141,65 @@ fun ReviewCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFF1C1F1E))
+            .background(colorResource(R.color.verde_oscuro3))
+            .clickable { onReviewClick(reviewInfo.idReview) }
             .padding(12.dp)
     ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = "${reviewInfo.usuarioNombre} - ${reviewInfo.usuarioEmail}",
-                color = Color.Gray,
-                fontSize = 12.sp
-            )
-            Text(
-                text = reviewInfo.titulo,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-            Text(
-                text = reviewInfo.descripcion,
-                color = Color.Gray,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
-            )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(16.dp)
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "${reviewInfo.usuarioNombre} - ${reviewInfo.usuarioEmail}",
+                    color = Color.Gray,
+                    fontSize = 12.sp
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "${reviewInfo.numLikes}", color = Color.White, fontSize = 12.sp)
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(16.dp)
+                Text(
+                    text = reviewInfo.titulo,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "${reviewInfo.numComentarios}", color = Color.White, fontSize = 12.sp)
+                Text(
+                    text = reviewInfo.descripcion,
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+                )
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "${reviewInfo.numLikes}", color = Color.White, fontSize = 12.sp)
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "${reviewInfo.numComentarios}", color = Color.White, fontSize = 12.sp)
+                }
             }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.estadio_bernabeu),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
         }
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.estadio_bernabeu),
-            contentDescription = null,
-            modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
-        )
-    }
 }
 
 
@@ -234,7 +207,6 @@ fun ReviewCard(
 @Preview (showBackground = true)
 fun PublicacionesScreenPreview(){
     PublicacionesScreen(
-        notificacionesButtonClick = {},
-        settingsButtonClick = {}
+       reviewClick = {}
     )
 }
