@@ -15,10 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddComment
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -47,8 +50,8 @@ import com.example.postmatch.ui.PublicacionesSection
 @Composable
 fun ReviewDetail(
     reviewInfo: ReviewInfo,
-    notificacionesButtonClick: () -> Unit,
-    settingsButtonClick: () -> Unit,
+    comentarioButtonClick: () -> Unit,
+    likeButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val comentarios = LocalComentarioProvider.comentarios
@@ -59,14 +62,13 @@ fun ReviewDetail(
             .padding(16.dp)
     ) {
         // Encabezado
-        PublicacionesHeader(
-            onNotificacionesButtonClick = notificacionesButtonClick,
-            onSettingsButtonClick = settingsButtonClick
-        )
+        PublicacionesHeader()
         Spacer(modifier = Modifier.height(16.dp))
         // Tarjeta de revisión
         ReviewCard(
-            reviewInfo = reviewInfo
+            reviewInfo = reviewInfo,
+            onComentarButtonClick = comentarioButtonClick,
+            onLikeButtonClick = likeButtonClick
         )
         Spacer(modifier = Modifier.height(16.dp))
         // Lista de tarjetas
@@ -85,7 +87,7 @@ fun ComentarioCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFF1C1F1E))
+            .background(colorResource(R.color.verde_oscuro3))
             .padding(12.dp)
     ) {
         Column(
@@ -128,7 +130,44 @@ fun ComentarioCard(
 }
 
 @Composable
+fun ReviewActionBar(
+    onComentarButtonClick: () -> Unit,
+    onLikeButtonClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
+    ) {
+        IconButton(
+            onClick = onComentarButtonClick,
+            modifier = Modifier.size(18.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.AddComment,
+                contentDescription = stringResource (R.string.agregar_comentario),
+                tint = Color.White
+            )
+        }
+        IconButton(
+            onClick = onLikeButtonClick,
+            modifier = Modifier.size(18.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = stringResource(R.string.agregar_like),
+                tint = Color.White
+            )
+        }
+    }
+}
+
+@Composable
 fun ReviewCard(
+    onComentarButtonClick: () -> Unit,
+    onLikeButtonClick: () -> Unit,
     reviewInfo: ReviewInfo,
     modifier: Modifier = Modifier
 ) {
@@ -136,7 +175,7 @@ fun ReviewCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xFF1C1F1E))
+            .background(colorResource(R.color.verde_oscuro3))
             .padding(12.dp)
     ) {
         Column(
@@ -181,6 +220,12 @@ fun ReviewCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(text = "${reviewInfo.numComentarios}", color = Color.White, fontSize = 12.sp)
             }
+            Spacer(modifier = Modifier.height(4.dp))
+            HorizontalDivider(thickness = 1.dp)
+            ReviewActionBar(
+                onComentarButtonClick = onComentarButtonClick,
+                onLikeButtonClick = onLikeButtonClick
+            )
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -198,8 +243,6 @@ fun ReviewCard(
 
 @Composable
 fun PublicacionesHeader(
-    onNotificacionesButtonClick: () -> Unit,
-    onSettingsButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -213,36 +256,9 @@ fun PublicacionesHeader(
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
-
-        BotonesAccionHeader(
-            onNotificacionesButtonClick = onNotificacionesButtonClick,
-            onSettingsButtonClick = onSettingsButtonClick
-        )
     }
 }
 
-@Composable
-fun BotonesAccionHeader(
-    onSettingsButtonClick: () -> Unit,
-    onNotificacionesButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-    ) {
-        AccionButtonHeader(
-            imageVector = Icons.Filled.Notifications,
-            idContentDescription = R.string.notificaciones,
-            onClick = onNotificacionesButtonClick
-        )
-
-        AccionButtonHeader(
-            imageVector = Icons.Filled.Settings,
-            idContentDescription = R.string.settings,
-            onClick = onSettingsButtonClick
-        )
-    }
-}
 
 @Composable
 fun AccionButtonHeader(
@@ -286,7 +302,7 @@ fun ComentariosSection(
 fun ReviewDetailPreview() {
     ReviewDetail(
         reviewInfo = LocalReviewProvider.reviews[0],
-        notificacionesButtonClick = {},
-        settingsButtonClick = {}
+        comentarioButtonClick = {},
+        likeButtonClick = {}
     )
 }
