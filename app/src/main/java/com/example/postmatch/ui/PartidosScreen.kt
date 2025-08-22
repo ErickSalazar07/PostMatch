@@ -15,8 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import com.example.postmatch.data.local.LocalPartidoProvider
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -56,12 +59,36 @@ fun PartidoCard(
             // Encabezado
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(equipoLocal, color = Color.White, fontWeight = FontWeight.Bold)
-                Text(marcador, color = Color.Yellow, fontWeight = FontWeight.Bold)
-                Text(equipoVisitante, color = Color.White, fontWeight = FontWeight.Bold)
+                // Equipo Local a la izquierda
+                Text(
+                    text = equipoLocal,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.End
+                )
+
+                // Marcador centrado
+                Text(
+                    text = marcador,
+                    color = Color.Yellow,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center
+                )
+
+                // Equipo Visitante a la derecha
+                Text(
+                    text = equipoVisitante,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Start
+                )
             }
+
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -88,7 +115,7 @@ fun PartidoScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(colorResource(id = R.color.verde_oscuro))
             .padding(8.dp)
     ) {
         Text(
