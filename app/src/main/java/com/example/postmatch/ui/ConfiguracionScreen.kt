@@ -49,35 +49,31 @@ fun ConfiguracionScreen(
 ) {
     val usuario = LocalUsuarioProvider.usuarios[0]
     val secciones = LocalSeccionConfiguracionProvider.seccionesConfiguracion
-    Column(
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ) {
         // Imagen de perfil y nombre
-        ImagenPerfil(
-            usuario = usuario
-        )
-
-        // Sección Cuenta
-        LazyColumn(
-
-        ) {
-            items(secciones.size) {
+        item {
+            ImagenPerfil(
+                usuario = usuario
+            )
+        }
+        items(secciones.size) {
                 index ->
-                SeccionConfiguracion(secciones[index])
-            }
-            item {
-                // Botón Cerrar sesión
-                Button(
-                    onClick = { /* Acción logout */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.verde_claro)),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(stringResource(R.string.cerrar_sesi_n), color = Color.White)
-                }
+            SeccionConfiguracion(secciones[index])
+        }
+        item {
+            // Botón Cerrar sesión
+            Button(
+                onClick = { /* Acción logout */ },
+                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.verde_claro)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(stringResource(R.string.cerrar_sesi_n), color = Color.White)
             }
         }
     }

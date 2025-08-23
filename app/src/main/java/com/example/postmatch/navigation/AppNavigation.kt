@@ -45,7 +45,7 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Perfil : Screen(route = "perfil")
     object Publicaciones : Screen(route = "publicaciones")
     object Registro : Screen(route = "registro")
-    object ReviewDetail : Screen(route = "reviewDetail")
+    object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
     object Review : Screen("review")          // Nueva pantalla para el "más"
     object Partidos : Screen("partidos")
 }
@@ -148,7 +148,7 @@ fun AppNavigation(
         composable(route = Screen.Publicaciones.route) {
             PublicacionesScreen(
                 reviewClick = { idReview ->
-                    navController.navigate("${Screen.ReviewDetail.route}/$idReview")
+                    navController.navigate(Screen.ReviewDetail.route.replace("{idReview}","$idReview"))
                 }
             )
         }
@@ -157,7 +157,7 @@ fun AppNavigation(
             RegistroScreen()
         }
         composable(
-            route = "${Screen.ReviewDetail.route}/{idReview}",
+            route = Screen.ReviewDetail.route,
             arguments = listOf(navArgument("idReview") { type = NavType.IntType})
         ) {
             val idReview = it.arguments?.getInt("idReview") ?: 0

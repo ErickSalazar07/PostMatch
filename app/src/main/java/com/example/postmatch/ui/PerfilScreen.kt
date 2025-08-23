@@ -50,27 +50,34 @@ fun PerfilScreen(
     configuracionButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    Column(
+    val listaReseniasPerfil = listOf(
+    ReseniaPerfilData(5, "Excelente servicio", "Me encantó la atención y el lugar", R.drawable.estadio_bernabeu),
+    ReseniaPerfilData(4, "Muy bueno", "Todo estuvo bien, pero se puede mejorar", R.drawable.estadio_bernabeu),
+    ReseniaPerfilData(3, "Regular", "La experiencia fue aceptable", R.drawable.estadio_bernabeu),
+    ReseniaPerfilData(5, "Perfecto", "Superó mis expectativas", R.drawable.estadio_bernabeu),
+    ReseniaPerfilData(2, "Mala experiencia", "No quedé satisfecho con el servicio", R.drawable.estadio_bernabeu),
+    ReseniaPerfilData(4, "Muy agradable", "Volvería sin dudarlo", R.drawable.estadio_bernabeu)
+    )
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ){
-        PerfilHeader(
-            onConfiguracionButtonClick = configuracionButtonClick
-        )
-        ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardo", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
-        InformacionCuenta(1002, 1293)
-        TextoIzquierda(stringResource(R.string.rese_as))
-        SeccionReseniasPerfil(
-            listaReseniasPerfil = listOf(
-                ReseniaPerfilData(5, "Excelente servicio", "Me encantó la atención y el lugar", R.drawable.estadio_bernabeu),
-                ReseniaPerfilData(4, "Muy bueno", "Todo estuvo bien, pero se puede mejorar", R.drawable.estadio_bernabeu),
-                ReseniaPerfilData(3, "Regular", "La experiencia fue aceptable", R.drawable.estadio_bernabeu),
-                ReseniaPerfilData(5, "Perfecto", "Superó mis expectativas", R.drawable.estadio_bernabeu),
-                ReseniaPerfilData(2, "Mala experiencia", "No quedé satisfecho con el servicio", R.drawable.estadio_bernabeu),
-                ReseniaPerfilData(4, "Muy agradable", "Volvería sin dudarlo", R.drawable.estadio_bernabeu)
-            )
-        )
+        item {
+            PerfilHeader(onConfiguracionButtonClick = configuracionButtonClick)
+        }
+        item {
+            ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardo", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
+        }
+        item {
+            InformacionCuenta(1002, 1293)
+        }
+        item {
+            TextoIzquierda(stringResource(R.string.rese_as))
+        }
+        items(listaReseniasPerfil) { reseniaPerfil -> // Usamos 'items' para iterar sobre la lista
+            ItemReseniaPerfil(reseniaPerfil) // Componente que recibe cada notificación
+        }
     }
 
 }
@@ -86,9 +93,6 @@ fun SeccionReseniasPerfil(
             .background(colorResource(id = R.color.verde_oscuro))
             .padding(vertical = 8.dp)
     ) {
-        items(listaReseniasPerfil) { reseniaPerfil -> // Usamos 'items' para iterar sobre la lista
-            ItemReseniaPerfil(reseniaPerfil) // Componente que recibe cada notificación
-        }
     }
 }
 

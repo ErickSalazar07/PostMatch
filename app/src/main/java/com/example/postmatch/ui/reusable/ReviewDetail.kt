@@ -55,26 +55,31 @@ fun ReviewDetail(
     modifier: Modifier = Modifier
 ) {
     val comentarios = LocalComentarioProvider.comentarios
-    Column(
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(colorResource(R.color.verde_oscuro))
             .padding(16.dp)
     ) {
         // Encabezado
-        PublicacionesHeader()
-        Spacer(modifier = Modifier.height(16.dp))
-        // Tarjeta de revisión
-        ReviewCard(
-            reviewInfo = reviewInfo,
-            onComentarButtonClick = comentarioButtonClick,
-            onLikeButtonClick = likeButtonClick
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        // Lista de tarjetas
-        ComentariosSection(
-            comentarios = comentarios
-        )
+        item {
+            PublicacionesHeader()
+            Spacer(modifier = Modifier.height(15.dp))
+            // Tarjeta de revisión
+            ReviewCard(
+                reviewInfo = reviewInfo,
+                onComentarButtonClick = comentarioButtonClick,
+                onLikeButtonClick = likeButtonClick
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            // Lista de tarjetas
+        }
+        items(comentarios.size) {
+                index ->
+            ComentarioCard(
+                comentarioInfo = comentarios[index]
+            )
+        }
     }
 }
 
@@ -95,22 +100,21 @@ fun ComentarioCard(
         ) {
             Text(
                 text = "${comentarioInfo.usuarioNombre} - ${comentarioInfo.usuarioEmail}",
-                color = Color.Gray,
+                color = Color.White,
                 fontSize = 12.sp
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Respuesta a review: \"${comentarioInfo.reviewTitulo}\"",
-                color = Color.Gray,
+                text = comentarioInfo.fecha,
+                color = Color.White,
                 fontSize = 12.sp
             )
-            Text(
-                text = "Realizado el: ${comentarioInfo.fecha}",
-                color = Color.Gray,
-                fontSize = 12.sp
-            )
+            Spacer(modifier = Modifier.height(4.dp))
+            HorizontalDivider(thickness = 1.dp)
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = comentarioInfo.descripcion,
-                color = Color.Gray,
+                color = Color.White,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
             )
@@ -118,13 +122,13 @@ fun ComentarioCard(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Icon(
-            imageVector = Icons.Default.Person,
+        Image(
+            painter = painterResource(comentarioInfo.idUsuarioFotoPerfil),
             contentDescription = stringResource(R.string.foto_de_perfil),
-            tint = Color.White,
             modifier = Modifier
                 .size(80.dp)
-                .background(Color.Transparent, RoundedCornerShape(8.dp)),
+                .clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Crop
         )
     }
 }
@@ -288,12 +292,6 @@ fun ComentariosSection(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
     ) {
-        items(comentarios.size) {
-                index ->
-            ComentarioCard(
-                comentarioInfo = comentarios[index]
-            )
-        }
     }
 }
 
