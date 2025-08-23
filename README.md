@@ -18,6 +18,7 @@
 - [Diagrama Entidad Relación](#diagrama-entidad-relación)
 - [Diagrama de Clases](#diagrama-clases)
 - [Requerimientos funcionales](docs/requerimientos_funcionales.pdf)
+- [Figma](#mockup-figma)
 
 ## Integrantes del proyecto
 - Juan Eduardo Diaz Rojas
@@ -68,5 +69,4 @@ comunidad a través de la experiencia deportiva.
 ![Diagrama clases](docs/diagramas/clases.png)  
 
 ## Mockup figma  
-[Figma - POSTMATCH](https://www.figma.com/design/cbYEQF8F6TdDw2u7fZiOyx/POSTMATCH?node-id=0-1&t=eO4BWRzCNMAYYWjQ-1)
-
+[Figma - PostMatch](https://www.figma.com/design/AuSTbTEK20Tgqt2AiHOQUT/Untitled?node-id=0-1&p=f)
