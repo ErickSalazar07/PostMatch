@@ -1,12 +1,10 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.reviews
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,19 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,23 +34,21 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalReviewProvider
 
 
 @Composable
-fun PublicacionesScreen(
-    reviewClick: (Int) -> Unit,
+fun ReviewsScreen(
+    reviewsViewModel: ReviewsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val reviews = LocalReviewProvider.reviews
+    val reviews by reviewsViewModel.reviews.collectAsState()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -63,18 +56,18 @@ fun PublicacionesScreen(
             .padding(16.dp)
     ) {
         // Encabezado
-        PublicacionesHeader()
+        ReviewHeader()
         Spacer(modifier = Modifier.height(16.dp))
         // Lista de tarjetas
-        PublicacionesSection(
+        SectionReviews(
             reviews = reviews,
-            onReviewClick = reviewClick
+            onReviewClick =  reviewsViewModel::reviewClick
         )
     }
 }
 
 @Composable
-fun PublicacionesHeader(
+fun ReviewHeader(
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -111,7 +104,7 @@ fun AccionButtonHeader(
 }
 
 @Composable
-fun PublicacionesSection(
+fun SectionReviews(
     onReviewClick: (Int) -> Unit,
     reviews: List<ReviewInfo>,
     modifier: Modifier = Modifier
@@ -205,8 +198,8 @@ fun ReviewCard(
 
 @Composable
 @Preview (showBackground = true)
-fun PublicacionesScreenPreview(){
-    PublicacionesScreen(
-       reviewClick = {}
+fun ReviewsScreenPreview(){
+    ReviewsScreen(
+       reviewsViewModel = viewModel(),
     )
 }

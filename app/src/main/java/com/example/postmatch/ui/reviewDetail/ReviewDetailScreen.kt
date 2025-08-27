@@ -1,4 +1,4 @@
-package com.example.postmatch.ui.reusable
+package com.example.postmatch.ui.reviewDetail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,14 +18,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddComment
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,22 +39,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 import com.example.postmatch.data.ComentarioInfo
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalComentarioProvider
 import com.example.postmatch.data.local.LocalReviewProvider
-import com.example.postmatch.ui.PublicacionesHeader
-import com.example.postmatch.ui.PublicacionesSection
 
 @Composable
-fun ReviewDetail(
-    reviewInfo: ReviewInfo,
-    comentarioButtonClick: () -> Unit,
-    likeButtonClick: () -> Unit,
+fun ReviewDetailScreen(
+    reviewDetailViewModel: ReviewDetailViewModel,
     modifier: Modifier = Modifier
 ) {
-    val comentarios = LocalComentarioProvider.comentarios
+    val comentarios by reviewDetailViewModel.comentarios.collectAsState()
+    val reviewInfo by reviewDetailViewModel.reviewInfo.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -68,8 +66,8 @@ fun ReviewDetail(
             // Tarjeta de revisión
             ReviewCard(
                 reviewInfo = reviewInfo,
-                onComentarButtonClick = comentarioButtonClick,
-                onLikeButtonClick = likeButtonClick
+                onComentarButtonClick = { reviewDetailViewModel.comentarioButtonClick() },
+                onLikeButtonClick = { reviewDetailViewModel.likeButtonClick() }
             )
             Spacer(modifier = Modifier.height(15.dp))
             // Lista de tarjetas
@@ -79,6 +77,7 @@ fun ReviewDetail(
             ComentarioCard(
                 comentarioInfo = comentarios[index]
             )
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
@@ -263,26 +262,6 @@ fun PublicacionesHeader(
     }
 }
 
-
-@Composable
-fun AccionButtonHeader(
-    imageVector: ImageVector,
-    idContentDescription: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Icon(
-            imageVector = imageVector,
-            contentDescription = stringResource(idContentDescription),
-            tint = Color.White
-        )
-    }
-}
-
 @Composable
 fun ComentariosSection(
     comentarios: List<ComentarioInfo>,
@@ -297,10 +276,8 @@ fun ComentariosSection(
 
 @Composable
 @Preview(showBackground = true)
-fun ReviewDetailPreview() {
-    ReviewDetail(
-        reviewInfo = LocalReviewProvider.reviews[0],
-        comentarioButtonClick = {},
-        likeButtonClick = {}
+fun ReviewDetailScreenPreview() {
+    ReviewDetailScreen(
+        reviewDetailViewModel = viewModel(),
     )
 }

@@ -1,9 +1,8 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.crearReview
 
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,10 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,18 +41,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 import com.example.postmatch.data.PartidoInfo
-import com.example.postmatch.data.local.LocalPartidoProvider
 
 
 @Composable
-fun ReviewScreen(
+fun CrearReviewScreen(
+    crearReviewViewModel: CrearReviewViewModel,
     modifier: Modifier = Modifier
 ) {
-    var resenha by remember { mutableStateOf("") }
-    val partido = LocalPartidoProvider.partidos[0]
-    var calificacion by remember { mutableStateOf(1)}
+    val resenha by crearReviewViewModel.resenha.collectAsState()
+    val partido by crearReviewViewModel.partido.collectAsState()
+    val calificacion by crearReviewViewModel.calificacion.collectAsState()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -67,19 +64,12 @@ fun ReviewScreen(
         Spacer(modifier = Modifier.height(20.dp))
         MostrarPartidoCard(partido)
         Spacer(modifier = Modifier.height(30.dp))
-        CalificacionInput(calificacion, {calificacion = it})
+        CalificacionInput(calificacion,onCalificacionChange = {crearReviewViewModel.updateCalificacion(it)})
         Spacer(modifier = Modifier.height(35.dp))
-        ResenhaInput(
-            resenha = resenha,
-            onResenhaChange = {resenha = it},
-        )
+        ResenhaInput(resenha = resenha,onResenhaChange = { crearReviewViewModel.updateResenha(it)})
         Spacer(modifier = Modifier.weight(2f))
         BotonPublicar(
-            onChange = {
-                Log.d("ReviewScreen","datos obtenidos:")
-                Log.d("ReviewScreen","resenha: $resenha")
-                Log.d("ReviewScreen","calificacion: $calificacion")
-            }
+            onChange = { crearReviewViewModel.publicarButtonClick() }
         )
     }
 }
@@ -223,22 +213,6 @@ fun ReviewCalificacionButton(
             modifier = Modifier.size(32.dp)
         )
     }
-
-    /*IconButton(
-        onClick = { onCalificacionChange(valorCalificacion)},
-        modifier = modifier
-            .size(55.dp)
-            .border(1.dp, Color.White, shape),
-        ),
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Star,
-            contentDescription = stringResource(R.string.calificaci_n),
-            tint = Color.White
-        )
-    }
-
-     */
 }
 
 @Composable
@@ -308,6 +282,8 @@ fun BotonPublicar(
 
 @Composable
 @Preview(showBackground = true)
-fun ReviewScreenPreview() {
-    ReviewScreen()
+fun CrearReviewScreenPreview() {
+    CrearReviewScreen(
+        crearReviewViewModel = viewModel()
+    )
 }

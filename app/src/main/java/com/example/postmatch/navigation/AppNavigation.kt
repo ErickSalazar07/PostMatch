@@ -7,19 +7,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.ui.AnalisisPartidoScreen
 import com.example.postmatch.ui.ConfiguracionScreen
 import com.example.postmatch.ui.FollowScreen
-import com.example.postmatch.ui.LoginScreen
-import com.example.postmatch.ui.NotificacionesScreen
+import com.example.postmatch.ui.login.LoginScreen
+import com.example.postmatch.ui.notificaciones.NotificacionesScreen
 import com.example.postmatch.ui.PerfilScreen
-import com.example.postmatch.ui.PublicacionesScreen
 import com.example.postmatch.ui.RegistroScreen
-import com.example.postmatch.ui.reusable.ReviewDetail
 import androidx.compose.material3.NavigationBar;
-import androidx.compose.material3.MaterialTheme;
 import androidx.compose.material3.NavigationBarItem;
 import androidx.compose.material3.Icon;
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -33,8 +29,16 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.ui.PartidoScreen
-import com.example.postmatch.ui.ReviewScreen
+import com.example.postmatch.ui.crearReview.CrearReviewScreen
+import com.example.postmatch.ui.crearReview.CrearReviewViewModel
+import com.example.postmatch.ui.login.LoginViewModel
+import com.example.postmatch.ui.notificaciones.NotificacionesViewModel
+import com.example.postmatch.ui.reviewDetail.ReviewDetailScreen
+import com.example.postmatch.ui.reviewDetail.ReviewDetailViewModel
+import com.example.postmatch.ui.reviews.ReviewsScreen
+import com.example.postmatch.ui.reviews.ReviewsViewModel
 
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
     object Login : Screen(route = "login")
@@ -43,10 +47,10 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Follow : Screen(route = "follow")
     object Notificaciones : Screen(route = "notificaciones")
     object Perfil : Screen(route = "perfil")
-    object Publicaciones : Screen(route = "publicaciones")
+    object Reviews : Screen(route = "reviews")
     object Registro : Screen(route = "registro")
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
-    object Review : Screen("review")          // Nueva pantalla para el "más"
+    object CrearReview : Screen("crearReview")          // Nueva pantalla para el "más"
     object Partidos : Screen("partidos")
 }
 
@@ -62,9 +66,9 @@ fun BottomNavBar(
     onItemClick: (String) -> Unit
 ) {
     val items = listOf(
-        BottomNavItem(Screen.Publicaciones.route, Icons.Filled.Home, "Inicio"),
+        BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
         BottomNavItem(Screen.Partidos.route, Icons.Filled.Search, "Buscar"),   // Cambiado
-        BottomNavItem(Screen.Review.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
+        BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
         BottomNavItem(Screen.Perfil.route, Icons.Filled.Person, "Perfil")
 
@@ -123,20 +127,21 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Login.route) {
+            val loginViewModel: LoginViewModel = viewModel()
+
+            loginViewModel.setLoginButtonClick(action = { navController.navigate(Screen.Reviews.route) })
+            loginViewModel.setSignUpButtonClick(action = { navController.navigate(Screen.Registro.route) })
+
             LoginScreen(
-                loginButtonClick = {
-                    navController.navigate(Screen.Publicaciones.route) {
-                        popUpTo(id = 0) {
-                            inclusive = true
-                        }
-                    }
-                },
-                signUpButtonClick = { navController.navigate(Screen.Registro.route) }
+                loginViewModel = loginViewModel
             )
         }
 
         composable(route = Screen.Notificaciones.route) {
-            NotificacionesScreen()
+            val notificacionesViewModel: NotificacionesViewModel = viewModel()
+            NotificacionesScreen(
+                notificacionesViewModel = notificacionesViewModel
+            )
         }
 
         composable(route = Screen.Perfil.route) {
@@ -145,11 +150,15 @@ fun AppNavigation(
             )
         }
 
-        composable(route = Screen.Publicaciones.route) {
-            PublicacionesScreen(
-                reviewClick = { idReview ->
-                    navController.navigate(Screen.ReviewDetail.route.replace("{idReview}","$idReview"))
-                }
+        composable(route = Screen.Reviews.route) {
+            val reviewsViewModel: ReviewsViewModel = viewModel()
+
+            reviewsViewModel.setReviewClick(action = { idReview ->
+                navController.navigate(Screen.ReviewDetail.route.replace("{idReview}", "$idReview"))
+            })
+
+            ReviewsScreen(
+                reviewsViewModel = reviewsViewModel
             )
         }
 
@@ -160,17 +169,26 @@ fun AppNavigation(
             route = Screen.ReviewDetail.route,
             arguments = listOf(navArgument("idReview") { type = NavType.IntType})
         ) {
+            val reviewDetailViewModel: ReviewDetailViewModel = viewModel()
             val idReview = it.arguments?.getInt("idReview") ?: 0
             val reviewInfo = LocalReviewProvider.reviews.find {review -> review.idReview == idReview}
-            if(reviewInfo == null) navController.navigate(Screen.Publicaciones.route)
+            if(reviewInfo != null) {
+                reviewDetailViewModel.setReviewInfo(reviewInfo)
+                reviewDetailViewModel.setComentarioButtonClick(action = { navController.navigate(Screen.Follow.route) })
+                reviewDetailViewModel.setLikeButtonClick(action = { navController.navigate(Screen.AnalisisPartido.route) })
+                ReviewDetailScreen(
+                   reviewDetailViewModel = reviewDetailViewModel
+                )
+            } else navController.navigate(Screen.Reviews.route)
+        }
 
-            ReviewDetail(
-                reviewInfo = reviewInfo!!,
-                comentarioButtonClick = { navController.navigate(Screen.Follow.route) },
-                likeButtonClick = { navController.navigate(Screen.AnalisisPartido.route)}
+        composable(Screen.CrearReview.route) {
+            val crearReviewViewModel: CrearReviewViewModel = viewModel()
+
+            CrearReviewScreen(
+                crearReviewViewModel = crearReviewViewModel
             )
         }
-        composable(Screen.Review.route) { ReviewScreen() }        // Agregado
         composable(Screen.Partidos.route) { PartidoScreen() }
     }
 }
