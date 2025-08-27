@@ -14,9 +14,9 @@ import com.example.postmatch.ui.login.LoginScreen
 import com.example.postmatch.ui.notificaciones.NotificacionesScreen
 import com.example.postmatch.ui.perfil.PerfilScreen
 import com.example.postmatch.ui.registro.RegistroScreen
-import androidx.compose.material3.NavigationBar;
-import androidx.compose.material3.NavigationBarItem;
-import androidx.compose.material3.Icon;
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -31,10 +31,13 @@ import androidx.compose.material.icons.filled.Person
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.ui.partidos.PartidoScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilScreen
+import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilViewModel
 import com.example.postmatch.ui.crearReview.CrearReviewScreen
 import com.example.postmatch.ui.crearReview.CrearReviewViewModel
+import com.example.postmatch.ui.follow.FollowViewModel
 import com.example.postmatch.ui.login.LoginViewModel
 import com.example.postmatch.ui.notificaciones.NotificacionesViewModel
+import com.example.postmatch.ui.registro.RegistroViewModel
 import com.example.postmatch.ui.reviewDetail.ReviewDetailScreen
 import com.example.postmatch.ui.reviewDetail.ReviewDetailViewModel
 import com.example.postmatch.ui.reviews.ReviewsScreen
@@ -111,15 +114,22 @@ fun AppNavigation(
         modifier = modifier
     ) {
         composable(route = Screen.AnalisisPartido.route) {
+
             AnalisisPartidoScreen()
         }
 
         composable(route = Screen.ConfiguracionPerfil.route) {
-            ConfiguracionPerfilScreen()
+            val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = viewModel()
+            ConfiguracionPerfilScreen(
+                configuracionPerfilViewModel = configuracionPerfilViewModel
+            )
         }
 
         composable(route = Screen.Follow.route) {
-            FollowScreen()
+            val followViewModel: FollowViewModel = viewModel()
+            FollowScreen(
+                followViewModel = followViewModel
+            )
         }
 
         composable(route= Screen.Partidos.route){
@@ -163,7 +173,10 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Registro.route) {
-            RegistroScreen()
+            val registroViewModel: RegistroViewModel = viewModel()
+            RegistroScreen(
+                registroViewModel = registroViewModel
+            )
         }
         composable(
             route = Screen.ReviewDetail.route,

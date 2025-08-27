@@ -37,12 +37,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 
 data class ReseniaFollowData(val idFoto: Int, val partido:String, val descripcion:String)
 
 @Composable
 fun FollowScreen(
+    followViewModel: FollowViewModel,
     modifier: Modifier = Modifier
 ){
     Column(
@@ -352,5 +354,7 @@ fun ImagenFollow(
 @Composable
 @Preview(showBackground = true)
 fun FollowScreenPreview(){
-    FollowScreen()
+    FollowScreen(
+        followViewModel = viewModel()
+    )
 }
