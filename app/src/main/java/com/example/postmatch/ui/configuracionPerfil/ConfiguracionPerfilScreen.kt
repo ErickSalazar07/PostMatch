@@ -1,4 +1,4 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.configuracionPerfil
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,7 +44,7 @@ import com.example.postmatch.data.local.LocalUsuarioProvider
 
 
 @Composable
-fun ConfiguracionScreen(
+fun ConfiguracionPerfilScreen(
     modifier: Modifier = Modifier
 ) {
     val usuario = LocalUsuarioProvider.usuarios[0]
@@ -202,7 +202,7 @@ fun ImagenPerfil(
 
 @Composable
 @Preview(showBackground = true)
-fun ConfiguracionScreenPreview() {
-    ConfiguracionScreen()
+fun ConfiguracionPerfilScreenPreview() {
+    ConfiguracionPerfilScreen()
 }
 

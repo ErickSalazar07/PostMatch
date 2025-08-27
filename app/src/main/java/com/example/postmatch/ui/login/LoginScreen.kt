@@ -46,10 +46,7 @@ fun LoginScreen(
     loginViewModel: LoginViewModel,
     modifier: Modifier = Modifier
 ) {
-    val usuario by loginViewModel.usuario.collectAsState()
-    val correo by loginViewModel.correo.collectAsState()
-    val password by loginViewModel.password.collectAsState()
-    val passwordVisible by loginViewModel.passwordVisible.collectAsState()
+    val state by loginViewModel.uiState.collectAsState()
 
     Box(
         modifier = modifier
@@ -68,30 +65,18 @@ fun LoginScreen(
         ) {
             Spacer(modifier = Modifier.weight(1f))
             FormLogin(
-                correo = correo,
-                usuario = usuario,
-                password = password,
-                passwordVisible = passwordVisible,
-                onUsuarioChange = { loginViewModel.updateUsuario(it) },
-                onCorreoChange = { loginViewModel.updateCorreo(it) },
-                onPasswordChange = { loginViewModel.updatePassword(it) },
-                onPasswordVisibleChange = { loginViewModel.changePasswordVisible() }
+                correo = state.correo,
+                usuario = state.usuario,
+                password = state.password,
+                passwordVisible = state.passwordVisible,
+                onUsuarioChange = loginViewModel::updateUsuario,
+                onCorreoChange = loginViewModel::updateCorreo,
+                onPasswordChange = loginViewModel::updatePassword,
+                onPasswordVisibleChange = loginViewModel::changePasswordVisible
             )
             BotonesLogin(
-                onLogInButtonClick = {
-                    Log.d("LoginScreen", "BOTON LOG IN desde el padre valores:")
-                    Log.d("LoginScreen", "usuario: $usuario")
-                    Log.d("LoginScreen", "correo: $correo")
-                    Log.d("LoginScreen", "password: $password")
-                    loginViewModel.loginButtonClick()
-                },
-                onSignUpButtonClick = {
-                    Log.d("LoginScreen", "BOTON SIGN UP desde el padre valores:")
-                    Log.d("LoginScreen", "usuario: $usuario")
-                    Log.d("LoginScreen", "correo: $correo")
-                    Log.d("LoginScreen", "password: $password")
-                    loginViewModel.signUpButtonClick()
-                }
+                onLogInButtonClick = loginViewModel::loginButtonClick,
+                onSignUpButtonClick = loginViewModel::signUpButtonClick
             )
             Spacer(modifier = Modifier.height(25.dp))
             TextoLegal()

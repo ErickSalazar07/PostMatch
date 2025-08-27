@@ -48,7 +48,7 @@ fun ReviewsScreen(
     reviewsViewModel: ReviewsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val reviews by reviewsViewModel.reviews.collectAsState()
+    val state by reviewsViewModel.uiState.collectAsState()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -60,7 +60,7 @@ fun ReviewsScreen(
         Spacer(modifier = Modifier.height(16.dp))
         // Lista de tarjetas
         SectionReviews(
-            reviews = reviews,
+            reviews = state.reviews,
             onReviewClick =  reviewsViewModel::reviewClick
         )
     }

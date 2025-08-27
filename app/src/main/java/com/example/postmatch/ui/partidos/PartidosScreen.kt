@@ -1,4 +1,4 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.partidos
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

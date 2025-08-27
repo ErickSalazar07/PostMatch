@@ -40,7 +40,7 @@ fun NotificacionesScreen(
     notificacionesViewModel: NotificacionesViewModel,
     modifier: Modifier = Modifier
 ) {
-    val notificaciones by notificacionesViewModel.notificaciones.collectAsState()
+    val state by notificacionesViewModel.uiState.collectAsState()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -48,7 +48,7 @@ fun NotificacionesScreen(
     ) {
         NotificacionesHeader()
         SeccionNotificaciones(
-            listaNotificaciones = notificaciones
+            listaNotificaciones = state.notificaciones
         )
     }
 }

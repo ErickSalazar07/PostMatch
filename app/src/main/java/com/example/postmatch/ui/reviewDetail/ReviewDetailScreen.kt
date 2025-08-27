@@ -51,8 +51,9 @@ fun ReviewDetailScreen(
     reviewDetailViewModel: ReviewDetailViewModel,
     modifier: Modifier = Modifier
 ) {
-    val comentarios by reviewDetailViewModel.comentarios.collectAsState()
-    val reviewInfo by reviewDetailViewModel.reviewInfo.collectAsState()
+
+    val state by reviewDetailViewModel.uiState.collectAsState()
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -65,17 +66,17 @@ fun ReviewDetailScreen(
             Spacer(modifier = Modifier.height(15.dp))
             // Tarjeta de revisión
             ReviewCard(
-                reviewInfo = reviewInfo,
-                onComentarButtonClick = { reviewDetailViewModel.comentarioButtonClick() },
-                onLikeButtonClick = { reviewDetailViewModel.likeButtonClick() }
+                reviewInfo = state.reviewInfo,
+                onComentarButtonClick = reviewDetailViewModel::comentarioButtonClick,
+                onLikeButtonClick = reviewDetailViewModel::likeButtonClick
             )
             Spacer(modifier = Modifier.height(15.dp))
             // Lista de tarjetas
         }
-        items(comentarios.size) {
+        items(state.comentarios.size) {
                 index ->
             ComentarioCard(
-                comentarioInfo = comentarios[index]
+                comentarioInfo = state.comentarios[index]
             )
             Spacer(modifier = Modifier.height(10.dp))
         }

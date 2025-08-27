@@ -8,13 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.postmatch.data.local.LocalReviewProvider
-import com.example.postmatch.ui.AnalisisPartidoScreen
-import com.example.postmatch.ui.ConfiguracionScreen
-import com.example.postmatch.ui.FollowScreen
+import com.example.postmatch.ui.analisisPartido.AnalisisPartidoScreen
+import com.example.postmatch.ui.follow.FollowScreen
 import com.example.postmatch.ui.login.LoginScreen
 import com.example.postmatch.ui.notificaciones.NotificacionesScreen
-import com.example.postmatch.ui.PerfilScreen
-import com.example.postmatch.ui.RegistroScreen
+import com.example.postmatch.ui.perfil.PerfilScreen
+import com.example.postmatch.ui.registro.RegistroScreen
 import androidx.compose.material3.NavigationBar;
 import androidx.compose.material3.NavigationBarItem;
 import androidx.compose.material3.Icon;
@@ -30,7 +29,8 @@ import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.postmatch.ui.PartidoScreen
+import com.example.postmatch.ui.partidos.PartidoScreen
+import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilScreen
 import com.example.postmatch.ui.crearReview.CrearReviewScreen
 import com.example.postmatch.ui.crearReview.CrearReviewViewModel
 import com.example.postmatch.ui.login.LoginViewModel
@@ -43,7 +43,7 @@ import com.example.postmatch.ui.reviews.ReviewsViewModel
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
     object Login : Screen(route = "login")
     object AnalisisPartido : Screen(route = "analisisPartido")
-    object Configuracion : Screen(route = "configuracion")
+    object ConfiguracionPerfil : Screen(route = "configuracionPerfil")
     object Follow : Screen(route = "follow")
     object Notificaciones : Screen(route = "notificaciones")
     object Perfil : Screen(route = "perfil")
@@ -114,8 +114,8 @@ fun AppNavigation(
             AnalisisPartidoScreen()
         }
 
-        composable(route = Screen.Configuracion.route) {
-            ConfiguracionScreen()
+        composable(route = Screen.ConfiguracionPerfil.route) {
+            ConfiguracionPerfilScreen()
         }
 
         composable(route = Screen.Follow.route) {
@@ -146,7 +146,7 @@ fun AppNavigation(
 
         composable(route = Screen.Perfil.route) {
             PerfilScreen(
-                configuracionButtonClick = { navController.navigate(Screen.Configuracion.route) }
+                configuracionButtonClick = { navController.navigate(Screen.ConfiguracionPerfil.route) }
             )
         }
 
@@ -184,7 +184,6 @@ fun AppNavigation(
 
         composable(Screen.CrearReview.route) {
             val crearReviewViewModel: CrearReviewViewModel = viewModel()
-
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel
             )

@@ -51,9 +51,7 @@ fun CrearReviewScreen(
     crearReviewViewModel: CrearReviewViewModel,
     modifier: Modifier = Modifier
 ) {
-    val resenha by crearReviewViewModel.resenha.collectAsState()
-    val partido by crearReviewViewModel.partido.collectAsState()
-    val calificacion by crearReviewViewModel.calificacion.collectAsState()
+    val state by crearReviewViewModel.uiState.collectAsState()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -62,15 +60,13 @@ fun CrearReviewScreen(
     ) {
         Encabezado()
         Spacer(modifier = Modifier.height(20.dp))
-        MostrarPartidoCard(partido)
+        MostrarPartidoCard(partido = state.partido)
         Spacer(modifier = Modifier.height(30.dp))
-        CalificacionInput(calificacion,onCalificacionChange = {crearReviewViewModel.updateCalificacion(it)})
+        CalificacionInput(calificacion = state.calificacion,onCalificacionChange = crearReviewViewModel::updateCalificacion)
         Spacer(modifier = Modifier.height(35.dp))
-        ResenhaInput(resenha = resenha,onResenhaChange = { crearReviewViewModel.updateResenha(it)})
+        ResenhaInput(resenha = state.resenha,onResenhaChange = crearReviewViewModel::updateResenha)
         Spacer(modifier = Modifier.weight(2f))
-        BotonPublicar(
-            onChange = { crearReviewViewModel.publicarButtonClick() }
-        )
+        BotonPublicar(onChange =  crearReviewViewModel::publicarButtonClick)
     }
 }
 

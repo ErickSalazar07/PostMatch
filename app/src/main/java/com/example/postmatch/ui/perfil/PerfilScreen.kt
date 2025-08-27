@@ -1,4 +1,4 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.perfil
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,8 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.IconButton

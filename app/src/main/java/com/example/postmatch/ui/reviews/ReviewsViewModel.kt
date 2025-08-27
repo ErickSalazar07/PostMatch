@@ -5,22 +5,22 @@ import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalReviewProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class ReviewsViewModel: ViewModel() {
-    private val _reviews = MutableStateFlow(LocalReviewProvider.reviews)
-    val reviews: StateFlow<List<ReviewInfo>> = _reviews
 
-    private val _onReviewClick = MutableStateFlow<(Int) -> Unit> {}
+    private val _uiState = MutableStateFlow(ReviewsState())
+    val uiState: StateFlow<ReviewsState> = _uiState
 
     fun updateReviews(input: List<ReviewInfo>) {
-        _reviews.value = input
+        _uiState.update { it.copy(reviews = input) }
     }
 
     fun setReviewClick(action: (Int) -> Unit) {
-        _onReviewClick.value = action
+        _uiState.update { it.copy(onReviewClick = action) }
     }
 
     fun reviewClick(idReview: Int) {
-        _onReviewClick.value(idReview)
+        _uiState.value.onReviewClick(idReview)
     }
 }
