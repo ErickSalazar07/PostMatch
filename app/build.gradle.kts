@@ -55,6 +55,10 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:$2024.04.01") // iconos embebidos
     implementation("androidx.navigation:navigation-compose:2.7.2") // navigation compose
 
+    // dependencias para el patron MVVM
+    implementation("androidx.compose.runtime:runtime-livedata:1.8.3")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
