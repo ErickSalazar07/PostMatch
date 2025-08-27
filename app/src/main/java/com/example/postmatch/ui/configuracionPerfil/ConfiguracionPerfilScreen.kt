@@ -23,6 +23,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 import com.example.postmatch.data.OpcionConfiguracionButtonInfo
 import com.example.postmatch.data.SeccionConfiguracionInfo
@@ -45,10 +48,10 @@ import com.example.postmatch.data.local.LocalUsuarioProvider
 
 @Composable
 fun ConfiguracionPerfilScreen(
+    configuracionPerfilViewModel: ConfiguracionPerfilViewModel,
     modifier: Modifier = Modifier
 ) {
-    val usuario = LocalUsuarioProvider.usuarios[0]
-    val secciones = LocalSeccionConfiguracionProvider.seccionesConfiguracion
+    val state by configuracionPerfilViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -57,17 +60,17 @@ fun ConfiguracionPerfilScreen(
         // Imagen de perfil y nombre
         item {
             ImagenPerfil(
-                usuario = usuario
+                usuario = state.usuario
             )
         }
-        items(secciones.size) {
+        items(count = state.secciones.size) {
                 index ->
-            SeccionConfiguracion(secciones[index])
+            SeccionConfiguracion(seccion = state.secciones[index])
         }
         item {
             // Botón Cerrar sesión
             Button(
-                onClick = { /* Acción logout */ },
+                onClick = configuracionPerfilViewModel::cerrarSesionButtonClick,
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.verde_claro)),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -203,6 +206,8 @@ fun ImagenPerfil(
 @Composable
 @Preview(showBackground = true)
 fun ConfiguracionPerfilScreenPreview() {
-    ConfiguracionPerfilScreen()
+    ConfiguracionPerfilScreen(
+        configuracionPerfilViewModel = viewModel()
+    )
 }
 
