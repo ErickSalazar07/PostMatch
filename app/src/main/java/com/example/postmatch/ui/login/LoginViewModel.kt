@@ -26,29 +26,9 @@ class LoginViewModel: ViewModel() {
         _uiState.update { it.copy(passwordVisible = !_uiState.value.passwordVisible) }
     }
 
-    fun setLoginButtonClick(action: () -> Unit) {
-        _uiState.update { it.copy(loginButtonClick = action) }
-    }
-
-    fun setSignUpButtonClick(action: () -> Unit) {
-        _uiState.update { it.copy(signUpButtonClick = action) }
-    }
-
     private fun showState() {
         Log.d("LoginViewModel", "usuario: ${_uiState.value.usuario}")
         Log.d("LoginViewModel", "correo: ${_uiState.value.correo}")
         Log.d("LoginViewModel", "password: ${_uiState.value.password}")
-    }
-
-    fun loginButtonClick() {
-        Log.d("LoginViewModel", "loginButtonClick")
-        showState()
-        _uiState.value.loginButtonClick()
-    }
-
-    fun signUpButtonClick() {
-        Log.d("LoginViewModel", "signUpButtonClick")
-        showState()
-        _uiState.value.signUpButtonClick()
     }
 }

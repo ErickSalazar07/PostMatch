@@ -42,4 +42,6 @@
     <string name="empieza_a_postear">Empieza a postear</string>
     <string name="agregar_comentario">Agregar comentario</string>
     <string name="agregar_like">Agregar like</string>
+    <string name="resumen_del_partido">Resumen del partido</string>
+    <string name="foto_partido">Foto partido</string>
 </resources>

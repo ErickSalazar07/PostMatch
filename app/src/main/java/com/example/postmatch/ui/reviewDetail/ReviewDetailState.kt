@@ -7,7 +7,5 @@ import com.example.postmatch.data.local.LocalReviewProvider
 
 data class ReviewDetailState(
     val comentarios: List<ComentarioInfo> = LocalComentarioProvider.comentarios,
-    val reviewInfo: ReviewInfo = LocalReviewProvider.reviews[0],
-    val comentarioButtonClick: () -> Unit = {},
-    val likeButtonClick: () -> Unit = {}
+    val reviewInfo: ReviewInfo = LocalReviewProvider.reviews[0]
 )

@@ -5,5 +5,4 @@ import com.example.postmatch.data.local.LocalReviewProvider
 
 data class ReviewsState(
     val reviews: List<ReviewInfo> = LocalReviewProvider.reviews,
-    val onReviewClick: (Int) -> Unit = {}
 )

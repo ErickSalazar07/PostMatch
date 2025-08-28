@@ -15,12 +15,4 @@ class ReviewsViewModel: ViewModel() {
     fun updateReviews(input: List<ReviewInfo>) {
         _uiState.update { it.copy(reviews = input) }
     }
-
-    fun setReviewClick(action: (Int) -> Unit) {
-        _uiState.update { it.copy(onReviewClick = action) }
-    }
-
-    fun reviewClick(idReview: Int) {
-        _uiState.value.onReviewClick(idReview)
-    }
 }

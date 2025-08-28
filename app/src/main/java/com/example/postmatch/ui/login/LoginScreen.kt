@@ -44,6 +44,8 @@ import com.example.postmatch.R
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel,
+    loginButtonClick: () -> Unit,
+    signUpButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by loginViewModel.uiState.collectAsState()
@@ -75,8 +77,8 @@ fun LoginScreen(
                 onPasswordVisibleChange = loginViewModel::changePasswordVisible
             )
             BotonesLogin(
-                onLogInButtonClick = loginViewModel::loginButtonClick,
-                onSignUpButtonClick = loginViewModel::signUpButtonClick
+                onLogInButtonClick = loginButtonClick,
+                onSignUpButtonClick = signUpButtonClick
             )
             Spacer(modifier = Modifier.height(25.dp))
             TextoLegal()
@@ -245,5 +247,8 @@ fun TextoLegal(
 fun LoginScreenPreview() {
     LoginScreen(
         loginViewModel = viewModel(),
+        loginButtonClick = {},
+        signUpButtonClick = {}
+
     )
 }

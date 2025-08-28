@@ -3,6 +3,7 @@ package com.example.postmatch.ui.partidos
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -15,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -22,49 +25,40 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.postmatch.data.local.LocalPartidoProvider
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.example.postmatch.R
+import com.example.postmatch.data.PartidoInfo
 
 
 // ---------- PANTALLA PRINCIPAL ----------
 @Composable
 fun PartidoScreen(
+    partidoViewModel: PartidosViewModel,
     modifier: Modifier = Modifier
 ) {
-    Column(
+
+    val state by partidoViewModel.uiState.collectAsState()
+
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
             .padding(8.dp)
     ) {
-        Text(
-            text = "Partidos Destacados",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.padding(8.dp)
-        )
-
-        // Lista de partidos usando datos del provider
-        LazyColumn {
-            items(LocalPartidoProvider.partidos) { partido ->
-                PartidoCard(
-                    equipoLocal = partido.local,
-                    equipoVisitante = partido.visitante,
-                    marcador = "${partido.golesLocal} - ${partido.golesVisitante}",
-                    eventos = listOf(
-                        "Ejemplo de gol 1",
-                        "Ejemplo de gol 2",
-                        "Ejemplo tarjeta"
-                    ),
-                    estadisticas = listOf(
-                        "Posesión: 50% - 50%",
-                        "Tiros: 12 - 10",
-                        "Faltas: 14 - 12",
-                        "Corners: 6 - 4"
-                    )
-                )
-            }
+        item {
+            Text(
+                text = "Partidos Destacados",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+        items(count = state.partidos.size) { index -> // Lista de partidos usando datos del provider
+            PartidoCard(
+                partido = state.partidos[index]
+            )
         }
     }
 }
@@ -72,21 +66,20 @@ fun PartidoScreen(
 // ---------- CARD DE PARTIDO ----------
 @Composable
 fun PartidoCard(
-    equipoLocal: String,
-    equipoVisitante: String,
-    marcador: String,
-    eventos: List<String>,
-    estadisticas: List<String>
+    partido: PartidoInfo,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
         colors = CardDefaults.cardColors(Color(0xFF1E1E1E)),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp)
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
             // Imagen del estadio
             Image(
                 painter = painterResource(id = R.drawable.estadio_bernabeu),
@@ -98,63 +91,86 @@ fun PartidoCard(
                 contentScale = ContentScale.Crop
             )
 
-            // Encabezado
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Equipo Local a la izquierda
-                Text(
-                    text = equipoLocal,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.End
-                )
-
-                // Marcador centrado
-                Text(
-                    text = marcador,
-                    color = Color.Yellow,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-
-                // Equipo Visitante a la derecha
-                Text(
-                    text = equipoVisitante,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Start
-                )
-            }
-
+            ResultadoPartidoCard(partido = partido)
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Eventos
-            Text("Eventos importantes:", color = Color.Gray, fontWeight = FontWeight.SemiBold)
-            eventos.forEach { evento ->
-                Text("• $evento", color = Color.White, fontSize = 14.sp)
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Estadísticas
-            Text("Estadísticas:", color = Color.Gray, fontWeight = FontWeight.SemiBold)
-            estadisticas.forEach { stat ->
-                Text("• $stat", color = Color.White, fontSize = 14.sp)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+                Text(
+                    text = "Posesión: ${partido.posesionLocal}% - ${partido.posesionVisitante}%",
+                    color = Color.Gray
+                )
             }
         }
     }
 }
 
+@Composable
+fun ResultadoPartidoCard(
+    partido: PartidoInfo,
+    modifier: Modifier = Modifier
+) {
+    Row( // Encabezado
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        var colorLocal = Color.White
+        var colorVisitante = Color.White
+
+        if(partido.golesLocal > partido.golesVisitante) {
+            colorLocal = Color.Green
+            colorVisitante = Color.Red
+        } else if(partido.golesLocal < partido.golesVisitante) {
+            colorLocal = Color.Red
+            colorVisitante = Color.Green
+        } else {
+            colorLocal = Color.Yellow
+            colorVisitante = Color.Yellow
+        }
+
+        Text( // Equipo Local a la izquierda
+            text = partido.local,
+            color = Color.White,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.weight(3f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text ="${partido.golesLocal}",
+            color = colorLocal,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(0.5f),
+            textAlign = TextAlign.End
+        )
+        Text( // Marcador centrado
+            text = " - ",
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text ="${partido.golesVisitante}",
+            color = colorVisitante,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(0.5f),
+            textAlign = TextAlign.Start
+        )
+        Text( // Equipo Visitante a la derecha
+            text = partido.visitante,
+            color = Color.White,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.weight(3f),
+            textAlign = TextAlign.Center
+        )
+    }
+}
 
 // ---------- PREVIEW ----------
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PartidoScreenPreview() {
-    PartidoScreen()
+    PartidoScreen(
+        partidoViewModel = viewModel()
+    )
 }

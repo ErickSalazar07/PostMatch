@@ -21,20 +21,4 @@ class ReviewDetailViewModel: ViewModel() {
     fun updateComentarios(input: List<ComentarioInfo>) {
         _uiState.update { it.copy(comentarios = input) }
     }
-
-    fun setComentarioButtonClick(action: () -> Unit) {
-        _uiState.update { it.copy(comentarioButtonClick = action) }
-    }
-
-    fun setLikeButtonClick(action: () -> Unit) {
-        _uiState.update { it.copy(likeButtonClick = action) }
-    }
-
-    fun comentarioButtonClick() {
-        _uiState.value.comentarioButtonClick()
-    }
-
-    fun likeButtonClick() {
-        _uiState.value.likeButtonClick()
-    }
 }

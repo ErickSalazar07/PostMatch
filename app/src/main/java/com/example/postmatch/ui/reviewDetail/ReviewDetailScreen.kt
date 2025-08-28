@@ -49,6 +49,8 @@ import com.example.postmatch.data.local.LocalReviewProvider
 @Composable
 fun ReviewDetailScreen(
     reviewDetailViewModel: ReviewDetailViewModel,
+    comentarioButtonClick: () -> Unit,
+    likeButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -67,8 +69,8 @@ fun ReviewDetailScreen(
             // Tarjeta de revisión
             ReviewCard(
                 reviewInfo = state.reviewInfo,
-                onComentarButtonClick = reviewDetailViewModel::comentarioButtonClick,
-                onLikeButtonClick = reviewDetailViewModel::likeButtonClick
+                onComentarButtonClick = comentarioButtonClick,
+                onLikeButtonClick = likeButtonClick
             )
             Spacer(modifier = Modifier.height(15.dp))
             // Lista de tarjetas
@@ -280,5 +282,8 @@ fun ComentariosSection(
 fun ReviewDetailScreenPreview() {
     ReviewDetailScreen(
         reviewDetailViewModel = viewModel(),
+        comentarioButtonClick = {},
+        likeButtonClick = {}
+
     )
 }

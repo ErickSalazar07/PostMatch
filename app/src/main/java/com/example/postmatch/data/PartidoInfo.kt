@@ -8,5 +8,9 @@ data class PartidoInfo(
     var local: String,
     var golesVisitante: Int,
     var golesLocal: Int,
+    var posesionLocal: Int,
+    var posesionVisitante: Int,
+    var tirosLocal: Int,
+    var tirosVisitante: Int,
     var fecha: String
 )

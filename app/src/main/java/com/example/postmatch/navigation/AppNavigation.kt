@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.postmatch.ui.analisisPartido.AnalisisPartidoViewModel
 import com.example.postmatch.ui.partidos.PartidoScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilViewModel
@@ -37,6 +38,7 @@ import com.example.postmatch.ui.crearReview.CrearReviewViewModel
 import com.example.postmatch.ui.follow.FollowViewModel
 import com.example.postmatch.ui.login.LoginViewModel
 import com.example.postmatch.ui.notificaciones.NotificacionesViewModel
+import com.example.postmatch.ui.partidos.PartidosViewModel
 import com.example.postmatch.ui.registro.RegistroViewModel
 import com.example.postmatch.ui.reviewDetail.ReviewDetailScreen
 import com.example.postmatch.ui.reviewDetail.ReviewDetailViewModel
@@ -114,8 +116,10 @@ fun AppNavigation(
         modifier = modifier
     ) {
         composable(route = Screen.AnalisisPartido.route) {
-
-            AnalisisPartidoScreen()
+            val analisisPartidoViewModel: AnalisisPartidoViewModel = viewModel()
+            AnalisisPartidoScreen(
+                analisisPartidoViewModel = analisisPartidoViewModel
+            )
         }
 
         composable(route = Screen.ConfiguracionPerfil.route) {
@@ -134,17 +138,16 @@ fun AppNavigation(
         }
 
         composable(route= Screen.Partidos.route){
-            PartidoScreen()
+            val partidoViewModel: PartidosViewModel = viewModel()
+            PartidoScreen(partidoViewModel = partidoViewModel)
         }
 
         composable(route = Screen.Login.route) {
             val loginViewModel: LoginViewModel = viewModel()
-
-            loginViewModel.setLoginButtonClick(action = { navController.navigate(Screen.Reviews.route) })
-            loginViewModel.setSignUpButtonClick(action = { navController.navigate(Screen.Registro.route) })
-
             LoginScreen(
-                loginViewModel = loginViewModel
+                loginViewModel = loginViewModel,
+                loginButtonClick = { navController.navigate(Screen.Reviews.route) },
+                signUpButtonClick = { navController.navigate(Screen.Registro.route) }
             )
         }
 
@@ -163,13 +166,9 @@ fun AppNavigation(
 
         composable(route = Screen.Reviews.route) {
             val reviewsViewModel: ReviewsViewModel = viewModel()
-
-            reviewsViewModel.setReviewClick(action = { idReview ->
-                navController.navigate(Screen.ReviewDetail.route.replace("{idReview}", "$idReview"))
-            })
-
             ReviewsScreen(
-                reviewsViewModel = reviewsViewModel
+                reviewsViewModel = reviewsViewModel,
+                onReviewClick = { idReview -> navController.navigate(Screen.ReviewDetail.route.replace("{idReview}", "$idReview")) }
             )
         }
 
@@ -188,10 +187,10 @@ fun AppNavigation(
             val reviewInfo = LocalReviewProvider.reviews.find {review -> review.idReview == idReview}
             if(reviewInfo != null) {
                 reviewDetailViewModel.setReviewInfo(reviewInfo)
-                reviewDetailViewModel.setComentarioButtonClick(action = { navController.navigate(Screen.Follow.route) })
-                reviewDetailViewModel.setLikeButtonClick(action = { navController.navigate(Screen.AnalisisPartido.route) })
                 ReviewDetailScreen(
-                   reviewDetailViewModel = reviewDetailViewModel
+                   reviewDetailViewModel = reviewDetailViewModel,
+                   comentarioButtonClick = { navController.navigate(Screen.Follow.route) },
+                   likeButtonClick = { navController.navigate(Screen.AnalisisPartido.route) }
                 )
             } else navController.navigate(Screen.Reviews.route)
         }
@@ -202,7 +201,6 @@ fun AppNavigation(
                 crearReviewViewModel = crearReviewViewModel
             )
         }
-        composable(Screen.Partidos.route) { PartidoScreen() }
     }
 }
 

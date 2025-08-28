@@ -12,6 +12,10 @@ object LocalPartidoProvider {
             local = "FC Barcelona",
             golesVisitante = 2,
             golesLocal = 3,
+            posesionLocal = 50,
+            posesionVisitante = 50,
+            tirosLocal = 15,
+            tirosVisitante = 10,
             fecha = "20/05/2025"
         ),
 
@@ -23,6 +27,10 @@ object LocalPartidoProvider {
             local = "PSG",
             golesVisitante = 1,
             golesLocal = 2,
+            posesionLocal = 55,
+            posesionVisitante = 45,
+            tirosLocal = 12,
+            tirosVisitante = 10,
             fecha = "21/05/2025"
         ),
         PartidoInfo(
@@ -33,6 +41,10 @@ object LocalPartidoProvider {
             local = "Liverpool",
             golesVisitante = 2,
             golesLocal = 2,
+            posesionLocal = 48,
+            posesionVisitante = 52,
+            tirosLocal = 15,
+            tirosVisitante = 18,
             fecha = "19/05/2025"
         ),
         PartidoInfo(
@@ -43,6 +55,10 @@ object LocalPartidoProvider {
             local = "Juventus",
             golesVisitante = 0,
             golesLocal = 1,
+            posesionLocal = 40,
+            posesionVisitante = 60,
+            tirosLocal = 8,
+            tirosVisitante = 14,
             fecha = "18/05/2025"
         ),
         PartidoInfo(
@@ -53,6 +69,10 @@ object LocalPartidoProvider {
             local = "Chelsea",
             golesVisitante = 3,
             golesLocal = 2,
+            posesionLocal = 45,
+            posesionVisitante = 55,
+            tirosLocal = 11,
+            tirosVisitante = 16,
             fecha = "17/05/2025"
         ),
         PartidoInfo(
@@ -63,6 +83,10 @@ object LocalPartidoProvider {
             local = "Milan",
             golesVisitante = 1,
             golesLocal = 1,
+            posesionLocal = 53,
+            posesionVisitante = 47,
+            tirosLocal = 13,
+            tirosVisitante = 9,
             fecha = "16/05/2025"
         ),
         PartidoInfo(
@@ -73,6 +97,10 @@ object LocalPartidoProvider {
             local = "Atlético de Madrid",
             golesVisitante = 0,
             golesLocal = 2,
+            posesionLocal = 42,
+            posesionVisitante = 58,
+            tirosLocal = 9,
+            tirosVisitante = 12,
             fecha = "15/05/2025"
         ),
         PartidoInfo(
@@ -83,6 +111,10 @@ object LocalPartidoProvider {
             local = "Borussia Dortmund",
             golesVisitante = 2,
             golesLocal = 3,
+            posesionLocal = 51,
+            posesionVisitante = 49,
+            tirosLocal = 17,
+            tirosVisitante = 14,
             fecha = "14/05/2025"
         )
     )

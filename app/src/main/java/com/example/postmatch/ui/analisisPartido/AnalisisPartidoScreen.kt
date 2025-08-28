@@ -34,8 +34,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
@@ -43,37 +46,38 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
+import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.ReseniaAnalisisPartidoInfo
 import com.example.postmatch.data.local.LocalAnalisisPartidoProvider
 
 
  @Composable
  fun AnalisisPartidoScreen(
+     analisisPartidoViewModel: AnalisisPartidoViewModel,
      modifier: Modifier = Modifier
  ) {
-     // Convertimos la lista en estados observables
-     val resenias = remember {
-         LocalAnalisisPartidoProvider.reseniasAnalisisPartido.map {
-             mutableStateOf(it)
-         }
-     }
 
-     Column(
+     val state by analisisPartidoViewModel.uiState.collectAsState()
+     LazyColumn(
          modifier = modifier
              .fillMaxSize()
              .background(colorResource(id = R.color.verde_oscuro))
      ) {
-         AnalisisPartidoHeader()
-
-         SeccionReseniasAnalisisPartido(
-             listaReseniasAnalisisPartido = resenias
-         )
+         item { AnalisisPartidoHeader(state.partido) }
+         items(
+             count = state.resenias.size,
+         ) { index ->
+             ItemReseniaAnalisisPartido(state.resenias[index])
+             Spacer(modifier = Modifier.height(8.dp))
+         }
      }
  }
 
 @Composable
 fun AnalisisPartidoHeader(
+    partido: PartidoInfo,
     modifier: Modifier = Modifier
 ){
     Box(
@@ -82,15 +86,6 @@ fun AnalisisPartidoHeader(
             .height(56.dp)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = stringResource(R.string.settings),
-            tint = Color.White,
-            modifier = Modifier
-                .size(28.dp)
-                .align(Alignment.CenterEnd)
-        )
-
         Text(
             text = stringResource(R.string.partido),
             color = Color.White,
@@ -101,7 +96,7 @@ fun AnalisisPartidoHeader(
 
     }
     Text(
-        text = "Resumen del partido 3-1",
+        text = stringResource(R.string.resumen_del_partido),
         color = Color.LightGray,
         fontSize = 10.sp,
         modifier = Modifier
@@ -112,7 +107,7 @@ fun AnalisisPartidoHeader(
     Spacer(modifier = Modifier.height(16.dp))
     Image(
         painter = painterResource(id = R.drawable.estadio_bernabeu),
-        contentDescription = "Foto partido",
+        contentDescription = stringResource(R.string.foto_partido),
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .fillMaxWidth()              // ocupa todo el ancho
@@ -130,12 +125,12 @@ fun AnalisisPartidoHeader(
         ) {
             RecuadroConTextos(
                 textoArriba = stringResource(R.string.goles),
-                textoAbajo = "2 - 1",
+                textoAbajo = "${partido.golesLocal} - ${partido.golesVisitante}",
                 modifier = Modifier.weight(1f)
             )
             RecuadroConTextos(
                 textoArriba = stringResource(R.string.posesi_n),
-                textoAbajo = "48% - 52%",
+                textoAbajo = "${partido.posesionLocal}% - ${partido.posesionVisitante}%",
                 modifier = Modifier.weight(1f)
             )
         }
@@ -147,7 +142,7 @@ fun AnalisisPartidoHeader(
         ) {
             RecuadroConTextos(
                 textoArriba = stringResource(R.string.tiros),
-                textoAbajo = "15 - 10",
+                textoAbajo = "${partido.tirosLocal} - ${partido.tirosVisitante}",
             )
         }
     }
@@ -172,7 +167,8 @@ fun RecuadroConTextos(
     Box(
         modifier = modifier
             .border(1.dp, Color.White, RoundedCornerShape(8.dp))
-            .padding(8.dp)
+            .padding(8.dp),
+        contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(textoArriba, fontSize = 12.sp, color = Color.White)
@@ -182,27 +178,10 @@ fun RecuadroConTextos(
 }
 
  @Composable
- fun SeccionReseniasAnalisisPartido(
-     modifier: Modifier = Modifier,
-     listaReseniasAnalisisPartido: List<MutableState<ReseniaAnalisisPartidoInfo>>
- ) {
-     LazyColumn(
-         modifier = modifier
-             .background(colorResource(id = R.color.verde_oscuro))
-             .padding(vertical = 8.dp)
-     ) {
-         items(listaReseniasAnalisisPartido) { reseniaState ->
-             ItemReseniaAnalisisPartido(reseniaState)
-         }
-     }
- }
-
- @Composable
  fun ItemReseniaAnalisisPartido(
-     reseniaState: MutableState<ReseniaAnalisisPartidoInfo>,
+     resenia: ReseniaAnalisisPartidoInfo,
      modifier: Modifier = Modifier
  ) {
-     val resenia = reseniaState.value
 
      Column(
          modifier = modifier
@@ -268,19 +247,9 @@ fun RecuadroConTextos(
                  tint = if (resenia.isLiked) Color.Blue else Color.Gray,
                  modifier = Modifier
                      .size(20.dp)
-                     .clickable {
-                         reseniaState.value = resenia.copy(
-                             isLiked = !resenia.isLiked,
-                             nLikes = if (resenia.isLiked) resenia.nLikes - 1 else resenia.nLikes + 1
-                         )
-                     }
              )
              Spacer(modifier = Modifier.width(4.dp))
-             Text(
-                 text = resenia.nLikes.toString(),
-                 color = Color.White
-             )
-
+             Text(text = resenia.nLikes.toString(), color = Color.White)
              Spacer(modifier = Modifier.width(16.dp))
          }
      }
@@ -290,5 +259,7 @@ fun RecuadroConTextos(
 @Composable
 @Preview(showBackground = true)
 fun AnalisisPartidoScreenReview(){
-    AnalisisPartidoScreen()
+    AnalisisPartidoScreen(
+        analisisPartidoViewModel = viewModel()
+    )
 }

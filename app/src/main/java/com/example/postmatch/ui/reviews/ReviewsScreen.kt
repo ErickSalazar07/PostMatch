@@ -46,6 +46,7 @@ import com.example.postmatch.data.local.LocalReviewProvider
 @Composable
 fun ReviewsScreen(
     reviewsViewModel: ReviewsViewModel,
+    onReviewClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by reviewsViewModel.uiState.collectAsState()
@@ -61,7 +62,7 @@ fun ReviewsScreen(
         // Lista de tarjetas
         SectionReviews(
             reviews = state.reviews,
-            onReviewClick =  reviewsViewModel::reviewClick
+            onReviewClick =  onReviewClick
         )
     }
 }
@@ -201,5 +202,6 @@ fun ReviewCard(
 fun ReviewsScreenPreview(){
     ReviewsScreen(
        reviewsViewModel = viewModel(),
+        onReviewClick = {}
     )
 }
