@@ -128,6 +128,7 @@ fun AppNavigation(
         composable(route = Screen.Follow.route) {
             val followViewModel: FollowViewModel = viewModel()
             FollowScreen(
+                onFollowButtonChange = {},
                 followViewModel = followViewModel
             )
         }
