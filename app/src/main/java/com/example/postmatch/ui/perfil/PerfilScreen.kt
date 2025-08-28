@@ -40,6 +40,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.postmatch.R
+import com.example.postmatch.data.ReseniaMiPerfilInfo
+import com.example.postmatch.data.local.LocalReseniaMiPerfilData.reseniasMiPerfil
 
 data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: String, val descripcionReseniaPerfil: String, val idFoto: Int)
 
@@ -48,14 +50,7 @@ fun PerfilScreen(
     configuracionButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    val listaReseniasPerfil = listOf(
-    ReseniaPerfilData(5, "Excelente servicio", "Me encantó la atención y el lugar", R.drawable.estadio_bernabeu),
-    ReseniaPerfilData(4, "Muy bueno", "Todo estuvo bien, pero se puede mejorar", R.drawable.estadio_bernabeu),
-    ReseniaPerfilData(3, "Regular", "La experiencia fue aceptable", R.drawable.estadio_bernabeu),
-    ReseniaPerfilData(5, "Perfecto", "Superó mis expectativas", R.drawable.estadio_bernabeu),
-    ReseniaPerfilData(2, "Mala experiencia", "No quedé satisfecho con el servicio", R.drawable.estadio_bernabeu),
-    ReseniaPerfilData(4, "Muy agradable", "Volvería sin dudarlo", R.drawable.estadio_bernabeu)
-    )
+    val listaReseniasPerfil = reseniasMiPerfil
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -83,7 +78,7 @@ fun PerfilScreen(
 @Composable
 fun SeccionReseniasPerfil(
     modifier: Modifier = Modifier,
-    listaReseniasPerfil: List<ReseniaPerfilData> // Define el tipo correctamente aquí
+    listaReseniasPerfil: List<ReseniaMiPerfilInfo> // Define el tipo correctamente aquí
 ) {
     // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
@@ -96,7 +91,7 @@ fun SeccionReseniasPerfil(
 
 @Composable
 fun ItemReseniaPerfil(
-    reseniaPerfil: ReseniaPerfilData,
+    reseniaPerfil: ReseniaMiPerfilInfo,
     modifier: Modifier = Modifier
 ) {
     Row(
