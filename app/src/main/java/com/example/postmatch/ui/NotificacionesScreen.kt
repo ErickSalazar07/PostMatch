@@ -52,7 +52,7 @@ fun NotificacionesScreen(
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
     ) {
-        notificacionesHeader()
+        NotificacionesHeader()
 
         SeccionNotificaciones(
             listaNotificaciones = notificaciones
@@ -62,7 +62,7 @@ fun NotificacionesScreen(
 }
 
 @Composable
-fun notificacionesHeader(
+fun NotificacionesHeader(
     modifier: Modifier = Modifier
 ) {
     Box(

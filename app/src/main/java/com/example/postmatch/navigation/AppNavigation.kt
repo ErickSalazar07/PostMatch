@@ -115,7 +115,7 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Follow.route) {
-            FollowScreen()
+            FollowScreen({})
         }
 
         composable(route= Screen.Partidos.route){

@@ -36,19 +36,31 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.postmatch.R
 
-data class ReseniaFollowData(val idFoto: Int, val partido:String, val descripcion:String)
+import com.example.postmatch.R
+import com.example.postmatch.data.PerfilInfo
+import com.example.postmatch.data.ReseniaPerfilInfo
+import com.example.postmatch.data.local.LocalPerfilInfoData
+import com.example.postmatch.data.local.LocalPerfilInfoData.perfilInfo
+import com.example.postmatch.data.local.LocalReseniaPerfilData.reseniasPerfil
+
 
 @Composable
 fun FollowScreen(
+    onFollowButtonChange:() -> Unit,
     modifier: Modifier = Modifier
 ){
+    var perfilInfo by remember { mutableStateOf(LocalPerfilInfoData.perfilInfo) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -57,75 +69,37 @@ fun FollowScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         FollowHeader()
-        ImagenFollow(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardo", arrobaPerfil = "@Ricardo420", oficioPerfil = "Fanático madrid")
+        ImagenFollow(perfilInfo)
 
         Button(
-            onClick = {},
+            onClick = {
+                // Cambiamos el estado
+                perfilInfo = perfilInfo.copy(
+                    isFollowing = !perfilInfo.isFollowing,
+                    seguidores = if (perfilInfo.isFollowing) {
+                        perfilInfo.seguidores - 1
+                    } else {
+                        perfilInfo.seguidores + 1
+                    }
+                )
+                onFollowButtonChange()
+            },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.verde_claro)
+                containerColor = if (perfilInfo.isFollowing) Color.Gray // cuando ya lo sigues
+                else colorResource(R.color.verde_claro) // cuando no lo sigues
             )
         ) {
-            Text("Seguir")
+            Text(
+                if (perfilInfo.isFollowing) "Siguiendo" else "Seguir"
+            )
         }
 
-        InformacionFollow(102, 45324)
 
         MenuFollowOpciones()
 
         SeccionReseniasFollow(
-            listaReseniasFollow = listOf(
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Real Madrid vs Barcelona",
-                    descripcion = "Partidazo con mucha emoción, remontada épica."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Liverpool vs Manchester City",
-                    descripcion = "Juego muy parejo, lleno de ocasiones."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Boca Juniors vs River Plate",
-                    descripcion = "Ambiente increíble, goles y tensión hasta el final."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "PSG vs Bayern Múnich",
-                    descripcion = "Velocidad, técnica y un final inesperado."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Atlético de Madrid vs Sevilla",
-                    descripcion = "Defensas sólidas, pocas ocasiones claras."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Chelsea vs Arsenal",
-                    descripcion = "Derbi londinense con mucha intensidad."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Colombia vs Brasil",
-                    descripcion = "Orgullo nacional, mucha garra y corazón."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Milan vs Inter",
-                    descripcion = "Un clásico que no decepcionó."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "Juventus vs Napoli",
-                    descripcion = "Gran despliegue táctico de ambos lados."
-                ),
-                ReseniaFollowData(
-                    idFoto = R.drawable.user_icon,
-                    partido = "River Plate vs San Lorenzo",
-                    descripcion = "Goles, polémicas y pasión hasta el final."
-                )
-            )
+            listaReseniasFollow = reseniasPerfil
         )
 
     }
@@ -134,7 +108,7 @@ fun FollowScreen(
 @Composable
 fun SeccionReseniasFollow(
     modifier: Modifier = Modifier,
-    listaReseniasFollow: List<ReseniaFollowData> // Define el tipo correctamente aquí
+    listaReseniasFollow: List<ReseniaPerfilInfo> // Define el tipo correctamente aquí
 ) {
     // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
@@ -150,7 +124,7 @@ fun SeccionReseniasFollow(
 
 @Composable
 fun ItemReseniaFollow(
-    reseniaFollow: ReseniaFollowData,
+    reseniaPerfil: ReseniaPerfilInfo,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -161,7 +135,7 @@ fun ItemReseniaFollow(
     ) {
         // Foto de perfil
         Image(
-            painter = painterResource(id = reseniaFollow.idFoto),
+            painter = painterResource(id = reseniaPerfil.idFoto),
             contentDescription = stringResource(R.string.foto_de_perfil),
             modifier = Modifier
                 .size(48.dp)
@@ -176,14 +150,14 @@ fun ItemReseniaFollow(
             verticalArrangement = Arrangement.Top
         ) {
             Text(
-                text = reseniaFollow.partido,
+                text = reseniaPerfil.partido,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = reseniaFollow.descripcion,
+                text = reseniaPerfil.descripcion,
                 fontSize = 14.sp,
                 color = Color.LightGray
             )
@@ -242,8 +216,7 @@ fun MenuFollowOpciones() {
 
 @Composable
 fun InformacionFollow(
-    seguidores: Int,
-    seguidos: Int,
+    perfilInfo: PerfilInfo,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -262,7 +235,7 @@ fun InformacionFollow(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = seguidores.toString(),
+                    text = perfilInfo.seguidores.toString(),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -288,7 +261,7 @@ fun InformacionFollow(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = seguidos.toString(),
+                    text = perfilInfo.seguidos.toString(),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -305,10 +278,7 @@ fun InformacionFollow(
 
 @Composable
 fun ImagenFollow(
-    fotoPerfil: Int,
-    nombrePerfil: String,
-    arrobaPerfil: String,
-    oficioPerfil: String,
+    perfilInfo: PerfilInfo,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -320,7 +290,7 @@ fun ImagenFollow(
     ) {
         // Imagen de perfil circular
         Image(
-            painter = painterResource(id = fotoPerfil), // pon aquí tu imagen de perfil mock
+            painter = painterResource(id = perfilInfo.foto), // pon aquí tu imagen de perfil mock
             contentDescription = stringResource(R.string.foto_de_perfil),
             modifier = Modifier
                 .size(100.dp)
@@ -333,7 +303,7 @@ fun ImagenFollow(
 
         // Nombre
         Text(
-            text = nombrePerfil,
+            text = perfilInfo.nombre,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = Color.White
@@ -341,20 +311,24 @@ fun ImagenFollow(
 
         // Usuario
         Text(
-            text = arrobaPerfil,
+            text = perfilInfo.arroba,
             fontSize = 14.sp,
             color = Color.LightGray
         )
         Text(
-            text = oficioPerfil,
+            text = perfilInfo.oficio,
             fontSize = 14.sp,
             color = Color.LightGray
         )
     }
+
+    InformacionFollow(perfilInfo)
 }
 
 @Composable
 @Preview(showBackground = true)
 fun FollowScreenPreview(){
-    FollowScreen()
+    FollowScreen(
+        onFollowButtonChange = {}
+    )
 }
