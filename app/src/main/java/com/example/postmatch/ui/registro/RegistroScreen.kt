@@ -1,4 +1,4 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.registro
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,16 +22,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 
 @Composable
 fun RegistroScreen(
+    registroViewModel: RegistroViewModel,
     modifier: Modifier = Modifier,
 ) {
-    var nombre by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var fotoPerfil by remember { mutableStateOf("") }
+    val state by registroViewModel.uiState.collectAsState()
 
     Column(
         modifier = modifier
@@ -47,42 +45,33 @@ fun RegistroScreen(
 
         CampoTexto(
             label = stringResource(R.string.nombre),
-            value = nombre,
-            onValueChange = { nombre = it }
+            value = state.nombre,
+            onValueChange = registroViewModel::updateNombre
         )
         Spacer(modifier = Modifier.height(30.dp))
 
         CampoTexto(
             label = stringResource(R.string.email),
-            value = email,
-            onValueChange = { email = it }
+            value = state.email,
+            onValueChange = registroViewModel::updateEmail
         )
         Spacer(modifier = Modifier.height(30.dp))
 
         CampoTexto(
             label = stringResource(R.string.contrase_a),
-            value = password,
-            onValueChange = { password = it }
+            value = state.password,
+            onValueChange = registroViewModel::updatePassword
         )
         Spacer(modifier = Modifier.height(30.dp))
 
         CampoTexto(
             label = stringResource(R.string.foto_de_perfil_url),
-            value = fotoPerfil,
-            onValueChange = { fotoPerfil = it }
+            value = state.urlFotoPerfil,
+            onValueChange = registroViewModel::updateUrlFotoPerfil
         )
 
         Spacer(modifier = Modifier.weight(1f))
-
-        BotonRegistrar(
-            onClick = {
-                Log.d("RegistroScreen", "Datos ingresados:")
-                Log.d("RegistroScreen", "Nombre: $nombre")
-                Log.d("RegistroScreen", "Email: $email")
-                Log.d("RegistroScreen", "Password: $password")
-                Log.d("RegistroScreen", "FotoPerfil: $fotoPerfil")
-            }
-        )
+        BotonRegistrar( onClick = registroViewModel::regitrarButtonClick)
     }
 }
 
@@ -180,5 +169,7 @@ fun BotonRegistrar(onClick: () -> Unit) {
 @Composable
 @Preview(showBackground = true)
 fun RegistroScreenPreview() {
-    RegistroScreen()
+    RegistroScreen(
+        registroViewModel = viewModel()
+    )
 }

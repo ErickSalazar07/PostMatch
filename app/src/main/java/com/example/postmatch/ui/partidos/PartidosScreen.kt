@@ -1,4 +1,4 @@
-package com.example.postmatch.ui
+package com.example.postmatch.ui.partidos
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +26,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.postmatch.R
 
 
+// ---------- PANTALLA PRINCIPAL ----------
+@Composable
+fun PartidoScreen(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.verde_oscuro))
+            .padding(8.dp)
+    ) {
+        Text(
+            text = "Partidos Destacados",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.padding(8.dp)
+        )
+
+        // Lista de partidos usando datos del provider
+        LazyColumn {
+            items(LocalPartidoProvider.partidos) { partido ->
+                PartidoCard(
+                    equipoLocal = partido.local,
+                    equipoVisitante = partido.visitante,
+                    marcador = "${partido.golesLocal} - ${partido.golesVisitante}",
+                    eventos = listOf(
+                        "Ejemplo de gol 1",
+                        "Ejemplo de gol 2",
+                        "Ejemplo tarjeta"
+                    ),
+                    estadisticas = listOf(
+                        "Posesión: 50% - 50%",
+                        "Tiros: 12 - 10",
+                        "Faltas: 14 - 12",
+                        "Corners: 6 - 4"
+                    )
+                )
+            }
+        }
+    }
+}
 
 // ---------- CARD DE PARTIDO ----------
 @Composable
@@ -109,46 +151,6 @@ fun PartidoCard(
     }
 }
 
-// ---------- PANTALLA PRINCIPAL ----------
-@Composable
-fun PartidoScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
-            .padding(8.dp)
-    ) {
-        Text(
-            text = "Partidos Destacados",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.padding(8.dp)
-        )
-
-        // Lista de partidos usando datos del provider
-        LazyColumn {
-            items(LocalPartidoProvider.partidos) { partido ->
-                PartidoCard(
-                    equipoLocal = partido.local,
-                    equipoVisitante = partido.visitante,
-                    marcador = "${partido.golesLocal} - ${partido.golesVisitante}",
-                    eventos = listOf(
-                        "Ejemplo de gol 1",
-                        "Ejemplo de gol 2",
-                        "Ejemplo tarjeta"
-                    ),
-                    estadisticas = listOf(
-                        "Posesión: 50% - 50%",
-                        "Tiros: 12 - 10",
-                        "Faltas: 14 - 12",
-                        "Corners: 6 - 4"
-                    )
-                )
-            }
-        }
-    }
-}
 
 // ---------- PREVIEW ----------
 @Preview(showBackground = true, showSystemUi = true)
