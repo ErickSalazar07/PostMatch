@@ -34,7 +34,7 @@ class LoginViewModel: ViewModel() {
         _uiState.update { it.copy(signUpButtonClick = action) }
     }
 
-    private fun shoState() {
+    private fun showState() {
         Log.d("LoginViewModel", "usuario: ${_uiState.value.usuario}")
         Log.d("LoginViewModel", "correo: ${_uiState.value.correo}")
         Log.d("LoginViewModel", "password: ${_uiState.value.password}")
@@ -42,13 +42,13 @@ class LoginViewModel: ViewModel() {
 
     fun loginButtonClick() {
         Log.d("LoginViewModel", "loginButtonClick")
-        shoState()
+        showState()
         _uiState.value.loginButtonClick()
     }
 
     fun signUpButtonClick() {
         Log.d("LoginViewModel", "signUpButtonClick")
-        shoState()
+        showState()
         _uiState.value.signUpButtonClick()
     }
 }

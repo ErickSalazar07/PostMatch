@@ -7,9 +7,7 @@
 <img width="157px" alt="Static Badge" src="https://img.shields.io/badge/database-firebase-red?logo=firebase&logoColor=red">
 <img width="157px" alt="Static Badge" src="https://img.shields.io/badge/database-fireship-red?logo=fireship&logoColor=red">
 <img width="185px" alt="Static Badge" src="https://img.shields.io/badge/project-in%20development-yellow?logo=git">
-<img width="165px" alt="Static Badge"
-    src="https://img.shields.io/badge/SDK-android%20studio-ligthgreen?logo=androidstudio&logoColor=%2304bade"
->
+<img width="165px" alt="Static Badge" src="https://img.shields.io/badge/SDK-android%20studio-ligthgreen?logo=androidstudio&logoColor=%2304bade">
 
 
 ## Indice
