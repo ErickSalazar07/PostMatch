@@ -1,4 +1,4 @@
-package com.example.postmatch.ui.analisisPartido
+package com.example.postmatch.ui.partidoDetail
 
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.ReviewInfo

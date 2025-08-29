@@ -1,8 +1,7 @@
-package com.example.postmatch.ui.analisisPartido
+package com.example.postmatch.ui.partidoDetail
 
 import androidx.lifecycle.ViewModel
 import com.example.postmatch.data.PartidoInfo
-import com.example.postmatch.data.ReseniaAnalisisPartidoInfo
 import com.example.postmatch.data.ReviewInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

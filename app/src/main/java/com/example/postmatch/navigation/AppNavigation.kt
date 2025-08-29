@@ -29,8 +29,8 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.data.local.LocalPartidoProvider
-import com.example.postmatch.ui.analisisPartido.PartidoDetailScreen
-import com.example.postmatch.ui.analisisPartido.PartidoDetailViewModel
+import com.example.postmatch.ui.partidoDetail.PartidoDetailScreen
+import com.example.postmatch.ui.partidoDetail.PartidoDetailViewModel
 import com.example.postmatch.ui.partidos.PartidoScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilViewModel
