@@ -167,7 +167,8 @@ fun AppNavigation(
 
             BuscadorScreenContent(
                 state = uiState,
-                onBuscar = { query -> buscarViewModel.onBuscar(query) }
+                onBuscar = { query -> buscarViewModel.onBuscar(query) },
+                        navController = navController
             )
         }
 

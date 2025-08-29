@@ -2,6 +2,7 @@ package com.example.postmatch.ui.Buscador
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,7 +43,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.postmatch.R
+import com.example.postmatch.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -53,7 +57,8 @@ private val GreenAccent = Color(0xFF4CAF50)
 @Composable
 fun BuscadorScreenContent(
     state: BuscarUIState,
-    onBuscar: (String) -> Unit
+    onBuscar: (String) -> Unit,
+    navController: NavController   // ✅ agregado NavController
 ) {
     Column(
         modifier = Modifier
@@ -72,7 +77,7 @@ fun BuscadorScreenContent(
                 unfocusedContainerColor = colorResource(R.color.verde_oscuro3),
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = GreenAccent,     // 🔹 texto blanco cuando está enfocado
+                cursorColor = GreenAccent,
                 focusedTextColor = Color.White,
                 unfocusedTextColor = Color.White
             ),
@@ -90,14 +95,17 @@ fun BuscadorScreenContent(
             FiltroChip("Deporte")
             FiltroChip("Review")
             FiltroChip("Competición")
-
         }
-        Spacer(Modifier.height(8.dp)) // 🔹 espacio entre filas
+
+        Spacer(Modifier.height(8.dp))
         Row(
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier.fillMaxWidth()
         ) {
-            FiltroChip("Destacados") // 🔹 este va abajo resaltado
+            FiltroChip(
+                text = "Destacados",
+                onClick = { navController.navigate(Screen.Partidos.route) } // ✅ navegar
+            )
         }
 
         Spacer(Modifier.height(12.dp))
@@ -114,20 +122,26 @@ fun BuscadorScreenContent(
 }
 
 @Composable
-fun FiltroChip(text: String, selected: Boolean = false) {
+fun FiltroChip(
+    text: String,
+    selected: Boolean = false,
+    onClick: () -> Unit = {}   // ✅ agregado callback
+) {
     Surface(
         shape = RoundedCornerShape(20.dp),
         color = if (selected) GreenAccent else colorResource(R.color.verde_oscuro3),
         tonalElevation = 2.dp,
-        modifier = Modifier.padding(vertical = 4.dp)
+        modifier = Modifier
+            .padding(vertical = 4.dp)
+            .clickable { onClick() }   // ✅ click
     ) {
         Text(
             text = text,
             color = if (selected) Color.Black else Color.White,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-            maxLines = 1,              // 🔹 fuerza una sola línea
-            overflow = TextOverflow.Ellipsis // 🔹 evita desbordes feos
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -153,7 +167,7 @@ fun ReseñaCard(reseña: Reseña) {
                 modifier = Modifier.size(56.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.estadio_bernabeu), // ⚠️ pon aquí tu imagen real
+                    painter = painterResource(id = R.drawable.estadio_bernabeu),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
@@ -206,6 +220,7 @@ fun ReseñaCard(reseña: Reseña) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun BuscadorScreenPreview() {
+    val fakeNavController = rememberNavController() // ✅ para que compile preview
     val fakeState = BuscarUIState(
         query = "",
         reseñas = listOf(
@@ -229,13 +244,12 @@ fun BuscadorScreenPreview() {
                 rating = 4.8,
                 reviews = 98
             ),
-
             Reseña(
-                id = 8,
-                titulo = "Reseña del partido: Santa fe vs. Dortmund",
+                id = 3,
+                titulo = "Reseña del partido: Santa Fe vs. Dortmund",
                 autor = "@Luis_Futbol",
                 fecha = "15 de abril de 2024",
-                equipos = "Bayern vs. Dortmund",
+                equipos = "Santa Fe vs. Dortmund",
                 resumen = "Análisis táctico y jugadas clave.",
                 rating = 4.8,
                 reviews = 98
@@ -244,6 +258,10 @@ fun BuscadorScreenPreview() {
     )
 
     MaterialTheme {
-        BuscadorScreenContent(state = fakeState, onBuscar = {})
+        BuscadorScreenContent(
+            state = fakeState,
+            onBuscar = {},
+            navController = fakeNavController
+        )
     }
 }
