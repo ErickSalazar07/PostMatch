@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.postmatch.data.local.LocalReviewProvider
-import com.example.postmatch.ui.analisisPartido.AnalisisPartidoScreen
 import com.example.postmatch.ui.follow.FollowScreen
 import com.example.postmatch.ui.login.LoginScreen
 import com.example.postmatch.ui.notificaciones.NotificacionesScreen
@@ -29,7 +28,9 @@ import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.postmatch.ui.analisisPartido.AnalisisPartidoViewModel
+import com.example.postmatch.data.local.LocalPartidoProvider
+import com.example.postmatch.ui.analisisPartido.PartidoDetailScreen
+import com.example.postmatch.ui.analisisPartido.PartidoDetailViewModel
 import com.example.postmatch.ui.partidos.PartidoScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilViewModel
@@ -47,7 +48,7 @@ import com.example.postmatch.ui.reviews.ReviewsViewModel
 
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
     object Login : Screen(route = "login")
-    object AnalisisPartido : Screen(route = "analisisPartido")
+    object PartidoDetail : Screen(route = "partidoDetail/{idPartido}")
     object ConfiguracionPerfil : Screen(route = "configuracionPerfil")
     object Follow : Screen(route = "follow")
     object Notificaciones : Screen(route = "notificaciones")
@@ -115,11 +116,19 @@ fun AppNavigation(
         startDestination = Screen.Login.route,
         modifier = modifier
     ) {
-        composable(route = Screen.AnalisisPartido.route) {
-            val analisisPartidoViewModel: AnalisisPartidoViewModel = viewModel()
-            AnalisisPartidoScreen(
-                analisisPartidoViewModel = analisisPartidoViewModel
-            )
+        composable(
+            route = Screen.PartidoDetail.route,
+            arguments = listOf(navArgument("idPartido") { type = NavType.IntType})
+        ) {
+            val partidoDetailViewModel: PartidoDetailViewModel = viewModel()
+            val idPartido = it.arguments?.getInt("idPartido") ?: 0
+            val partidoInfo = LocalPartidoProvider.partidos.find { partido -> partido.idPartido == idPartido}
+            if(partidoInfo != null) {
+                partidoDetailViewModel.setPartido(partidoInfo)
+                PartidoDetailScreen(
+                    partidoDetailViewModel = partidoDetailViewModel
+                )
+            } else navController.navigate(Screen.Partidos.route)
         }
 
         composable(route = Screen.ConfiguracionPerfil.route) {
@@ -139,7 +148,10 @@ fun AppNavigation(
 
         composable(route= Screen.Partidos.route){
             val partidoViewModel: PartidosViewModel = viewModel()
-            PartidoScreen(partidoViewModel = partidoViewModel)
+            PartidoScreen(
+                partidoViewModel = partidoViewModel,
+                onPartidoClick = { idPartido -> navController.navigate(Screen.PartidoDetail.route.replace("{idPartido}", "$idPartido")) }
+            )
         }
 
         composable(route = Screen.Login.route) {
@@ -190,7 +202,7 @@ fun AppNavigation(
                 ReviewDetailScreen(
                    reviewDetailViewModel = reviewDetailViewModel,
                    comentarioButtonClick = { navController.navigate(Screen.Follow.route) },
-                   likeButtonClick = { navController.navigate(Screen.AnalisisPartido.route) }
+                   likeButtonClick = { navController.navigate(Screen.PartidoDetail.route) } // TODO: eliminar esta accion no correspondiente
                 )
             } else navController.navigate(Screen.Reviews.route)
         }

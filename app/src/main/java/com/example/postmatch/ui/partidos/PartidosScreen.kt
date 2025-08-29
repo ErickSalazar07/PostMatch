@@ -2,6 +2,8 @@ package com.example.postmatch.ui.partidos
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -35,10 +38,37 @@ import com.example.postmatch.data.PartidoInfo
 @Composable
 fun PartidoScreen(
     partidoViewModel: PartidosViewModel,
+    onPartidoClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     val state by partidoViewModel.uiState.collectAsState()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(colorResource(R.color.verde_oscuro)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Partidos Destacados",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.padding(8.dp)
+        )
+        SectionPartidos(
+            partidos = state.partidos,
+            onPartidoClick = onPartidoClick
+        )
+    }
+}
+
+@Composable
+fun SectionPartidos(
+   partidos: List<PartidoInfo>,
+   onPartidoClick: (Int) -> Unit,
+   modifier: Modifier = Modifier
+) {
 
     LazyColumn(
         modifier = modifier
@@ -46,18 +76,10 @@ fun PartidoScreen(
             .background(colorResource(id = R.color.verde_oscuro))
             .padding(8.dp)
     ) {
-        item {
-            Text(
-                text = "Partidos Destacados",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-        items(count = state.partidos.size) { index -> // Lista de partidos usando datos del provider
+        items(count = partidos.size) { index -> // Lista de partidos usando datos del provider
             PartidoCard(
-                partido = state.partidos[index]
+                partido = partidos[index],
+                onPartidoClick = onPartidoClick
             )
         }
     }
@@ -67,12 +89,14 @@ fun PartidoScreen(
 @Composable
 fun PartidoCard(
     partido: PartidoInfo,
+    onPartidoClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
+            .padding(vertical = 6.dp)
+            .clickable { onPartidoClick(partido.idPartido) },
         colors = CardDefaults.cardColors(Color(0xFF1E1E1E)),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp)
@@ -84,21 +108,21 @@ fun PartidoCard(
             Image(
                 painter = painterResource(id = R.drawable.estadio_bernabeu),
                 contentDescription = "Imagen del estadio",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .padding(bottom = 8.dp),
-                contentScale = ContentScale.Crop
+                    .fillMaxWidth()              // ocupa todo el ancho
+                    .sizeIn(maxHeight = 200.dp)  // altura máxima
+                    .clip(shape = RoundedCornerShape(8.dp))
+                    .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
             )
-
-            ResultadoPartidoCard(partido = partido)
-
             Spacer(modifier = Modifier.height(8.dp))
-
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+            ResultadoPartidoCard(partido = partido)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(
-                    text = "Posesión: ${partido.posesionLocal}% - ${partido.posesionVisitante}%",
-                    color = Color.Gray
+                    text = "${partido.categoria} ⚽",
+                    color = Color.White,
+                    fontSize = 15.sp
                 )
             }
         }
@@ -171,6 +195,7 @@ fun ResultadoPartidoCard(
 @Composable
 fun PartidoScreenPreview() {
     PartidoScreen(
-        partidoViewModel = viewModel()
+        partidoViewModel = viewModel(),
+        onPartidoClick = {}
     )
 }

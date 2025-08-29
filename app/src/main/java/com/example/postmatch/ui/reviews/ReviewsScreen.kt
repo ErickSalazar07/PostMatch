@@ -86,25 +86,6 @@ fun ReviewHeader(
 }
 
 @Composable
-fun AccionButtonHeader(
-    imageVector: ImageVector,
-    idContentDescription: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Icon(
-            imageVector = imageVector,
-            contentDescription = stringResource(idContentDescription),
-            tint = Color.White
-        )
-    }
-}
-
-@Composable
 fun SectionReviews(
     onReviewClick: (Int) -> Unit,
     reviews: List<ReviewInfo>,
