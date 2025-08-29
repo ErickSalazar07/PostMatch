@@ -3,6 +3,8 @@ package com.example.postmatch.ui.partidoDetail
 import androidx.lifecycle.ViewModel
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.ReviewInfo
+import com.example.postmatch.data.local.LocalPartidoProvider
+import com.example.postmatch.data.local.LocalReviewProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -19,5 +21,20 @@ class PartidoDetailViewModel: ViewModel()  {
         _uiState.update { it.copy(resenias = resenias) }
     }
 
+    fun setPartidoInfo(idPartido: Int) {
+        val partido = LocalPartidoProvider.partidos.find { it.idPartido == idPartido }
+        if (partido != null) {
+            _uiState.update { it.copy(partido = partido) }
+        }
+    }
 
+    init {
+        _uiState.update {
+            it.copy(
+                partido = LocalPartidoProvider.partidos[0],
+                resenias = LocalReviewProvider.reviews
+            )
+        }
+
+    }
 }

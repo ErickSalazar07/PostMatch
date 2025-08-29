@@ -4,5 +4,5 @@ import com.example.postmatch.data.NotificacionInfo
 import com.example.postmatch.data.local.LocalNotificacionProvider
 
 data class NotificacionesState(
-    val notificaciones: List<NotificacionInfo> = LocalNotificacionProvider.notificaciones
+    val notificaciones: List<NotificacionInfo> = emptyList()
 )

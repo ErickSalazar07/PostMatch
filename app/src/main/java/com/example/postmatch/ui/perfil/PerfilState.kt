@@ -1,5 +1,7 @@
 package com.example.postmatch.ui.perfil
 
+import com.example.postmatch.data.ReviewInfo
+
 data class PerfilState(
 
 
@@ -9,5 +11,5 @@ data class PerfilState(
     val seguidores: Int = 0,
     val seguidos: Int = 0,
     val fotoPerfil: Int? = null,
-    val listaResenias: List<ReseniaPerfilData> = emptyList()
+    val resenhias: List<ReviewInfo> = emptyList()
 )

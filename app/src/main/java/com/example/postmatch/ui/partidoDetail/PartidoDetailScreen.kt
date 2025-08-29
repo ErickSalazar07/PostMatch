@@ -45,9 +45,11 @@ import com.example.postmatch.data.ReviewInfo
 @Composable
  fun PartidoDetailScreen(
     partidoDetailViewModel: PartidoDetailViewModel,
+    idPartido: Int,
     modifier: Modifier = Modifier
  ) {
 
+     partidoDetailViewModel.setPartidoInfo(idPartido)
      val state by partidoDetailViewModel.uiState.collectAsState()
      Column (
          modifier = modifier
@@ -287,6 +289,7 @@ fun DatoEstadistica(label: String, value: String) {
 @Preview(showBackground = true)
 fun PartidoDetailScreenReview(){
     PartidoDetailScreen(
-        partidoDetailViewModel = viewModel()
+        partidoDetailViewModel = viewModel(),
+        idPartido = 0
     )
 }

@@ -6,6 +6,6 @@ import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.local.LocalUsuarioProvider
 
 data class FollowState(
-    val usuario: UsuarioInfo = LocalUsuarioProvider.usuarios[0],
-    val resenhas: List<ReviewInfo> = LocalReviewProvider.reviews
+    val usuario: UsuarioInfo = UsuarioInfo(),
+    val resenhas: List<ReviewInfo> = emptyList()
 )

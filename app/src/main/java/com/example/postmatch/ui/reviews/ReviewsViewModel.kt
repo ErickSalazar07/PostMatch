@@ -15,4 +15,8 @@ class ReviewsViewModel: ViewModel() {
     fun updateReviews(input: List<ReviewInfo>) {
         _uiState.update { it.copy(reviews = input) }
     }
+
+    init {
+        _uiState.update { it.copy(reviews = LocalReviewProvider.reviews) }
+    }
 }

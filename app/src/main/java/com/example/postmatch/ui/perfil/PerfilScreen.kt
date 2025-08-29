@@ -34,23 +34,29 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 import com.example.postmatch.data.ReseniaMiPerfilInfo
+import com.example.postmatch.data.ReseniaPerfilInfo
+import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalReseniaMiPerfilData.reseniasMiPerfil
 
 data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: String, val descripcionReseniaPerfil: String, val idFoto: Int)
 
 @Composable
 fun PerfilScreen(
+    perfilViewModel: PerfilViewModel,
     configuracionButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    val listaReseniasPerfil = reseniasMiPerfil
+    val state by perfilViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -68,8 +74,8 @@ fun PerfilScreen(
         item {
             TextoIzquierda(stringResource(R.string.rese_as))
         }
-        items(listaReseniasPerfil) { reseniaPerfil -> // Usamos 'items' para iterar sobre la lista
-            ItemReseniaPerfil(reseniaPerfil) // Componente que recibe cada notificación
+        items(state.resenhias) { resenhia -> // Usamos 'items' para iterar sobre la lista
+            ItemReseniaPerfil(resenhia) // Componente que recibe cada notificación
         }
     }
 
@@ -78,7 +84,7 @@ fun PerfilScreen(
 @Composable
 fun SeccionReseniasPerfil(
     modifier: Modifier = Modifier,
-    listaReseniasPerfil: List<ReseniaMiPerfilInfo> // Define el tipo correctamente aquí
+    resenhias: List<ReviewInfo> // Define el tipo correctamente aquí
 ) {
     // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
@@ -91,7 +97,7 @@ fun SeccionReseniasPerfil(
 
 @Composable
 fun ItemReseniaPerfil(
-    reseniaPerfil: ReseniaMiPerfilInfo,
+    reseniaPerfil: ReviewInfo,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -112,7 +118,7 @@ fun ItemReseniaPerfil(
                 modifier = modifier
                     .padding(bottom = 10.dp)
             ) {
-                repeat(reseniaPerfil.nEstrellas) {
+                repeat(reseniaPerfil.calificacion) {
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = stringResource(R.string.estrella),
@@ -123,14 +129,14 @@ fun ItemReseniaPerfil(
             }
             // Título
             Text(
-                text = reseniaPerfil.tituloReseniaPerfil,
+                text = reseniaPerfil.titulo,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = Color.White
             )
             // Descripción
             Text(
-                text = reseniaPerfil.descripcionReseniaPerfil,
+                text = reseniaPerfil.descripcion,
                 fontSize = 14.sp,
                 color = Color.Gray
             )
@@ -143,7 +149,7 @@ fun ItemReseniaPerfil(
                 .aspectRatio(1f)
         ) {
             Image(
-                painter = painterResource(id = reseniaPerfil.idFoto),
+                painter = painterResource(id = R.drawable.ricardo_icon),
                 contentDescription = stringResource(R.string.imagen_rese_a),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -342,6 +348,7 @@ fun PerfilScreenPreview(
 ){
     //ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardito", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
     PerfilScreen(
-        configuracionButtonClick = {}
+        configuracionButtonClick = {},
+        perfilViewModel = viewModel()
     )
 }

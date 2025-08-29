@@ -15,4 +15,8 @@ class NotificacionesViewModel: ViewModel() {
     fun updateNotificaciones(input: List<NotificacionInfo>) {
         _uiState.update { it.copy(notificaciones = input) }
     }
+
+    init {
+        _uiState.update { it.copy(notificaciones = LocalNotificacionProvider.notificaciones) }
+    }
 }

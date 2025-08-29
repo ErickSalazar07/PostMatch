@@ -25,15 +25,19 @@ class CrearReviewViewModel: ViewModel() {
         _uiState.update { it.copy(publicarButtonClick = action) }
     }
 
-    private fun shoState() {
+    private fun showState() {
         Log.d("CrearReviewViewModel", "resenha: ${_uiState.value.resenha}")
         Log.d("CrearReviewViewModel", "calificacion: ${_uiState.value.calificacion}")
     }
 
     fun publicarButtonClick() {
         Log.d("CrearReviewViewModel", "publicarButtonClick")
-        shoState()
+        showState()
         _uiState.value.publicarButtonClick()
+    }
+
+    init {
+        _uiState.update { it.copy(partido = LocalPartidoProvider.partidos[0]) }
     }
 
 }

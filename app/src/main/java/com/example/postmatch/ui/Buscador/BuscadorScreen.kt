@@ -58,7 +58,7 @@ private val GreenAccent = Color(0xFF4CAF50)
 fun BuscadorScreenContent(
     state: BuscarUIState,
     onBuscar: (String) -> Unit,
-    navController: NavController   // ✅ agregado NavController
+    navController: NavController
 ) {
     Column(
         modifier = Modifier

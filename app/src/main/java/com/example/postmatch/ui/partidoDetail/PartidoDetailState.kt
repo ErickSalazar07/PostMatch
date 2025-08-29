@@ -6,6 +6,6 @@ import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.data.local.LocalReviewProvider
 
 data class PartidoDetailState(
-    val partido: PartidoInfo = LocalPartidoProvider.partidos[0],
-    val resenias: List<ReviewInfo> = LocalReviewProvider.reviews
+    val partido: PartidoInfo = PartidoInfo(),
+    val resenias: List<ReviewInfo> = emptyList()
 )

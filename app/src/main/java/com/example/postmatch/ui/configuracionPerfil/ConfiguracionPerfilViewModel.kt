@@ -2,6 +2,7 @@ package com.example.postmatch.ui.configuracionPerfil
 
 import androidx.lifecycle.ViewModel
 import com.example.postmatch.data.UsuarioInfo
+import com.example.postmatch.data.local.LocalSeccionConfiguracionProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -20,5 +21,9 @@ class ConfiguracionPerfilViewModel: ViewModel() {
 
     fun cerrarSesionButtonClick() {
         _uiState.value.cerrarSesionButtonClick()
+    }
+
+    init {
+        _uiState.update { it.copy(secciones = LocalSeccionConfiguracionProvider.seccionesConfiguracion) }
     }
 }

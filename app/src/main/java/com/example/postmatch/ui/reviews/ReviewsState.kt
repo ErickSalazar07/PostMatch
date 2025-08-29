@@ -4,5 +4,5 @@ import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalReviewProvider
 
 data class ReviewsState(
-    val reviews: List<ReviewInfo> = LocalReviewProvider.reviews,
+    val reviews: List<ReviewInfo> = emptyList(),
 )

@@ -51,9 +51,11 @@ fun ReviewDetailScreen(
     reviewDetailViewModel: ReviewDetailViewModel,
     comentarioButtonClick: () -> Unit,
     likeButtonClick: () -> Unit,
+    idReview: Int,
     modifier: Modifier = Modifier
 ) {
 
+    reviewDetailViewModel.setReviewInfo(idReview)
     val state by reviewDetailViewModel.uiState.collectAsState()
 
     LazyColumn(
@@ -271,7 +273,7 @@ fun ReviewDetailScreenPreview() {
     ReviewDetailScreen(
         reviewDetailViewModel = viewModel(),
         comentarioButtonClick = {},
-        likeButtonClick = {}
-
+        likeButtonClick = {},
+        idReview = 1
     )
 }

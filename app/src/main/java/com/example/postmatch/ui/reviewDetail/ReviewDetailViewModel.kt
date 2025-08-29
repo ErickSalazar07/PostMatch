@@ -14,11 +14,18 @@ class ReviewDetailViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(ReviewDetailState())
     val uiState: StateFlow<ReviewDetailState> = _uiState
 
-    fun setReviewInfo(reviewInfo: ReviewInfo) {
-        _uiState.update { it.copy(reviewInfo = reviewInfo) }
+    fun setReviewInfo(idReview: Int) {
+        val reviewInfo = LocalReviewProvider.reviews.find { it.idReview == idReview }
+        if (reviewInfo != null) {
+            _uiState.update { it.copy(reviewInfo = reviewInfo) }
+        }
     }
 
     fun updateComentarios(input: List<ComentarioInfo>) {
         _uiState.update { it.copy(comentarios = input) }
+    }
+
+    init {
+        _uiState.update { it.copy(comentarios = LocalComentarioProvider.comentarios) }
     }
 }

@@ -44,6 +44,7 @@ import com.example.postmatch.ui.follow.FollowViewModel
 import com.example.postmatch.ui.login.LoginViewModel
 import com.example.postmatch.ui.notificaciones.NotificacionesViewModel
 import com.example.postmatch.ui.partidos.PartidosViewModel
+import com.example.postmatch.ui.perfil.PerfilViewModel
 import com.example.postmatch.ui.registro.RegistroViewModel
 import com.example.postmatch.ui.reviewDetail.ReviewDetailScreen
 import com.example.postmatch.ui.reviewDetail.ReviewDetailViewModel
@@ -128,14 +129,10 @@ fun AppNavigation(
             arguments = listOf(navArgument("idPartido") { type = NavType.IntType})
         ) {
             val partidoDetailViewModel: PartidoDetailViewModel = viewModel()
-            val idPartido = it.arguments?.getInt("idPartido") ?: 0
-            val partidoInfo = LocalPartidoProvider.partidos.find { partido -> partido.idPartido == idPartido}
-            if(partidoInfo != null) {
-                partidoDetailViewModel.setPartido(partidoInfo)
-                PartidoDetailScreen(
-                    partidoDetailViewModel = partidoDetailViewModel
-                )
-            } else navController.navigate(Screen.Partidos.route)
+            PartidoDetailScreen(
+                partidoDetailViewModel = partidoDetailViewModel,
+                idPartido = it.arguments?.getInt("idPartido") ?: 0
+            )
         }
 
         composable(route = Screen.ConfiguracionPerfil.route) {
@@ -190,8 +187,10 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Perfil.route) {
+            val perfilViewModel: PerfilViewModel = viewModel()
             PerfilScreen(
-                configuracionButtonClick = { navController.navigate(Screen.ConfiguracionPerfil.route) }
+                configuracionButtonClick = { navController.navigate(Screen.ConfiguracionPerfil.route) },
+                perfilViewModel = perfilViewModel
             )
         }
 
@@ -214,16 +213,12 @@ fun AppNavigation(
             arguments = listOf(navArgument("idReview") { type = NavType.IntType})
         ) {
             val reviewDetailViewModel: ReviewDetailViewModel = viewModel()
-            val idReview = it.arguments?.getInt("idReview") ?: 0
-            val reviewInfo = LocalReviewProvider.reviews.find {review -> review.idReview == idReview}
-            if(reviewInfo != null) {
-                reviewDetailViewModel.setReviewInfo(reviewInfo)
-                ReviewDetailScreen(
-                   reviewDetailViewModel = reviewDetailViewModel,
-                   comentarioButtonClick = { navController.navigate(Screen.Follow.route) },
-                   likeButtonClick = { navController.navigate(Screen.PartidoDetail.route) } // TODO: eliminar esta accion no correspondiente
-                )
-            } else navController.navigate(Screen.Reviews.route)
+            ReviewDetailScreen(
+                reviewDetailViewModel = reviewDetailViewModel,
+                comentarioButtonClick = { navController.navigate(Screen.Follow.route) },
+                likeButtonClick = { navController.navigate(Screen.PartidoDetail.route) }, // TODO: eliminar esta accion no correspondiente
+                idReview = it.arguments?.getInt("idReview") ?: 0
+            )
         }
 
         composable(Screen.CrearReview.route) {
