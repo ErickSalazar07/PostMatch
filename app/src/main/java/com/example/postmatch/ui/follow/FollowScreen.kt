@@ -130,7 +130,7 @@ fun ItemReseniaFollow(
     ) {
         // Foto de perfil
         Image(
-            painter = painterResource(id = R.drawable.ricardo_icont ),
+            painter = painterResource(id = R.drawable.ricardo_icon),
             contentDescription = stringResource(R.string.foto_de_perfil),
             modifier = Modifier
                 .size(48.dp)
