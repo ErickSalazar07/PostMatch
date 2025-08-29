@@ -266,18 +266,6 @@ fun PublicacionesHeader(
 }
 
 @Composable
-fun ComentariosSection(
-    comentarios: List<ComentarioInfo>,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
-    ) {
-    }
-}
-
-@Composable
 @Preview(showBackground = true)
 fun ReviewDetailScreenPreview() {
     ReviewDetailScreen(

@@ -5,5 +5,7 @@ data class UsuarioInfo(
    var nombre: String,
    var email: String,
    var password: String,
-   var fotoPerfil: String
+   var fotoPerfil: String,
+   var numFollowed: Int,
+   var numFollowers: Int
 )

@@ -5,6 +5,7 @@ data class ReviewInfo(
     var titulo: String,
     var descripcion: String,
     var fecha: String,
+    var calificacion: Int,
     var numLikes: Int,
     var numComentarios: Int,
 // datos usuario

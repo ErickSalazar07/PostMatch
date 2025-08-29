@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Text
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +48,7 @@ import com.example.postmatch.R
 
 import com.example.postmatch.data.PerfilInfo
 import com.example.postmatch.data.ReseniaPerfilInfo
+import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalPerfilInfoData
 import com.example.postmatch.data.local.LocalPerfilInfoData.perfilInfo
 import com.example.postmatch.data.local.LocalReseniaPerfilData.reseniasPerfil
@@ -57,87 +60,81 @@ fun FollowScreen(
     followViewModel: FollowViewModel,
     modifier: Modifier = Modifier
 ){
-    var perfilInfo by remember { mutableStateOf(LocalPerfilInfoData.perfilInfo) }
+    val state by followViewModel.uiState.collectAsState()
 
-    Column(
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.verde_oscuro))
-            .padding(horizontal = 24.dp, vertical = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        FollowHeader()
-        ImagenFollow(perfilInfo)
-
-        Button(
-            onClick = {
-                // Cambiamos el estado
-                perfilInfo = perfilInfo.copy(
-                    isFollowing = !perfilInfo.isFollowing,
-                    seguidores = if (perfilInfo.isFollowing) {
-                        perfilInfo.seguidores - 1
-                    } else {
-                        perfilInfo.seguidores + 1
-                    }
-                )
-                onFollowButtonChange()
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = if (perfilInfo.isFollowing) Color.Gray // cuando ya lo sigues
-                else colorResource(R.color.verde_claro) // cuando no lo sigues
-            )
-        ) {
-            Text(
-                if (perfilInfo.isFollowing) "Siguiendo" else "Seguir"
-            )
+        item {
+            FollowHeader()
+        }
+        item {
+            ImagenFollow(perfilInfo)
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
+        item {
+            Button(
+                onClick = {},
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (perfilInfo.isFollowing) Color.Gray // cuando ya lo sigues
+                    else colorResource(R.color.verde_claro) // cuando no lo sigues
+                )
+            ) {
+                Text(
+                    if (perfilInfo.isFollowing) "Siguiendo" else "Seguir"
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        MenuFollowOpciones()
+        item { MenuFollowOpciones() }
 
-        SeccionReseniasFollow(
-            listaReseniasFollow = reseniasPerfil
-        )
-
+        items(count = state.resenhas.size) { index ->
+            ItemReseniaFollow(state.resenhas[index])
+            Divider(color = Color.DarkGray, thickness = 1.dp)
+        }
     }
 }
 
 @Composable
 fun SeccionReseniasFollow(
     modifier: Modifier = Modifier,
-    listaReseniasFollow: List<ReseniaPerfilInfo> // Define el tipo correctamente aquí
+    listaReseniasFollow: List<ReviewInfo> // Define el tipo correctamente aquí
 ) {
     // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
-        modifier = modifier
-            .background(colorResource(id = R.color.verde_oscuro))
-            .padding(vertical = 8.dp)
+        modifier = modifier.padding(vertical = 8.dp)
     ) {
         items(listaReseniasFollow) { reseniaFollow -> // Usamos 'items' para iterar sobre la lista
             ItemReseniaFollow(reseniaFollow) // Componente que recibe cada notificación
-        }
-    }
+            Divider(color = Color.DarkGray, thickness = 1.dp)
+        }    }
 }
 
 @Composable
 fun ItemReseniaFollow(
-    reseniaPerfil: ReseniaPerfilInfo,
+    resenha: ReviewInfo,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(vertical = 16.dp, horizontal = 8.dp), // Aumentamos el espacio vertical
         verticalAlignment = Alignment.Top
     ) {
         // Foto de perfil
         Image(
-            painter = painterResource(id = reseniaPerfil.idFoto),
+            painter = painterResource(id = R.drawable.ricardo_icont ),
             contentDescription = stringResource(R.string.foto_de_perfil),
             modifier = Modifier
                 .size(48.dp)
-                .clip(CircleShape),
+                .clip(RoundedCornerShape(8.dp)), // Hacemos la imagen un poco más cuadrada
             contentScale = ContentScale.Crop
         )
 
@@ -148,14 +145,14 @@ fun ItemReseniaFollow(
             verticalArrangement = Arrangement.Top
         ) {
             Text(
-                text = reseniaPerfil.partido,
+                text = resenha.partidoNombre,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = reseniaPerfil.descripcion,
+                text = resenha.descripcion,
                 fontSize = 14.sp,
                 color = Color.LightGray
             )
@@ -168,7 +165,7 @@ fun ItemReseniaFollow(
 fun FollowHeader(
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Row(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
@@ -181,7 +178,6 @@ fun FollowHeader(
             tint = Color.White,
             modifier = Modifier
                 .size(28.dp)
-                .align(Alignment.CenterStart)
         )
 
         // Texto centrado
@@ -190,7 +186,6 @@ fun FollowHeader(
             color = Color.White,
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
-            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
@@ -315,10 +310,12 @@ fun ImagenFollow(
         )
         Text(
             text = perfilInfo.oficio,
-            fontSize = 14.sp,
+            fontSize = 12.sp,
             color = Color.LightGray
         )
+        Spacer(modifier = Modifier.height(16.dp))
     }
+
 
     InformacionFollow(perfilInfo)
 }

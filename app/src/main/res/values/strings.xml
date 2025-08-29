@@ -44,4 +44,7 @@
     <string name="agregar_like">Agregar like</string>
     <string name="resumen_del_partido">Resumen del partido</string>
     <string name="foto_partido">Foto partido</string>
+    <string name="visitante">visitante</string>
+    <string name="local">local</string>
+    <string name="datos_del_partido">Datos del Partido</string>
 </resources>
