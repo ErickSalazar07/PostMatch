@@ -27,10 +27,14 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.ui.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.partidoDetail.PartidoDetailViewModel
+import com.example.postmatch.ui.Buscador.BuscadorScreenContent
+import com.example.postmatch.ui.Buscador.BuscarViewModel
 import com.example.postmatch.ui.partidos.PartidoScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilScreen
 import com.example.postmatch.ui.configuracionPerfil.ConfiguracionPerfilViewModel
@@ -58,6 +62,9 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
     object CrearReview : Screen("crearReview")          // Nueva pantalla para el "más"
     object Partidos : Screen("partidos")
+
+    object Buscador : Screen("buscador")
+
 }
 
 // Modelo de item
@@ -73,7 +80,7 @@ fun BottomNavBar(
 ) {
     val items = listOf(
         BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
-        BottomNavItem(Screen.Partidos.route, Icons.Filled.Search, "Buscar"),   // Cambiado
+        BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "Buscar"),   // Cambiado
         BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
         BottomNavItem(Screen.Perfil.route, Icons.Filled.Person, "Perfil")
@@ -153,6 +160,17 @@ fun AppNavigation(
                 onPartidoClick = { idPartido -> navController.navigate(Screen.PartidoDetail.route.replace("{idPartido}", "$idPartido")) }
             )
         }
+
+        composable(route = Screen.Buscador.route) {
+            val buscarViewModel: BuscarViewModel = viewModel()
+            val uiState by buscarViewModel.uiState.collectAsState()
+
+            BuscadorScreenContent(
+                state = uiState,
+                onBuscar = { query -> buscarViewModel.onBuscar(query) }
+            )
+        }
+
 
         composable(route = Screen.Login.route) {
             val loginViewModel: LoginViewModel = viewModel()
