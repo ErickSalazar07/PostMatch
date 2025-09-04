@@ -43,10 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
-import com.example.postmatch.data.ReseniaMiPerfilInfo
-import com.example.postmatch.data.ReseniaPerfilInfo
 import com.example.postmatch.data.ReviewInfo
-import com.example.postmatch.data.local.LocalReseniaMiPerfilData.reseniasMiPerfil
+
 
 data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: String, val descripcionReseniaPerfil: String, val idFoto: Int)
 

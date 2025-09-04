@@ -47,11 +47,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.R
 
 import com.example.postmatch.data.PerfilInfo
-import com.example.postmatch.data.ReseniaPerfilInfo
+
+import com.example.postmatch.data.ReseniaAnalisisPartidoInfo
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalPerfilInfoData
 import com.example.postmatch.data.local.LocalPerfilInfoData.perfilInfo
-import com.example.postmatch.data.local.LocalReseniaPerfilData.reseniasPerfil
+
+
 
 
 @Composable

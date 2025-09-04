@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.postmatch.R
+import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,12 +55,15 @@ import kotlinx.coroutines.flow.StateFlow
 
 private val GreenAccent = Color(0xFF4CAF50)
 
+
 @Composable
 fun BuscadorScreenContent(
-    state: BuscarUIState,
-    onBuscar: (String) -> Unit,
-    navController: NavController
-) {
+    viewModel: BuscarViewModel,
+    modifier: Modifier = Modifier
+){
+
+    val state by viewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +73,7 @@ fun BuscadorScreenContent(
         // Barra de búsqueda
         TextField(
             value = state.query,
-            onValueChange = { onBuscar(it) },
+            onValueChange = { viewModel.onBuscar(it) },
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text("Buscar", color = Color.White) },
             colors = TextFieldDefaults.colors(
@@ -87,7 +91,7 @@ fun BuscadorScreenContent(
 
         Spacer(Modifier.height(12.dp))
 
-        // Filtros como chips
+        // Filtros
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth()
@@ -102,10 +106,8 @@ fun BuscadorScreenContent(
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier.fillMaxWidth()
         ) {
-            FiltroChip(
-                text = "Destacados",
-                onClick = { navController.navigate(Screen.Partidos.route) } // ✅ navegar
-            )
+            // 👇 Aquí no navegamos. Solo mostramos el filtro.
+            FiltroChip(text = "Destacados")
         }
 
         Spacer(Modifier.height(12.dp))
@@ -216,6 +218,8 @@ fun ReseñaCard(reseña: Reseña) {
     }
 }
 
+
+/*
 // ✅ Preview
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -257,11 +261,45 @@ fun BuscadorScreenPreview() {
         )
     )
 
-    MaterialTheme {
-        BuscadorScreenContent(
-            state = fakeState,
-            onBuscar = {},
-            navController = fakeNavController
-        )
+
+}
+*/
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun BuscadorScreenPreview() {
+    val fakeState = BuscarUIState(
+        query = "",
+        reseñas = LocalReviewProvider.reviews.map { r ->
+            Reseña(
+                id = r.idReview,
+                titulo = r.titulo,
+                autor = r.usuarioNombre,
+                fecha = r.fecha,
+                equipos = r.partidoNombre,
+                resumen = r.descripcion,
+                rating = r.calificacion.toDouble(),
+                reviews = r.numComentarios
+            )
+        }
+    )
+
+
+}
+@Composable
+fun BuscadorScreenContentPreview(state: BuscarUIState) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.verde_oscuro))
+            .padding(12.dp)
+    ) {
+        LazyColumn {
+            items(state.reseñas, key = { it.id }) { reseña ->
+                ReseñaCard(reseña)
+            }
+        }
     }
 }
+
+

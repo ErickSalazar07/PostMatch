@@ -158,15 +158,18 @@ fun AppNavigation(
             )
         }
 
+
+
         composable(route = Screen.Buscador.route) {
             val buscarViewModel: BuscarViewModel = viewModel()
-            val uiState by buscarViewModel.uiState.collectAsState()
 
             BuscadorScreenContent(
-                state = uiState,
-                onBuscar = { query -> buscarViewModel.onBuscar(query) },
-                        navController = navController
+                viewModel = buscarViewModel
             )
+
+            // 👇 ejemplo: si quieres que el filtro "Destacados" navegue a Partidos,
+            // lo manejas aquí, no dentro del Composable.
+            // podrías observar un estado en el ViewModel, o manejar un evento.
         }
 
 
