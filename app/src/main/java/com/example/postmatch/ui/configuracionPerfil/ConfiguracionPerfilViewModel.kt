@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.local.LocalSeccionConfiguracionProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
