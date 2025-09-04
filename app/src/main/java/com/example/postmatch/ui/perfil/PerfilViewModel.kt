@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import com.example.postmatch.R
 import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.ui.partidos.PartidosState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 // PerfilViewModel.kt
-class PerfilViewModel : ViewModel() {
+@HiltViewModel
+class PerfilViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(PerfilState())
     val uiState: StateFlow<PerfilState> = _uiState

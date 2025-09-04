@@ -2,11 +2,14 @@ package com.example.postmatch.ui.registro
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class RegistroViewModel: ViewModel()  {
+@HiltViewModel
+class RegistroViewModel @Inject constructor(): ViewModel()  {
     private val _uiState = MutableStateFlow(RegistroState())
     val uiState: StateFlow<RegistroState> = _uiState
 

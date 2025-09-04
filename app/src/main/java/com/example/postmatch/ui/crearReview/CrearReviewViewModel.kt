@@ -4,11 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.local.LocalPartidoProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class CrearReviewViewModel: ViewModel() {
+@HiltViewModel
+class CrearReviewViewModel @Inject constructor(): ViewModel() {
 
     private val _uiState = MutableStateFlow(CrearReviewState())
     val uiState: StateFlow<CrearReviewState> = _uiState
