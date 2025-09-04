@@ -3,11 +3,14 @@ package com.example.postmatch.ui.configuracionPerfil
 import androidx.lifecycle.ViewModel
 import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.local.LocalSeccionConfiguracionProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class ConfiguracionPerfilViewModel: ViewModel() {
+@HiltViewModel
+class ConfiguracionPerfilViewModel @Inject constructor(): ViewModel() {
     private val _uiState = MutableStateFlow(ConfiguracionPerfilState())
     val uiState: StateFlow<ConfiguracionPerfilState> = _uiState
 

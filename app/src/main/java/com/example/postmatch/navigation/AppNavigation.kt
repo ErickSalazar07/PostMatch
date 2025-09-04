@@ -29,7 +29,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.ui.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.partidoDetail.PartidoDetailViewModel
@@ -128,7 +128,7 @@ fun AppNavigation(
             route = Screen.PartidoDetail.route,
             arguments = listOf(navArgument("idPartido") { type = NavType.IntType})
         ) {
-            val partidoDetailViewModel: PartidoDetailViewModel = viewModel()
+            val partidoDetailViewModel: PartidoDetailViewModel = hiltViewModel()
             PartidoDetailScreen(
                 partidoDetailViewModel = partidoDetailViewModel,
                 idPartido = it.arguments?.getInt("idPartido") ?: 0
@@ -136,14 +136,14 @@ fun AppNavigation(
         }
 
         composable(route = Screen.ConfiguracionPerfil.route) {
-            val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = viewModel()
+            val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = hiltViewModel()
             ConfiguracionPerfilScreen(
                 configuracionPerfilViewModel = configuracionPerfilViewModel
             )
         }
 
         composable(route = Screen.Follow.route) {
-            val followViewModel: FollowViewModel = viewModel()
+            val followViewModel: FollowViewModel = hiltViewModel()
             FollowScreen(
                 onFollowButtonChange = {},
                 followViewModel = followViewModel
@@ -151,7 +151,7 @@ fun AppNavigation(
         }
 
         composable(route= Screen.Partidos.route){
-            val partidoViewModel: PartidosViewModel = viewModel()
+            val partidoViewModel: PartidosViewModel = hiltViewModel()
             PartidoScreen(
                 partidoViewModel = partidoViewModel,
                 onPartidoClick = { idPartido -> navController.navigate(Screen.PartidoDetail.route.replace("{idPartido}", "$idPartido")) }
@@ -161,7 +161,10 @@ fun AppNavigation(
 
 
         composable(route = Screen.Buscador.route) {
-            val buscarViewModel: BuscarViewModel = viewModel()
+
+            val buscarViewModel: BuscarViewModel = hiltViewModel()
+            val uiState by buscarViewModel.uiState.collectAsState()
+
 
             BuscadorScreenContent(
                 viewModel = buscarViewModel
@@ -174,7 +177,7 @@ fun AppNavigation(
 
 
         composable(route = Screen.Login.route) {
-            val loginViewModel: LoginViewModel = viewModel()
+            val loginViewModel: LoginViewModel = hiltViewModel()
             LoginScreen(
                 loginViewModel = loginViewModel,
                 loginButtonClick = { navController.navigate(Screen.Reviews.route) },
@@ -183,14 +186,14 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Notificaciones.route) {
-            val notificacionesViewModel: NotificacionesViewModel = viewModel()
+            val notificacionesViewModel: NotificacionesViewModel = hiltViewModel()
             NotificacionesScreen(
                 notificacionesViewModel = notificacionesViewModel
             )
         }
 
         composable(route = Screen.Perfil.route) {
-            val perfilViewModel: PerfilViewModel = viewModel()
+            val perfilViewModel: PerfilViewModel = hiltViewModel()
             PerfilScreen(
                 configuracionButtonClick = { navController.navigate(Screen.ConfiguracionPerfil.route) },
                 perfilViewModel = perfilViewModel
@@ -198,7 +201,7 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Reviews.route) {
-            val reviewsViewModel: ReviewsViewModel = viewModel()
+            val reviewsViewModel: ReviewsViewModel = hiltViewModel()
             ReviewsScreen(
                 reviewsViewModel = reviewsViewModel,
                 onReviewClick = { idReview -> navController.navigate(Screen.ReviewDetail.route.replace("{idReview}", "$idReview")) }
@@ -206,7 +209,7 @@ fun AppNavigation(
         }
 
         composable(route = Screen.Registro.route) {
-            val registroViewModel: RegistroViewModel = viewModel()
+            val registroViewModel: RegistroViewModel = hiltViewModel()
             RegistroScreen(
                 registroViewModel = registroViewModel
             )
@@ -215,7 +218,7 @@ fun AppNavigation(
             route = Screen.ReviewDetail.route,
             arguments = listOf(navArgument("idReview") { type = NavType.IntType})
         ) {
-            val reviewDetailViewModel: ReviewDetailViewModel = viewModel()
+            val reviewDetailViewModel: ReviewDetailViewModel = hiltViewModel()
             ReviewDetailScreen(
                 reviewDetailViewModel = reviewDetailViewModel,
                 comentarioButtonClick = { navController.navigate(Screen.Follow.route) },
@@ -225,7 +228,7 @@ fun AppNavigation(
         }
 
         composable(Screen.CrearReview.route) {
-            val crearReviewViewModel: CrearReviewViewModel = viewModel()
+            val crearReviewViewModel: CrearReviewViewModel = hiltViewModel()
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel
             )

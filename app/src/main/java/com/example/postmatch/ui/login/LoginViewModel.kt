@@ -2,16 +2,35 @@ package com.example.postmatch.ui.login
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.postmatch.data.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class LoginViewModel: ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor (
+    private val authRepository: AuthRepository
+): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
     val uiState: StateFlow<LoginState> = _uiState
     fun updateUsuario(input: String) {
         _uiState.update { it.copy(usuario = input) }
+    }
+
+    fun loginButtonClick() {
+        showState()
+        viewModelScope.launch {
+            try {
+                authRepository.singIn(_uiState.value.correo, _uiState.value.password)
+            } catch(e: Exception) {
+                Log.d("LoginViewModel", e.toString())
+            }
+        }
     }
 
     fun updateCorreo(input: String) {
