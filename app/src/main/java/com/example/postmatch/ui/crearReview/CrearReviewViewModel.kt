@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.local.LocalPartidoProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
