@@ -179,7 +179,7 @@ fun AppNavigation(
         composable(route = Screen.Login.route) {
             val loginViewModel: LoginViewModel = hiltViewModel()
             loginViewModel.setLoginButtonClick(callback = { navController.navigate(Screen.Reviews.route) })
-            loginViewModel.setSingInButtonClick(callback = { navController.navigate(Screen.Registro.route) })
+            loginViewModel.setSignInButtonClick(callback = { navController.navigate(Screen.Registro.route) })
             LoginScreen(
                 loginViewModel = loginViewModel
             )

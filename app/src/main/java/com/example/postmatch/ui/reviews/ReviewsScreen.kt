@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -53,7 +54,7 @@ fun ReviewsScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
         // Encabezado
@@ -78,7 +79,7 @@ fun ReviewHeader(
     ) {
         Text(
             text = stringResource(R.string.postmatch),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -116,7 +117,7 @@ fun ReviewCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(R.color.verde_oscuro3))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable { onReviewClick(reviewInfo.idReview) }
             .padding(12.dp)
     ) {
@@ -125,18 +126,18 @@ fun ReviewCard(
             ) {
                 Text(
                     text = "${reviewInfo.usuarioNombre} - ${reviewInfo.usuarioEmail}",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
                 Text(
                     text = reviewInfo.titulo,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
                 Text(
                     text = reviewInfo.descripcion,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp,
                     modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
                 )
@@ -145,22 +146,22 @@ fun ReviewCard(
                     Icon(
                         imageVector = Icons.Default.FavoriteBorder,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "${reviewInfo.numLikes}", color = Color.White, fontSize = 12.sp)
+                    Text("${reviewInfo.numLikes}", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
 
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Icon(
                         imageVector = Icons.Default.Person,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "${reviewInfo.numComentarios}", color = Color.White, fontSize = 12.sp)
+                    Text("${reviewInfo.numComentarios}", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
                 }
             }
 

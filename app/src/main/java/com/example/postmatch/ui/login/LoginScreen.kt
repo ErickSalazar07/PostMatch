@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -48,6 +49,7 @@ fun LoginScreen(
 ) {
     val state by loginViewModel.uiState.collectAsState()
 
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -74,9 +76,16 @@ fun LoginScreen(
                 onPasswordChange = loginViewModel::updatePassword,
                 onPasswordVisibleChange = loginViewModel::changePasswordVisible
             )
+            if (state.errorMessage != null) {
+                Text(
+                    text = state.errorMessage!!,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
             BotonesLogin(
                 onLogInButtonClick = loginViewModel::loginButtonClick,
-                onSignUpButtonClick = loginViewModel::singInButtonClick
+                onSignUpButtonClick = loginViewModel::signInButtonClick
             )
             Spacer(modifier = Modifier.height(25.dp))
             TextoLegal()
@@ -136,13 +145,13 @@ fun PasswordField(
     TextField(
         value = textDataField,
         onValueChange = onTextDataFieldChange,
-        label = { Text(text = label, color = Color.White) },
+        label = { Text(text = label, color = MaterialTheme.colorScheme.onPrimary) },
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = colorResource(R.color.verde),
-            unfocusedContainerColor = colorResource(R.color.verde),
-            cursorColor = Color.White,
-            focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White
+            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            cursorColor = MaterialTheme.colorScheme.onPrimary,
+            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+            unfocusedTextColor = MaterialTheme.colorScheme.onPrimary
         ),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier.fillMaxWidth(),
@@ -151,7 +160,7 @@ fun PasswordField(
             Button(
                 onClick = onPasswordVisibleChange,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
             ) {
                 Icon(painter = painterResource(
@@ -177,17 +186,18 @@ fun FieldLogin(
     TextField(
         value = textDataField,
         onValueChange = onTextDataFieldChange,
-        label = { Text(text = label, color = Color.White) },
+        label = { Text(text = label, color = MaterialTheme.colorScheme.onPrimary) },
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = colorResource(R.color.verde),
-            unfocusedContainerColor = colorResource(R.color.verde),
-            cursorColor = Color.White,
-            focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White
+            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            cursorColor = MaterialTheme.colorScheme.onPrimary,
+            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+            unfocusedTextColor = MaterialTheme.colorScheme.onPrimary
         ),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier.fillMaxWidth()
     )
+
 }
 
 @Composable
@@ -215,11 +225,11 @@ fun BotonesLogin(
         Button(
             onClick = onSignUpButtonClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.verde)
+                containerColor = MaterialTheme.colorScheme.primary
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(R.string.sign_up), color = colorResource(R.color.white))
+            Text(stringResource(R.string.sign_up), color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }
@@ -230,7 +240,7 @@ fun TextoLegal(
 ) {
     Text(
         text = stringResource(R.string.by_continuing_you_agree_to_our_terms_of_service_and_privacy_policy),
-        color = colorResource(R.color.white),
+        color = MaterialTheme.colorScheme.onBackground,
         fontSize = 13.sp,
         textAlign = TextAlign.Center,
         modifier = modifier

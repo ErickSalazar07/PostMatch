@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.repository.AuthRepository
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,9 +18,11 @@ class LoginViewModel @Inject constructor (
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
-    private var loginButtonClick: () -> Unit = {}
-    private var singInButtonClick: () -> Unit = {}
+    private var loginButtonClick: (() -> Unit)? = null
+    private var signInButtonClick: () -> Unit = {}
     val uiState: StateFlow<LoginState> = _uiState
+    val currentUser: FirebaseUser? = authRepository.currentUser
+
 
     fun updateUsuario(input: String) {
         _uiState.update { it.copy(usuario = input) }
@@ -29,16 +32,16 @@ class LoginViewModel @Inject constructor (
         loginButtonClick = callback
     }
 
-    fun setSingInButtonClick(callback: () -> Unit) {
-        singInButtonClick = callback
+    fun setSignInButtonClick(callback: () -> Unit) {
+        signInButtonClick = callback
     }
 
-    fun singInButtonClick() {
+    fun signInButtonClick() {
         showState()
         viewModelScope.launch {
             try {
-                authRepository.signUp(_uiState.value.correo, _uiState.value.password)
-                singInButtonClick()
+                authRepository.signUp(_uiState.value.correo.trim(), _uiState.value.password.trim())
+                signInButtonClick()
             } catch(e: Exception) {
                 Log.d("LoginViewModel", e.toString())
             }
@@ -49,10 +52,12 @@ class LoginViewModel @Inject constructor (
         showState()
         viewModelScope.launch {
             try {
-                authRepository.signIn(_uiState.value.correo, _uiState.value.password)
-                loginButtonClick()
-            } catch(e: Exception) {
-                Log.d("LoginViewModel", e.toString())
+                val result = authRepository.signIn(_uiState.value.correo.trim(), _uiState.value.password.trim())
+                loginButtonClick?.invoke() // navega si login fue OK
+                _uiState.update { it.copy(errorMessage = null) }
+            } catch (e: Exception) {
+                Log.e("LoginViewModel", "Login error", e)
+                _uiState.update { it.copy(errorMessage = "Correo o contraseña incorrectos") }
             }
         }
     }
@@ -68,6 +73,11 @@ class LoginViewModel @Inject constructor (
     fun changePasswordVisible() {
         _uiState.update { it.copy(passwordVisible = !_uiState.value.passwordVisible) }
     }
+
+    fun logout() {
+        authRepository.signOut()
+    }
+
 
     private fun showState() {
         Log.d("LoginViewModel", "usuario: ${_uiState.value.usuario}")
