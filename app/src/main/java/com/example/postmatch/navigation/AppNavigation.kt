@@ -1,5 +1,7 @@
 package com.example.postmatch.navigation
 
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -29,7 +31,9 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.activity
 import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.ui.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.partidoDetail.PartidoDetailViewModel
@@ -136,7 +140,16 @@ fun AppNavigation(
         }
 
         composable(route = Screen.ConfiguracionPerfil.route) {
+
             val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             configuracionPerfilViewModel.setOnLogout {
                 navController.navigate(Screen.Login.route) {
                     popUpTo(0){ inclusive = true}
@@ -170,6 +183,13 @@ fun AppNavigation(
 
             val buscarViewModel: BuscarViewModel = hiltViewModel()
             val uiState by buscarViewModel.uiState.collectAsState()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
 
 
             BuscadorScreenContent(
@@ -190,6 +210,14 @@ fun AppNavigation(
 
         composable(route = Screen.Notificaciones.route) {
             val notificacionesViewModel: NotificacionesViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             NotificacionesScreen(
                 notificacionesViewModel = notificacionesViewModel
             )
@@ -197,6 +225,14 @@ fun AppNavigation(
 
         composable(route = Screen.Perfil.route) {
             val perfilViewModel: PerfilViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             PerfilScreen(
                 configuracionButtonClick = { navController.navigate(Screen.ConfiguracionPerfil.route) },
                 reviewButtonClick = {
@@ -211,6 +247,16 @@ fun AppNavigation(
 
         composable(route = Screen.Reviews.route) {
             val reviewsViewModel: ReviewsViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
+
+
             ReviewsScreen(
                 reviewsViewModel = reviewsViewModel,
                 onReviewClick = { idReview -> navController.navigate(Screen.ReviewDetail.route.replace("{idReview}", "$idReview")) }
@@ -238,6 +284,14 @@ fun AppNavigation(
 
         composable(Screen.CrearReview.route) {
             val crearReviewViewModel: CrearReviewViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel
             )
