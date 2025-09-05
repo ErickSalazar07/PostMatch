@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.Buscador
 
+import android.R.attr.onClick
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -59,7 +60,8 @@ private val GreenAccent = Color(0xFF4CAF50)
 @Composable
 fun BuscadorScreenContent(
     viewModel: BuscarViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDestacadosClick: () -> Unit
 ){
 
     val state by viewModel.uiState.collectAsState()
@@ -107,7 +109,11 @@ fun BuscadorScreenContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             // 👇 Aquí no navegamos. Solo mostramos el filtro.
-            FiltroChip(text = "Destacados")
+            FiltroChip(text = "Destacados",
+                onClick = onDestacadosClick
+            )
+
+
         }
 
         Spacer(Modifier.height(12.dp))
@@ -116,7 +122,7 @@ fun BuscadorScreenContent(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(state.reseñas, key = { it.id }) { reseña ->
+            items(state.reseñas) { reseña ->
                 ReseñaCard(reseña)
             }
         }
@@ -136,6 +142,7 @@ fun FiltroChip(
         modifier = Modifier
             .padding(vertical = 4.dp)
             .clickable { onClick() }   // ✅ click
+
     ) {
         Text(
             text = text,

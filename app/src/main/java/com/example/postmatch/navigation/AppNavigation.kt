@@ -167,12 +167,9 @@ fun AppNavigation(
 
 
             BuscadorScreenContent(
-                viewModel = buscarViewModel
+                viewModel = buscarViewModel,
+                onDestacadosClick ={navController.navigate(Screen.Partidos.route) }
             )
-
-            // 👇 ejemplo: si quieres que el filtro "Destacados" navegue a Partidos,
-            // lo manejas aquí, no dentro del Composable.
-            // podrías observar un estado en el ViewModel, o manejar un evento.
         }
 
 
@@ -196,6 +193,12 @@ fun AppNavigation(
             val perfilViewModel: PerfilViewModel = hiltViewModel()
             PerfilScreen(
                 configuracionButtonClick = { navController.navigate(Screen.ConfiguracionPerfil.route) },
+                reviewButtonClick = {
+                    navController.navigate(Screen.Reviews.route) {
+                        launchSingleTop = true
+                        popUpTo(Screen.Perfil.route) { inclusive = true }
+                    }
+                },
                 perfilViewModel = perfilViewModel
             )
         }
