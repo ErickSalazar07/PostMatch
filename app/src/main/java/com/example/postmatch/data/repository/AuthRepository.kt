@@ -10,7 +10,7 @@ class AuthRepository @Inject constructor (
 
     val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
 
-    suspend fun singIn(email: String, password: String) {
+    suspend fun signIn(email: String, password: String) {
         authRemoteDataSource.singIn(email, password)
     }
 

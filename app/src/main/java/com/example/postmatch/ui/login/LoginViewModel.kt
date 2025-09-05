@@ -17,16 +17,40 @@ class LoginViewModel @Inject constructor (
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
+    private var loginButtonClick: () -> Unit = {}
+    private var singInButtonClick: () -> Unit = {}
     val uiState: StateFlow<LoginState> = _uiState
+
     fun updateUsuario(input: String) {
         _uiState.update { it.copy(usuario = input) }
+    }
+
+    fun setLoginButtonClick(callback: () -> Unit) {
+        loginButtonClick = callback
+    }
+
+    fun setSingInButtonClick(callback: () -> Unit) {
+        singInButtonClick = callback
+    }
+
+    fun singInButtonClick() {
+        showState()
+        viewModelScope.launch {
+            try {
+                authRepository.signUp(_uiState.value.correo, _uiState.value.password)
+                singInButtonClick()
+            } catch(e: Exception) {
+                Log.d("LoginViewModel", e.toString())
+            }
+        }
     }
 
     fun loginButtonClick() {
         showState()
         viewModelScope.launch {
             try {
-                authRepository.singIn(_uiState.value.correo, _uiState.value.password)
+                authRepository.signIn(_uiState.value.correo, _uiState.value.password)
+                loginButtonClick()
             } catch(e: Exception) {
                 Log.d("LoginViewModel", e.toString())
             }
