@@ -140,7 +140,16 @@ fun AppNavigation(
         }
 
         composable(route = Screen.ConfiguracionPerfil.route) {
+
             val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             configuracionPerfilViewModel.setOnLogout {
                 navController.navigate(Screen.Login.route) {
                     popUpTo(0){ inclusive = true}
@@ -174,6 +183,13 @@ fun AppNavigation(
 
             val buscarViewModel: BuscarViewModel = hiltViewModel()
             val uiState by buscarViewModel.uiState.collectAsState()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
 
 
             BuscadorScreenContent(
@@ -194,6 +210,14 @@ fun AppNavigation(
 
         composable(route = Screen.Notificaciones.route) {
             val notificacionesViewModel: NotificacionesViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             NotificacionesScreen(
                 notificacionesViewModel = notificacionesViewModel
             )
@@ -201,6 +225,14 @@ fun AppNavigation(
 
         composable(route = Screen.Perfil.route) {
             val perfilViewModel: PerfilViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             PerfilScreen(
                 configuracionButtonClick = { navController.navigate(Screen.ConfiguracionPerfil.route) },
                 reviewButtonClick = {
@@ -252,6 +284,14 @@ fun AppNavigation(
 
         composable(Screen.CrearReview.route) {
             val crearReviewViewModel: CrearReviewViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            // Manejo del botón atrás
+            BackHandler {
+                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+            }
+
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel
             )
