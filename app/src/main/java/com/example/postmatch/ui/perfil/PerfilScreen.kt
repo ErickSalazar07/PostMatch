@@ -52,6 +52,7 @@ data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: Strin
 fun PerfilScreen(
     perfilViewModel: PerfilViewModel,
     configuracionButtonClick: () -> Unit,
+    reviewButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val state by perfilViewModel.uiState.collectAsState()
@@ -61,7 +62,8 @@ fun PerfilScreen(
             .background(colorResource(id = R.color.verde_oscuro))
     ){
         item {
-            PerfilHeader(onConfiguracionButtonClick = configuracionButtonClick)
+            PerfilHeader(onConfiguracionButtonClick = configuracionButtonClick,
+                onReviewButtonClick = reviewButtonClick)
         }
         item {
             ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardo", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
@@ -241,6 +243,7 @@ fun InformacionCuenta(
 @Composable
 fun PerfilHeader(
     onConfiguracionButtonClick: () -> Unit,
+    onReviewButtonClick:()->Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -250,14 +253,20 @@ fun PerfilHeader(
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         // Icono de volver a la izquierda
-        Icon(
-            imageVector = Icons.Rounded.ArrowBackIosNew,
-            contentDescription = stringResource(R.string.volver),
-            tint = Color.White,
-            modifier = Modifier
-                .size(28.dp)
-                .align(Alignment.CenterStart)
-        )
+        IconButton(
+            onClick = onReviewButtonClick, // aquí va el click del back
+            modifier = Modifier.align(Alignment.CenterStart)
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.ArrowBackIosNew,
+                contentDescription = stringResource(R.string.volver),
+                tint = Color.White,
+                modifier = Modifier
+                    .size(28.dp)
+                    .align(Alignment.CenterStart),
+
+                )
+        }
 
         // Texto centrado
         Text(
@@ -347,6 +356,7 @@ fun PerfilScreenPreview(
     //ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardito", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
     PerfilScreen(
         configuracionButtonClick = {},
+        reviewButtonClick = {},
         perfilViewModel = viewModel()
     )
 }
