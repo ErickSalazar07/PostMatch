@@ -206,7 +206,7 @@ fun ReviewCalificacionButton(
         Icon(
             imageVector = Icons.Filled.Star,
             contentDescription = stringResource(R.string.calificaci_n),
-            tint = if (calificacion >= valorCalificacion) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurface,
+            tint = if (calificacion >= valorCalificacion) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.size(32.dp)
         )
     }
