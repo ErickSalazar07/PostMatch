@@ -137,6 +137,12 @@ fun AppNavigation(
 
         composable(route = Screen.ConfiguracionPerfil.route) {
             val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = hiltViewModel()
+            configuracionPerfilViewModel.setOnLogout {
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(0){ inclusive = true}
+                }
+            }
+
             ConfiguracionPerfilScreen(
                 configuracionPerfilViewModel = configuracionPerfilViewModel
             )
