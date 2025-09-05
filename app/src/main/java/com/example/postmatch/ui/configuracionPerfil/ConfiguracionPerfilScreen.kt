@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -55,7 +56,7 @@ fun ConfiguracionPerfilScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
     ) {
         // Imagen de perfil y nombre
         item {
@@ -71,12 +72,12 @@ fun ConfiguracionPerfilScreen(
             // Botón Cerrar sesión
             Button(
                 onClick = configuracionPerfilViewModel::cerrarSesionButtonClick,
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.verde_claro)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Text(stringResource(R.string.cerrar_sesi_n), color = Color.White)
+                Text(stringResource(R.string.cerrar_sesi_n), color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }
@@ -94,12 +95,12 @@ fun SeccionConfiguracion(
         Text(
             text = seccion.titulo,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(16.dp)
         )
         Column(
             modifier = Modifier
-                .background(colorResource(id = R.color.verde))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(vertical = 8.dp)
         ) {
 
@@ -132,13 +133,13 @@ fun ItemOpcion(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color.White, shape = RoundedCornerShape(8.dp)),
+                    .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = opcion.idIcono),
                     contentDescription = opcion.titulo,
-                    tint = Color.Black,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -147,15 +148,15 @@ fun ItemOpcion(
 
             // Título y subtítulo
             Column(modifier = Modifier.weight(1f)) {
-                Text(opcion.titulo, fontWeight = FontWeight.Bold, color = Color.White)
-                Text(opcion.subtitulo, fontSize = 12.sp, color = Color.LightGray)
+                Text(opcion.titulo, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                Text(opcion.subtitulo, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface)
             }
 
             // Flecha
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = stringResource(R.string.ir),
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
     }
@@ -169,7 +170,7 @@ fun ImagenPerfil(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -180,7 +181,7 @@ fun ImagenPerfil(
             modifier = Modifier
                 .size(100.dp)
                 .clip(CircleShape)
-                .background(Color.White), // fondo blanco por si la imagen no llena el círculo
+                .background(MaterialTheme.colorScheme.surface), // fondo blanco por si la imagen no llena el círculo
             contentScale = ContentScale.Crop
         )
 
@@ -191,14 +192,14 @@ fun ImagenPerfil(
             text = usuario.nombre,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         // correo
         Text(
             text = usuario.email,
             fontSize = 14.sp,
-            color = Color.LightGray
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

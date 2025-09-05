@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -46,14 +47,14 @@ fun PartidoScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(R.color.verde_oscuro)),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "Partidos Destacados",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(8.dp)
         )
         SectionPartidos(
@@ -73,7 +74,7 @@ fun SectionPartidos(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(8.dp)
     ) {
         items(count = partidos.size) { index -> // Lista de partidos usando datos del provider
@@ -97,7 +98,7 @@ fun PartidoCard(
             .fillMaxWidth()
             .padding(vertical = 6.dp)
             .clickable { onPartidoClick(partido.idPartido) },
-        colors = CardDefaults.cardColors(Color(0xFF1E1E1E)),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceVariant),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp)
     ) {
@@ -113,7 +114,7 @@ fun PartidoCard(
                     .fillMaxWidth()              // ocupa todo el ancho
                     .sizeIn(maxHeight = 200.dp)  // altura máxima
                     .clip(shape = RoundedCornerShape(8.dp))
-                    .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
             )
             Spacer(modifier = Modifier.height(8.dp))
             ResultadoPartidoCard(partido = partido)
@@ -121,7 +122,7 @@ fun PartidoCard(
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(
                     text = "${partido.categoria} ⚽",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 15.sp
                 )
             }
@@ -155,7 +156,7 @@ fun ResultadoPartidoCard(
 
         Text( // Equipo Local a la izquierda
             text = partido.local,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.weight(3f),
             textAlign = TextAlign.Center
@@ -169,7 +170,7 @@ fun ResultadoPartidoCard(
         )
         Text( // Marcador centrado
             text = " - ",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
@@ -182,7 +183,7 @@ fun ResultadoPartidoCard(
         )
         Text( // Equipo Visitante a la derecha
             text = partido.visitante,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.weight(3f),
             textAlign = TextAlign.Center

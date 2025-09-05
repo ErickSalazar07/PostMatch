@@ -69,7 +69,7 @@ fun BuscadorScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(12.dp)
     ) {
         // Barra de búsqueda
@@ -77,15 +77,15 @@ fun BuscadorScreenContent(
             value = state.query,
             onValueChange = { viewModel.onBuscar(it) },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Buscar", color = Color.White) },
+            placeholder = { Text("Buscar", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)) },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = colorResource(R.color.verde_oscuro3),
-                unfocusedContainerColor = colorResource(R.color.verde_oscuro3),
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = GreenAccent,
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.White
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.outline,
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
             ),
             shape = RoundedCornerShape(12.dp),
             singleLine = true
@@ -137,7 +137,7 @@ fun FiltroChip(
 ) {
     Surface(
         shape = RoundedCornerShape(20.dp),
-        color = if (selected) GreenAccent else colorResource(R.color.verde_oscuro3),
+        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
         tonalElevation = 2.dp,
         modifier = Modifier
             .padding(vertical = 4.dp)
@@ -146,7 +146,7 @@ fun FiltroChip(
     ) {
         Text(
             text = text,
-            color = if (selected) Color.Black else Color.White,
+            color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
             maxLines = 1,
@@ -161,7 +161,7 @@ fun ReseñaCard(reseña: Reseña) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(colorResource(R.color.verde_oscuro3)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
@@ -172,7 +172,7 @@ fun ReseñaCard(reseña: Reseña) {
             // Imagen circular
             Surface(
                 shape = CircleShape,
-                color = GreenAccent.copy(alpha = 0.2f),
+                color = MaterialTheme.colorScheme.surfaceVariant,
                 modifier = Modifier.size(56.dp)
             ) {
                 Image(
@@ -186,15 +186,15 @@ fun ReseñaCard(reseña: Reseña) {
             Spacer(Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(reseña.titulo, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                Text("Por: ${reseña.autor}", color = Color.Gray, fontSize = 12.sp)
+                Text(reseña.titulo, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("Por: ${reseña.autor}", color = MaterialTheme.colorScheme.onSurface, fontSize = 12.sp)
 
                 Spacer(Modifier.height(6.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = reseña.rating.toString(),
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp
                     )
@@ -203,7 +203,7 @@ fun ReseñaCard(reseña: Reseña) {
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = null,
-                            tint = GreenAccent,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(18.dp)
                         )
                     }
@@ -211,7 +211,7 @@ fun ReseñaCard(reseña: Reseña) {
 
                 Text(
                     "${reseña.reviews} reviews",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 12.sp
                 )
 
@@ -298,7 +298,7 @@ fun BuscadorScreenContentPreview(state: BuscarUIState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(12.dp)
     ) {
         LazyColumn {

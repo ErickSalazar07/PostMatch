@@ -34,6 +34,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
@@ -59,7 +60,7 @@ fun PerfilScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
     ){
         item {
             PerfilHeader(onConfiguracionButtonClick = configuracionButtonClick,
@@ -104,7 +105,7 @@ fun ItemReseniaPerfil(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .background(colorResource(id = R.color.verde_oscuro), shape = RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp))
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -132,13 +133,13 @@ fun ItemReseniaPerfil(
                 text = reseniaPerfil.titulo,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             // Descripción
             Text(
                 text = reseniaPerfil.descripcion,
                 fontSize = 14.sp,
-                color = Color.Gray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -175,7 +176,7 @@ fun TextoIzquierda(
     ) {
         Text(
             text = texto,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -191,7 +192,7 @@ fun CajaInfoNumFollow(
     Box(
         modifier = modifier
             .size(100.dp)
-            .border(1.dp, Color.White, RoundedCornerShape(8.dp)),
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -199,13 +200,13 @@ fun CajaInfoNumFollow(
         ) {
             Text(
                 text = numFollow.toString(),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = stringResource(idLabelFollow),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 12.sp
             )
         }
@@ -260,7 +261,7 @@ fun PerfilHeader(
             Icon(
                 imageVector = Icons.Rounded.ArrowBackIosNew,
                 contentDescription = stringResource(R.string.volver),
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .size(28.dp)
                     .align(Alignment.CenterStart),
@@ -271,7 +272,7 @@ fun PerfilHeader(
         // Texto centrado
         Text(
             text = stringResource(R.string.perfil),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             modifier = Modifier.align(Alignment.Center)
@@ -283,7 +284,7 @@ fun PerfilHeader(
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = stringResource(R.string.settings),
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .size(28.dp)
             )
@@ -303,7 +304,7 @@ fun ImagenPerfil(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.surface)
             .padding(vertical = 24.dp)
     ) {
         Column(
@@ -319,7 +320,7 @@ fun ImagenPerfil(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
-                    .background(Color.White), // fondo blanco por si la imagen no llena el círculo
+                    .background(MaterialTheme.colorScheme.onSurface), // fondo blanco por si la imagen no llena el círculo
                 contentScale = ContentScale.Crop
             )
 
@@ -330,19 +331,19 @@ fun ImagenPerfil(
                 text = nombrePerfil,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             // Usuario
             Text(
                 text = arrobaPerfil,
                 fontSize = 14.sp,
-                color = Color.LightGray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = oficioPerfil,
                 fontSize = 14.sp,
-                color = Color.LightGray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

@@ -54,13 +54,13 @@ import com.example.postmatch.data.ReviewInfo
      Column (
          modifier = modifier
              .fillMaxSize()
-             .background(colorResource(id = R.color.verde_oscuro))
+             .background(MaterialTheme.colorScheme.background)
      ) {
          LazyColumn(
              modifier = Modifier
                  .padding(10.dp)
                  .fillMaxSize()
-                 .background(colorResource(id = R.color.verde_oscuro))
+                 .background(MaterialTheme.colorScheme.background)
          ) {
 
              item { AnalisisPartidoHeader(state.partido) }
@@ -68,7 +68,7 @@ import com.example.postmatch.data.ReviewInfo
                  Text(
                      text = stringResource(R.string.rese_as),
                      style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                     color = Color.White,
+                     color = MaterialTheme.colorScheme.onBackground,
                      modifier = Modifier.padding(start = 8.dp, top = 24.dp, bottom = 8.dp)
                  )
              }
@@ -100,7 +100,7 @@ fun AnalisisPartidoHeader(
             Text(
                 text = stringResource(R.string.partido),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -113,14 +113,14 @@ fun AnalisisPartidoHeader(
                 .fillMaxWidth()              // ocupa todo el ancho
                 .sizeIn(maxHeight = 200.dp)  // altura máxima
                 .clip(shape = RoundedCornerShape(8.dp))
-                .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp))
+                .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
         )
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.datos_del_partido),
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(start = 8.dp, bottom = 12.dp)
         )
 
@@ -150,7 +150,7 @@ fun DatosEquipo(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(id = R.color.verde_oscuro2))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .border(1.dp, Color.White, RoundedCornerShape(12.dp))
             .padding(12.dp)
     ) {
@@ -163,12 +163,12 @@ fun DatosEquipo(
                 text = nombreEquipo,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onBackground
             )
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .background(colorResource(id = R.color.verde_oscuro))
+                    .background(MaterialTheme.colorScheme.primaryContainer)
                     .padding(horizontal = 8.dp, vertical = 2.dp)
             ) {
                 Text(
@@ -194,13 +194,13 @@ fun DatoEstadistica(label: String, value: String) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            color = Color.LightGray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = value,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
@@ -239,7 +239,7 @@ fun DatoEstadistica(label: String, value: String) {
                  Text(
                      text = resenia.usuarioNombre,
                      style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                     color = Color.White
+                     color = MaterialTheme.colorScheme.onBackground
                  )
 
                  Row(verticalAlignment = Alignment.CenterVertically) {
@@ -247,7 +247,7 @@ fun DatoEstadistica(label: String, value: String) {
                          Icon(
                              imageVector = Icons.Default.Star,
                              contentDescription = "Estrella",
-                             tint = Color.White,
+                             tint = Color.Yellow,
                              modifier = Modifier.size(16.dp)
                          )
                      }
@@ -262,7 +262,7 @@ fun DatoEstadistica(label: String, value: String) {
              text = resenia.descripcion,
              style = MaterialTheme.typography.bodyMedium,
              modifier = Modifier.fillMaxWidth(),
-             color = Color.White
+             color = MaterialTheme.colorScheme.onBackground
          )
 
          Spacer(modifier = Modifier.height(8.dp))
@@ -274,12 +274,12 @@ fun DatoEstadistica(label: String, value: String) {
              Icon(
                  imageVector = Icons.Default.ThumbUp,
                  contentDescription = stringResource(R.string.likes),
-                 tint = Color.Gray,
+                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                  modifier = Modifier
                      .size(20.dp)
              )
              Spacer(modifier = Modifier.fillMaxWidth(0.01f))
-             Text(text = resenia.numLikes.toString(), color = Color.White)
+             Text(text = resenia.numLikes.toString(), color = MaterialTheme.colorScheme.onBackground)
          }
      }
  }

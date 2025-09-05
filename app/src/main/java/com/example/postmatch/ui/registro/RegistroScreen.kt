@@ -35,7 +35,7 @@ fun RegistroScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -88,12 +88,12 @@ fun EncabezadoRegistro(
             Icon(
                 imageVector = Icons.Outlined.ArrowBackIosNew,
                 contentDescription = "Volver",
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onBackground
             )
             Text(
                 text = stringResource(R.string.registro_de_usuario),
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 18.sp,
                 modifier = Modifier
                     .weight(1f)
@@ -114,7 +114,7 @@ fun EncabezadoRegistro(
         Spacer(modifier = Modifier.height(15.dp))
         Text(
             text = stringResource(R.string.empieza_a_postear),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 8.dp)
@@ -131,17 +131,17 @@ fun CampoTexto(
     TextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = Color.White) },
+        label = { Text(label, color = MaterialTheme.colorScheme.onPrimary) },
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Transparent, RoundedCornerShape(32.dp)),
         visualTransformation = VisualTransformation.None,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = colorResource(R.color.verde),
-            unfocusedContainerColor = colorResource(R.color.verde),
-            cursorColor = Color.White,
-            focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White,
+            focusedContainerColor = MaterialTheme.colorScheme.primary,
+            unfocusedContainerColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.onPrimary,
+            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+            unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         )
@@ -155,13 +155,13 @@ fun BotonRegistrar(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.verde_claro)),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
             text = "Registrar",
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onSecondary
         )
     }
 }

@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,7 +65,7 @@ fun FollowScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -81,8 +82,8 @@ fun FollowScreen(
                 onClick = {},
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (perfilInfo.isFollowing) Color.Gray // cuando ya lo sigues
-                    else colorResource(R.color.verde_claro) // cuando no lo sigues
+                    containerColor = if (perfilInfo.isFollowing) MaterialTheme.colorScheme.surfaceVariant // cuando ya lo sigues
+                    else MaterialTheme.colorScheme.primary // cuando no lo sigues
                 )
             ) {
                 Text(
@@ -96,7 +97,7 @@ fun FollowScreen(
 
         items(count = state.resenhas.size) { index ->
             ItemReseniaFollow(state.resenhas[index])
-            Divider(color = Color.DarkGray, thickness = 1.dp)
+            Divider(color = MaterialTheme.colorScheme.outline, thickness = 1.dp)
         }
     }
 }
@@ -147,13 +148,13 @@ fun ItemReseniaFollow(
                 text = resenha.partidoNombre,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = resenha.descripcion,
                 fontSize = 14.sp,
-                color = Color.LightGray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -174,7 +175,7 @@ fun FollowHeader(
         Icon(
             imageVector = Icons.Default.ArrowBack,
             contentDescription = stringResource(R.string.volver),
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .size(28.dp)
         )
@@ -182,7 +183,7 @@ fun FollowHeader(
         // Texto centrado
         Text(
             text = stringResource(R.string.perfil),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
         )
@@ -198,11 +199,11 @@ fun MenuFollowOpciones() {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(stringResource(R.string.rese_as), color = Color.White, fontSize = 16.sp)
+        Text(stringResource(R.string.rese_as), color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp)
         Spacer(modifier = Modifier.width(16.dp))
-        Text(stringResource(R.string.guardado), color = Color.White, fontSize = 16.sp)
+        Text(stringResource(R.string.guardado), color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp)
         Spacer(modifier = Modifier.width(16.dp))
-        Text(stringResource(R.string.m_s), color = Color.White, fontSize = 16.sp)
+        Text(stringResource(R.string.m_s), color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp)
     }
 }
 
@@ -228,13 +229,13 @@ fun InformacionFollow(
             ) {
                 Text(
                     text = perfilInfo.seguidores.toString(),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = stringResource(R.string.seguidores),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
             }
@@ -246,7 +247,7 @@ fun InformacionFollow(
         Box(
             modifier = Modifier
                 .size(100.dp)
-                .border(1.dp, Color.White, RoundedCornerShape(8.dp)),
+                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp)),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -254,13 +255,13 @@ fun InformacionFollow(
             ) {
                 Text(
                     text = perfilInfo.seguidos.toString(),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = stringResource(R.string.seguidos),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
             }
@@ -276,7 +277,7 @@ fun ImagenFollow(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -287,7 +288,7 @@ fun ImagenFollow(
             modifier = Modifier
                 .size(100.dp)
                 .clip(CircleShape)
-                .background(Color.White), // fondo blanco por si la imagen no llena el círculo
+                .background(MaterialTheme.colorScheme.surfaceVariant), // fondo blanco por si la imagen no llena el círculo
             contentScale = ContentScale.Crop
         )
 
@@ -298,19 +299,19 @@ fun ImagenFollow(
             text = perfilInfo.nombre,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         // Usuario
         Text(
             text = perfilInfo.arroba,
             fontSize = 14.sp,
-            color = Color.LightGray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = perfilInfo.oficio,
             fontSize = 12.sp,
-            color = Color.LightGray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(16.dp))
     }

@@ -23,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -55,7 +56,7 @@ fun CrearReviewScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
         Encabezado()
@@ -82,12 +83,12 @@ fun Encabezado(
         Icon(
             imageVector = Icons.Default.Close,
             contentDescription = stringResource(R.string.cerrar),
-            tint = Color.White
+            tint = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = stringResource(R.string.escribir_rese_a),
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 18.sp
         )
         Spacer(modifier = Modifier.width(24.dp))
@@ -111,33 +112,33 @@ fun MostrarPartidoCard(
             Column {
                 Text(
                     text = partido.fecha,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 14.sp
                 )
                 Text(
                     text = partido.nombre,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp
                 )
                 Text(
                     "Santiago Bernabéu",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.height(25.dp))
                 Button(
                     onClick = {},
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.verde)
+                        containerColor = MaterialTheme.colorScheme.primary
                     ),
                     shape = RoundedCornerShape(50)
                 ) {
-                    Text("VS", color = Color.White)
+                    Text("VS", color = MaterialTheme.colorScheme.onPrimary)
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -147,7 +148,7 @@ fun MostrarPartidoCard(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(colorResource(R.color.color_piel)),
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentScale = ContentScale.Crop
             )
         }
@@ -169,7 +170,7 @@ fun CalificacionInput(
         Text(
             text = stringResource(R.string.calificaci_n),
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 16.sp
         )
         Spacer(modifier = Modifier.height(25.dp))
@@ -205,7 +206,7 @@ fun ReviewCalificacionButton(
         Icon(
             imageVector = Icons.Filled.Star,
             contentDescription = stringResource(R.string.calificaci_n),
-            tint = if (calificacion >= valorCalificacion) Color.Yellow else Color.Gray,
+            tint = if (calificacion >= valorCalificacion) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.size(32.dp)
         )
     }
@@ -223,7 +224,7 @@ fun ResenhaInput(
         Text(
             text = stringResource(R.string.resenha),
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 16.sp
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -232,7 +233,7 @@ fun ResenhaInput(
                 .fillMaxWidth()
                 .height(120.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFF2A322B))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         ) {
             TextField(
                 value = resenha,
@@ -241,14 +242,13 @@ fun ResenhaInput(
                     .fillMaxSize()
                     .background(Color.Transparent),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = colorResource(R.color.verde_oscuro2),
-                    unfocusedContainerColor = colorResource(R.color.verde_oscuro2),
-                    disabledContainerColor = colorResource(R.color.verde_oscuro2),
-                    cursorColor = Color.White,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    cursorColor = MaterialTheme.colorScheme.onBackground,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
+                    unfocusedIndicatorColor = Color.Transparent
                 )
             )
         }
@@ -265,13 +265,13 @@ fun BotonPublicar(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.verde_claro)),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
             text = stringResource(R.string.publicar),
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onPrimary
         )
     }
 }

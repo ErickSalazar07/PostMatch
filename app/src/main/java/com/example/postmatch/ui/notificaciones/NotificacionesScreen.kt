@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
@@ -44,7 +45,7 @@ fun NotificacionesScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
     ) {
         NotificacionesHeader()
         SeccionNotificaciones(
@@ -66,7 +67,7 @@ fun NotificacionesHeader(
         // Texto centrado
         Text(
             text = stringResource(R.string.notificaciones),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             modifier = Modifier.align(Alignment.Center)
@@ -85,7 +86,7 @@ fun SeccionNotificaciones(
     // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
         modifier = modifier
-            .background(colorResource(id = R.color.verde_oscuro))
+            .background(MaterialTheme.colorScheme.background)
             .padding(vertical = 8.dp)
     ) {
         items(listaNotificaciones) { notificacion -> // Usamos 'items' para iterar sobre la lista
@@ -110,13 +111,13 @@ fun ItemNotificacion(
         Box(
             modifier = Modifier
                 .size(50.dp)
-                .background(Color.White, shape = CircleShape),
+                .background(MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape),
             contentAlignment = Alignment.Center
         ){
             Icon(
                 painter = painterResource(id = notificacionData.idFotoPerfil),
                 contentDescription = notificacionData.descripcion,
-                tint = Color.Black,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(40.dp)
             )
         }
@@ -124,8 +125,8 @@ fun ItemNotificacion(
         Spacer(modifier = Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)){
-            Text(text = "A ${notificacionData.nombreUsuario} le gustó tu reseña", fontWeight = FontWeight.SemiBold, color = Color.White)
-            Text("hace ${notificacionData.nSemanas} semanas", fontSize = 14.sp, color = Color.Gray)
+            Text(text = "A ${notificacionData.nombreUsuario} le gustó tu reseña", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
+            Text("hace ${notificacionData.nSemanas} semanas", fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground)
         }
     }
 }
