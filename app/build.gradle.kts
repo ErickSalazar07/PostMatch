@@ -65,6 +65,9 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.8.3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     // Hilt
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.compose.navigation)
