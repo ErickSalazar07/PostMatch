@@ -67,7 +67,7 @@ fun BuscadorScreenContent(
     val state by viewModel.uiState.collectAsState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(12.dp)

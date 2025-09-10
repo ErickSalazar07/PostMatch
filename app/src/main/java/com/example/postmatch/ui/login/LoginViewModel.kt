@@ -36,19 +36,19 @@ class LoginViewModel @Inject constructor (
         signInButtonClick = callback
     }
 
-    fun signInButtonClick() {
+    fun onSignInButtonClick() {
         showState()
         viewModelScope.launch {
             try {
                 authRepository.signUp(_uiState.value.correo.trim(), _uiState.value.password.trim())
-                signInButtonClick()
+                loginButtonClick?.invoke()
             } catch(e: Exception) {
                 Log.d("LoginViewModel", e.toString())
             }
         }
     }
 
-    fun loginButtonClick() {
+    fun onLoginButtonClick() {
         showState()
         viewModelScope.launch {
             try {

@@ -84,8 +84,8 @@ fun LoginScreen(
                 )
             }
             BotonesLogin(
-                onLogInButtonClick = loginViewModel::loginButtonClick,
-                onSignUpButtonClick = loginViewModel::signInButtonClick
+                onLogInButtonClick = loginViewModel::onLoginButtonClick,
+                onSignUpButtonClick = loginViewModel::onSignInButtonClick
             )
             Spacer(modifier = Modifier.height(25.dp))
             TextoLegal()

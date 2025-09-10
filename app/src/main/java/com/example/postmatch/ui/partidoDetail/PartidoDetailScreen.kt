@@ -30,6 +30,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
@@ -49,7 +50,9 @@ import com.example.postmatch.data.ReviewInfo
     modifier: Modifier = Modifier
  ) {
 
-     partidoDetailViewModel.setPartidoInfo(idPartido)
+    LaunchedEffect(Unit) {
+        partidoDetailViewModel.setPartidoInfo(idPartido)
+    }
      val state by partidoDetailViewModel.uiState.collectAsState()
      Column (
          modifier = modifier
