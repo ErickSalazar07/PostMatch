@@ -39,24 +39,21 @@ class LoginViewModel @Inject constructor (
     fun onSignInButtonClick() {
         showState()
         viewModelScope.launch {
-            try {
-                authRepository.signUp(_uiState.value.correo.trim(), _uiState.value.password.trim())
-                loginButtonClick?.invoke()
-            } catch(e: Exception) {
-                Log.d("LoginViewModel", e.toString())
-            }
+            val result = authRepository.signUp(_uiState.value.correo.trim(), _uiState.value.password.trim())
+            if(result.isSuccess) loginButtonClick?.invoke()
+            else Log.d("LoginViewModel", "Error: no se logro hacer el sign in")
         }
     }
 
     fun onLoginButtonClick() {
         showState()
         viewModelScope.launch {
-            try {
-                val result = authRepository.signIn(_uiState.value.correo.trim(), _uiState.value.password.trim())
+            val result = authRepository.signIn(_uiState.value.correo.trim(), _uiState.value.password.trim())
+            if(result.isSuccess) {
                 loginButtonClick?.invoke() // navega si login fue OK
                 _uiState.update { it.copy(errorMessage = null) }
-            } catch (e: Exception) {
-                Log.e("LoginViewModel", "Login error", e)
+            } else {
+                Log.e("LoginViewModel", "Login error")
                 _uiState.update { it.copy(errorMessage = "Correo o contraseña incorrectos") }
             }
         }
