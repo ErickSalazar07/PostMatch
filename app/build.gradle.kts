@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.firestore)
+    implementation("com.google.firebase:firebase-storage-ktx")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

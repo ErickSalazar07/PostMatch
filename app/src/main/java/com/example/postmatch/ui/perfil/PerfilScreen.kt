@@ -76,10 +76,10 @@ fun PerfilScreen(
         }
         item {
             ImagenPerfil(
-                fotoPerfilUri = state.fotoPerfilUri,
+                fotoPerfilUrl = state.fotoPerfilUrl,
                 nombrePerfil = "Ricardo",
                 arrobaPerfil = "@Ricardo_420",
-                onFotoPerfilButton = perfilViewModel::updateProfileImageUri,
+                onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
                 oficioPerfil = "Futbolista")
         }
         item {
@@ -308,7 +308,7 @@ fun PerfilHeader(
 
 @Composable
 fun ImagenPerfil(
-    fotoPerfilUri: Uri?,
+    fotoPerfilUrl: String?,
     nombrePerfil: String,
     arrobaPerfil: String,
     oficioPerfil: String,
@@ -330,7 +330,7 @@ fun ImagenPerfil(
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(fotoPerfilUri)
+                    .data(fotoPerfilUrl)
                     .crossfade(true)
                     .build(),
                 error = painterResource(R.drawable.user_icon),

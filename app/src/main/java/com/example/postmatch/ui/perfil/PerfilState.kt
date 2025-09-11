@@ -11,6 +11,6 @@ data class PerfilState(
     val oficio: String = "",
     val seguidores: Int = 0,
     val seguidos: Int = 0,
-    val fotoPerfilUri: Uri? = null,
+    val fotoPerfilUrl: String? = null,
     val resenhias: List<ReviewInfo> = emptyList()
 )
