@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.perfil
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.postmatch.R
 import com.example.postmatch.data.local.LocalReviewProvider
@@ -16,6 +17,10 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(PerfilState())
     val uiState: StateFlow<PerfilState> = _uiState
+
+    fun updateProfileImageUri(profileImageUri: Uri) {
+        _uiState.update { it.copy(fotoPerfilUri = profileImageUri) }
+    }
 
     init {
         _uiState.update {

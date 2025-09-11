@@ -1,5 +1,9 @@
 package com.example.postmatch.ui.perfil
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,17 +37,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
+import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
 
@@ -68,7 +75,12 @@ fun PerfilScreen(
                 onReviewButtonClick = reviewButtonClick)
         }
         item {
-            ImagenPerfil(fotoPerfil = R.drawable.ricardo_icon, nombrePerfil = "Ricardo", arrobaPerfil = "@Ricardo_420", oficioPerfil = "Futbolista")
+            ImagenPerfil(
+                fotoPerfilUri = state.fotoPerfilUri,
+                nombrePerfil = "Ricardo",
+                arrobaPerfil = "@Ricardo_420",
+                onFotoPerfilButton = perfilViewModel::updateProfileImageUri,
+                oficioPerfil = "Futbolista")
         }
         item {
             InformacionCuenta(1002, 1293)
@@ -296,10 +308,11 @@ fun PerfilHeader(
 
 @Composable
 fun ImagenPerfil(
-    fotoPerfil: Int,
+    fotoPerfilUri: Uri?,
     nombrePerfil: String,
     arrobaPerfil: String,
     oficioPerfil: String,
+    onFotoPerfilButton: (uri:Uri) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -314,16 +327,20 @@ fun ImagenPerfil(
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Imagen de perfil circular
-            Image(
-                painter = painterResource(id = fotoPerfil), // pon aquí tu imagen de perfil mock
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(fotoPerfilUri)
+                    .crossfade(true)
+                    .build(),
+                error = painterResource(R.drawable.user_icon),
+                placeholder = painterResource(R.drawable.user_icon),
                 contentDescription = stringResource(R.string.foto_de_perfil),
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.onSurface), // fondo blanco por si la imagen no llena el círculo
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(200.dp).clip(CircleShape)
             )
+
+            PickImageButton(action = onFotoPerfilButton)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -347,6 +364,28 @@ fun ImagenPerfil(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+    }
+}
+
+@Composable
+fun PickImageButton(
+    action: (uri:Uri) -> Unit
+) {
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            Log.d("PerfilScreen", uri.toString())
+            action(uri)
+        }
+    }
+    Button(
+        onClick = {
+            launcher.launch("image/*")
+        }
+    ) {
+        Text(text = "Seleccionar Imagen")
     }
 }
 
