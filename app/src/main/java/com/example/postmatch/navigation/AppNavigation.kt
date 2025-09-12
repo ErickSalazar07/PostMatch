@@ -57,6 +57,7 @@ import com.example.postmatch.ui.reviews.ReviewsViewModel
 
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
     object Login : Screen(route = "login")
+    object Splash: Screen(route = "splash")
     object PartidoDetail : Screen(route = "partidoDetail/{idPartido}")
     object ConfiguracionPerfil : Screen(route = "configuracionPerfil")
     object Follow : Screen(route = "follow")
@@ -125,9 +126,19 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route,
+        startDestination = Screen.Splash.route,
         modifier = modifier
     ) {
+
+         composable(route = Screen.Splash.route) {
+            SplashScreen(
+                onSplashFinished = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
         composable(
             route = Screen.PartidoDetail.route,
             arguments = listOf(navArgument("idPartido") { type = NavType.IntType})
