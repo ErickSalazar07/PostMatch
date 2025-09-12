@@ -24,7 +24,8 @@ object LocalReviewProvider {
             partidoLocal = "RM",
             partidoGolesVisitante = 2,
             partidoGolesLocal = 1,
-            partidoFecha = "05/06/2025"
+            partidoFecha = "05/06/2025",
+            partidoFotoUrl = "partido1.png"
         ),
         ReviewInfo(
             idReview = 2,
@@ -44,7 +45,8 @@ object LocalReviewProvider {
             partidoLocal = "Chelsea",
             partidoGolesVisitante = 3,
             partidoGolesLocal = 2,
-            partidoFecha = "09/08/2025"
+            partidoFecha = "09/08/2025",
+            partidoFotoUrl = ""
         ),
         ReviewInfo(
             idReview = 3,
@@ -64,7 +66,8 @@ object LocalReviewProvider {
             partidoLocal = "Milan",
             partidoGolesVisitante = 4,
             partidoGolesLocal = 3,
-            partidoFecha = "10/08/2025"
+            partidoFecha = "10/08/2025",
+            partidoFotoUrl = ""
         ),
         ReviewInfo(
             idReview = 4,
@@ -84,7 +87,8 @@ object LocalReviewProvider {
             partidoLocal = "Ajax",
             partidoGolesVisitante = 1,
             partidoGolesLocal = 1,
-            partidoFecha = "11/08/2025"
+            partidoFecha = "11/08/2025",
+            partidoFotoUrl = ""
         ),
         ReviewInfo(
             idReview = 5,
@@ -104,7 +108,8 @@ object LocalReviewProvider {
             partidoLocal = "Juventus",
             partidoGolesVisitante = 2,
             partidoGolesLocal = 2,
-            partidoFecha = "12/08/2025"
+            partidoFecha = "12/08/2025",
+            partidoFotoUrl = ""
         ),
         ReviewInfo(
             idReview = 6,
@@ -124,7 +129,8 @@ object LocalReviewProvider {
             partidoLocal = "Sevilla",
             partidoGolesVisitante = 1,
             partidoGolesLocal = 0,
-            partidoFecha = "13/08/2025"
+            partidoFecha = "13/08/2025",
+            partidoFotoUrl = ""
         ),
         ReviewInfo(
             idReview = 6,
@@ -144,7 +150,8 @@ object LocalReviewProvider {
             partidoLocal = "Sevilla",
             partidoGolesVisitante = 1,
             partidoGolesLocal = 0,
-            partidoFecha = "13/08/2025"
+            partidoFecha = "13/08/2025",
+            partidoFotoUrl = ""
         )
     )
 }

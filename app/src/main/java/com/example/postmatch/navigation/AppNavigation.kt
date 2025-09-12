@@ -145,11 +145,6 @@ fun AppNavigation(
             val context = LocalContext.current
             val activity = context as? ComponentActivity
 
-            // Manejo del botón atrás
-            BackHandler {
-                activity?.finish()  // 🔹 Cierra la Activity → termina la app
-            }
-
             configuracionPerfilViewModel.setOnLogout {
                 navController.navigate(Screen.Login.route) {
                     popUpTo(0){ inclusive = true}

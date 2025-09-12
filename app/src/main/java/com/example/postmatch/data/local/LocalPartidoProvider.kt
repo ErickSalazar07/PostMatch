@@ -16,7 +16,8 @@ object LocalPartidoProvider {
             posesionVisitante = 50,
             tirosLocal = 15,
             tirosVisitante = 10,
-            fecha = "20/05/2025"
+            fecha = "20/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
 
         PartidoInfo(
@@ -31,7 +32,8 @@ object LocalPartidoProvider {
             posesionVisitante = 45,
             tirosLocal = 12,
             tirosVisitante = 10,
-            fecha = "21/05/2025"
+            fecha = "21/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
             idPartido = 3,
@@ -45,7 +47,8 @@ object LocalPartidoProvider {
             posesionVisitante = 52,
             tirosLocal = 15,
             tirosVisitante = 18,
-            fecha = "19/05/2025"
+            fecha = "19/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
             idPartido = 4,
@@ -59,7 +62,8 @@ object LocalPartidoProvider {
             posesionVisitante = 60,
             tirosLocal = 8,
             tirosVisitante = 14,
-            fecha = "18/05/2025"
+            fecha = "18/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
             idPartido = 5,
@@ -73,7 +77,8 @@ object LocalPartidoProvider {
             posesionVisitante = 55,
             tirosLocal = 11,
             tirosVisitante = 16,
-            fecha = "17/05/2025"
+            fecha = "17/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
             idPartido = 6,
@@ -87,7 +92,8 @@ object LocalPartidoProvider {
             posesionVisitante = 47,
             tirosLocal = 13,
             tirosVisitante = 9,
-            fecha = "16/05/2025"
+            fecha = "16/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
             idPartido = 7,
@@ -101,7 +107,8 @@ object LocalPartidoProvider {
             posesionVisitante = 58,
             tirosLocal = 9,
             tirosVisitante = 12,
-            fecha = "15/05/2025"
+            fecha = "15/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
             idPartido = 8,
@@ -115,7 +122,8 @@ object LocalPartidoProvider {
             posesionVisitante = 49,
             tirosLocal = 17,
             tirosVisitante = 14,
-            fecha = "14/05/2025"
+            fecha = "14/05/2025",
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         )
     )
 }

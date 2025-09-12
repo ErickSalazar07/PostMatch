@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,6 +43,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ComentarioInfo
 import com.example.postmatch.data.ReviewInfo
@@ -130,13 +133,16 @@ fun ComentarioCard(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Image(
-            painter = painterResource(comentarioInfo.idUsuarioFotoPerfil),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(comentarioInfo.usuarioFotoPerfil)
+                .crossfade(true)
+                .build(),
             contentDescription = stringResource(R.string.foto_de_perfil),
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(80.dp)
-                .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
+                .clip(RoundedCornerShape(8.dp))
         )
     }
 }
@@ -242,6 +248,17 @@ fun ReviewCard(
 
         Spacer(modifier = Modifier.width(8.dp))
 
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(reviewInfo.partidoFotoUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = stringResource(R.string.foto_de_perfil),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(80.dp)
+                .clip(RoundedCornerShape(8.dp))
+        )
         Image(
             painter = painterResource(id = R.drawable.estadio_bernabeu),
             contentDescription = null,

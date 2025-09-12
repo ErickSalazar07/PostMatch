@@ -40,16 +40,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.postmatch.R
 
 import com.example.postmatch.data.PerfilInfo
 
 import com.example.postmatch.data.ReviewInfo
+import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.local.LocalPerfilInfoData
 import com.example.postmatch.data.local.LocalPerfilInfoData.perfilInfo
 
@@ -73,7 +77,7 @@ fun FollowScreen(
             FollowHeader()
         }
         item {
-            ImagenFollow(perfilInfo)
+            ImagenFollow(state.usuario)
             Spacer(modifier = Modifier.height(16.dp))
         }
 
@@ -271,7 +275,7 @@ fun InformacionFollow(
 
 @Composable
 fun ImagenFollow(
-    perfilInfo: PerfilInfo,
+    usuarioInfo: UsuarioInfo,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -282,14 +286,16 @@ fun ImagenFollow(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Imagen de perfil circular
-        Image(
-            painter = painterResource(id = perfilInfo.foto), // pon aquí tu imagen de perfil mock
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(usuarioInfo.fotoPerfil)
+                .crossfade(true)
+                .build(),
+            error = painterResource(R.drawable.user_icon),
+            placeholder = painterResource(R.drawable.user_icon),
             contentDescription = stringResource(R.string.foto_de_perfil),
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant), // fondo blanco por si la imagen no llena el círculo
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(200.dp).clip(CircleShape)
         )
 
         Spacer(modifier = Modifier.height(8.dp))

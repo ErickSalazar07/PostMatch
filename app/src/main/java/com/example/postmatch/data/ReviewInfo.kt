@@ -20,5 +20,6 @@ data class ReviewInfo(
     var partidoLocal: String = "",
     var partidoGolesVisitante: Int = 0,
     var partidoGolesLocal: Int = 0,
-    var partidoFecha: String = ""
+    var partidoFecha: String = "",
+    var partidoFotoUrl: String = ""
 )

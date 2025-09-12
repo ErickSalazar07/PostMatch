@@ -24,12 +24,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.postmatch.data.local.LocalPartidoProvider
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 import com.example.postmatch.R
 import com.example.postmatch.data.PartidoInfo
@@ -106,15 +110,17 @@ fun PartidoCard(
             modifier = Modifier.padding(12.dp)
         ) {
             // Imagen del estadio
-            Image(
-                painter = painterResource(id = R.drawable.estadio_bernabeu),
-                contentDescription = "Imagen del estadio",
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(partido.partidoFotoUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = stringResource(R.string.foto_de_perfil),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth()              // ocupa todo el ancho
-                    .sizeIn(maxHeight = 200.dp)  // altura máxima
-                    .clip(shape = RoundedCornerShape(8.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
             Spacer(modifier = Modifier.height(8.dp))
             ResultadoPartidoCard(partido = partido)

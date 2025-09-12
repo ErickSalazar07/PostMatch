@@ -9,7 +9,7 @@ object LocalUsuarioProvider {
             nombre = "Pedro",
             email = "p@noemail",
             password = "54321",
-            fotoPerfil = "1.png",
+            fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Fusuario_foto_perfil_01.jpg?alt=media&token=f8b0fe4f-86bd-4341-ba0b-0e0b10da1ea60",
             numFollowed = 10,
             numFollowers = 5
         ),

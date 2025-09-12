@@ -12,5 +12,6 @@ data class PartidoInfo(
     var posesionVisitante: Int = 0,
     var tirosLocal: Int = 0,
     var tirosVisitante: Int = 0,
-    var fecha: String = ""
+    var fecha: String = "",
+    var partidoFotoUrl: String = ""
 )
