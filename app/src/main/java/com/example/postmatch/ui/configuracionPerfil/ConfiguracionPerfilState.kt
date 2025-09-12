@@ -6,6 +6,7 @@ import com.example.postmatch.data.local.LocalSeccionConfiguracionProvider
 import com.example.postmatch.data.local.LocalUsuarioProvider
 
 data class ConfiguracionPerfilState(
+    val fotoPerfilUrl: String? = null,
     val usuario: UsuarioInfo = LocalUsuarioProvider.usuarios[0],
     val secciones: List<SeccionConfiguracionInfo> = emptyList(),
     val cerrarSesionButtonClick: () -> Unit = {}

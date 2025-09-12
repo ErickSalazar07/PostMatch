@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.postmatch.R
 import com.example.postmatch.data.OpcionConfiguracionButtonInfo
 import com.example.postmatch.data.SeccionConfiguracionInfo
@@ -61,7 +62,8 @@ fun ConfiguracionPerfilScreen(
         // Imagen de perfil y nombre
         item {
             ImagenPerfil(
-                usuario = state.usuario
+                usuario = state.usuario,
+                fotoPerfilUrl = state.fotoPerfilUrl
             )
         }
         items(count = state.secciones.size) {
@@ -165,6 +167,7 @@ fun ItemOpcion(
 @Composable
 fun ImagenPerfil(
     usuario: UsuarioInfo,
+    fotoPerfilUrl: String?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -174,6 +177,8 @@ fun ImagenPerfil(
             .padding(vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+       /*
         // Imagen de perfil circular
         Image(
             painter = painterResource(id = R.drawable.ricardo_icon), // pon aquí tu imagen de perfil mock
@@ -184,6 +189,19 @@ fun ImagenPerfil(
                 .background(MaterialTheme.colorScheme.surface), // fondo blanco por si la imagen no llena el círculo
             contentScale = ContentScale.Crop
         )
+
+        */
+        AsyncImage(
+            model = fotoPerfilUrl ?: R.drawable.ricardo_icon, // 👈 si no hay url, usa mock
+            contentDescription = stringResource(R.string.foto_de_perfil),
+            modifier = Modifier
+                .size(100.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface),
+            contentScale = ContentScale.Crop
+        )
+
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
