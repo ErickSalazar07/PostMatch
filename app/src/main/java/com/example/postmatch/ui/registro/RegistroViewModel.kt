@@ -2,16 +2,23 @@ package com.example.postmatch.ui.registro
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.postmatch.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class RegistroViewModel @Inject constructor(): ViewModel()  {
+class RegistroViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+): ViewModel()  {
+
     private val _uiState = MutableStateFlow(RegistroState())
     val uiState: StateFlow<RegistroState> = _uiState
+    private var onRegisterSuccess: (() -> Unit)? = null
 
     fun updateNombre(nuevoNombre: String) {
         _uiState.update { it.copy(nombre = nuevoNombre) }
@@ -29,8 +36,35 @@ class RegistroViewModel @Inject constructor(): ViewModel()  {
         _uiState.update { it.copy(urlFotoPerfil = nuevaUrlFotoPerfil) }
     }
 
-    fun setRegistrarButtonClick(action: () -> Unit) {
-        _uiState.update { it.copy(registrarButtonClick = action) }
+    fun register() {
+        val state = _uiState.value
+        val nombre = state.nombre.trim()
+        val email = state.email.trim()
+        val password = state.password.trim()
+        val urlFoto = state.urlFotoPerfil.trim()
+
+        // validaciones
+        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            _uiState.update { it.copy(errorMessage = "Todos los campos son obligatorios")}
+            return
+        }
+        if (password.length < 6) {
+            _uiState.update { it.copy(errorMessage = "La contraseña debe tener al menos 6 caracteres")}
+            return
+        }
+
+        viewModelScope.launch {
+            val result = authRepository.signUp(_uiState.value.email.trim(), _uiState.value.password.trim())
+            if (result.isSuccess) {
+                onRegisterSuccess?.invoke()
+            } else {
+                _uiState.update { it.copy(errorMessage = "Error al registrar usuario") }
+            }
+        }
+    }
+
+    fun setOnRegisterSuccess(callback: () -> Unit) {
+        onRegisterSuccess = callback
     }
 
     fun showState() {
@@ -40,9 +74,4 @@ class RegistroViewModel @Inject constructor(): ViewModel()  {
         Log.d("RegistroViewModel","URL Foto Perfil: ${uiState.value.urlFotoPerfil}")
     }
 
-    fun regitrarButtonClick() {
-        Log.d("RegistroViewModel","registrarButtonClick")
-        showState()
-        _uiState.value.registrarButtonClick()
-    }
 }
