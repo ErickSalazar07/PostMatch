@@ -54,9 +54,11 @@ import com.example.postmatch.ui.reviewDetail.ReviewDetailScreen
 import com.example.postmatch.ui.reviewDetail.ReviewDetailViewModel
 import com.example.postmatch.ui.reviews.ReviewsScreen
 import com.example.postmatch.ui.reviews.ReviewsViewModel
+import com.example.postmatch.ui.splash.SplashScreen
 
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
     object Login : Screen(route = "login")
+    object Splash : Screen("splash")
     object PartidoDetail : Screen(route = "partidoDetail/{idPartido}")
     object ConfiguracionPerfil : Screen(route = "configuracionPerfil")
     object Follow : Screen(route = "follow")
@@ -129,7 +131,8 @@ fun AppNavigation(
         modifier = modifier
     ) {
 
-         composable(route = Screen.Splash.route) {
+
+        composable(route = Screen.Splash.route) {
             SplashScreen(
                 onSplashFinished = {
                     navController.navigate(Screen.Login.route) {
@@ -314,4 +317,5 @@ fun AppNavigation(
         }
     }
 }
+
 
