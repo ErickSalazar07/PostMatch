@@ -37,12 +37,7 @@ class LoginViewModel @Inject constructor (
     }
 
     fun onSignInButtonClick() {
-        showState()
-        viewModelScope.launch {
-            val result = authRepository.signUp(_uiState.value.correo.trim(), _uiState.value.password.trim())
-            if(result.isSuccess) loginButtonClick?.invoke()
-            else Log.d("LoginViewModel", "Error: no se logro hacer el sign in")
-        }
+        signInButtonClick?.invoke()
     }
 
     fun onLoginButtonClick() {

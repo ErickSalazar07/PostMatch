@@ -69,9 +69,15 @@ fun RegistroScreen(
             value = state.urlFotoPerfil,
             onValueChange = registroViewModel::updateUrlFotoPerfil
         )
-
+        if (state.errorMessage != null) {
+            Text(
+                text = state.errorMessage!!,
+                color = Color.Red
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
-        BotonRegistrar( onClick = registroViewModel::regitrarButtonClick)
+        BotonRegistrar( onClick = {registroViewModel.register()})
+
     }
 }
 
@@ -128,6 +134,7 @@ fun CampoTexto(
     value: String,
     onValueChange: (String) -> Unit
 ) {
+
     TextField(
         value = value,
         onValueChange = onValueChange,

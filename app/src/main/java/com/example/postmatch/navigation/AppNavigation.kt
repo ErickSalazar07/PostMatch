@@ -265,6 +265,12 @@ fun AppNavigation(
 
         composable(route = Screen.Registro.route) {
             val registroViewModel: RegistroViewModel = hiltViewModel()
+
+            registroViewModel.setOnRegisterSuccess{navController.navigate(Screen.Login.route){
+                popUpTo(Screen.Login.route){inclusive = true}
+                }
+            }
+
             RegistroScreen(
                 registroViewModel = registroViewModel
             )
