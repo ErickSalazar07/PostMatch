@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.R
 import com.example.postmatch.data.local.LocalReviewProvider
+import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.StorageRepository
 import com.example.postmatch.ui.partidos.PartidosState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +18,13 @@ import kotlinx.coroutines.launch
 // PerfilViewModel.kt
 @HiltViewModel
 class PerfilViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
     private val storageRepository: StorageRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PerfilState())
+    private val _uiState = MutableStateFlow(PerfilState(
+        fotoPerfilUrl = authRepository.currentUser?.photoUrl?.toString() ?: ""
+    ))
     val uiState: StateFlow<PerfilState> = _uiState
 
     // fun updateProfileImageUri(profileImageUri: Uri) {

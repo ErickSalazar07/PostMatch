@@ -14,6 +14,7 @@ class StorageRepository @Inject constructor(
             val userId = auth.currentUser?.uid ?: return Result.failure(Exception("Usuario no autenticado"))
             val path = "profileImages/$userId.jpg"
             val url = storage.uploadImage(path, uri)
+            auth.updateProfileImage(url) // actualiza url del usuario
             Result.success(url)
         } catch(e: Exception) {
             Result.failure(Exception("Error al subir la imagen"))
