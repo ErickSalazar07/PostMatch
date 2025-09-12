@@ -52,4 +52,8 @@ class AuthRepository @Inject constructor (
         authRemoteDataSource.signOut()
     }
 
+     fun isLoggedIn(): Boolean {
+        return currentUser != null;
+    }
+
 }

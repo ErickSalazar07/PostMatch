@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.activity
 import com.example.postmatch.data.local.LocalPartidoProvider
+import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.ui.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.partidoDetail.PartidoDetailViewModel
 import com.example.postmatch.ui.Buscador.BuscadorScreenContent
@@ -133,10 +134,17 @@ fun AppNavigation(
 
 
         composable(route = Screen.Splash.route) {
+            val logged = hiltViewModel<LoginViewModel>().currentUser != null
             SplashScreen(
                 onSplashFinished = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    if (logged) {
+                        navController.navigate(Screen.Reviews.route) { // Va directo al home
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(Screen.Login.route) { // Si no, login
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
                     }
                 }
             )
