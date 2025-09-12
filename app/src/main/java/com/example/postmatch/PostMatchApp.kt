@@ -16,7 +16,7 @@ fun PostMatchApp() {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination?.route
-    val showBottomBar = currentDestination !in listOf("login", "registro")
+    val showBottomBar = currentDestination !in listOf("login", "registro","splash")
 
     Scaffold (
         bottomBar = {
