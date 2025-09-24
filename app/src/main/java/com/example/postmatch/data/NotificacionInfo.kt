@@ -5,5 +5,5 @@ data class NotificacionInfo(
     var nombreUsuario: String,
     var descripcion: String,
     var nSemanas: Int,
-    var idFotoPerfil: Int
+    var idFotoPerfil: String
 )

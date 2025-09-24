@@ -34,10 +34,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.ReviewInfo
@@ -108,7 +111,7 @@ fun AnalisisPartidoHeader(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Image(
+        /*Image(
             painter = painterResource(id = R.drawable.estadio_bernabeu),
             contentDescription = stringResource(R.string.foto_partido),
             contentScale = ContentScale.Crop,
@@ -117,6 +120,22 @@ fun AnalisisPartidoHeader(
                 .sizeIn(maxHeight = 200.dp)  // altura máxima
                 .clip(shape = RoundedCornerShape(8.dp))
                 .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
+        )*/
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(partido.partidoFotoUrl)
+                .crossfade(true)
+                .build(),
+            error = painterResource(R.drawable.estadio_bernabeu),
+            placeholder = painterResource(R.drawable.estadio_bernabeu),
+            contentDescription = stringResource(R.string.foto_de_perfil),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()              // ocupa todo el ancho
+                .sizeIn(maxHeight = 200.dp)  // altura máxima
+                .clip(shape = RoundedCornerShape(8.dp))
+                .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
+
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -226,7 +245,7 @@ fun DatoEstadistica(label: String, value: String) {
              verticalAlignment = Alignment.CenterVertically
          ) {
              // Foto del reseñador
-             Image(
+             /*Image(
                  painter = painterResource(id = R.drawable.ricardo_icon),
                  contentDescription = "Foto de ${resenia.usuarioNombre}",
                  modifier = Modifier
@@ -234,6 +253,20 @@ fun DatoEstadistica(label: String, value: String) {
                      .clip(CircleShape)
                      .border(1.dp, Color.Gray, CircleShape),
                  contentScale = ContentScale.Crop
+             )*/
+             AsyncImage(
+                 model = ImageRequest.Builder(LocalContext.current)
+                     .data(resenia.usuarioFotoPerfil)
+                     .crossfade(true)
+                     .build(),
+                 error = painterResource(R.drawable.user_icon),
+                 placeholder = painterResource(R.drawable.user_icon),
+                 contentDescription = stringResource(R.string.foto_de_perfil),
+                 contentScale = ContentScale.Crop,
+                 modifier = Modifier
+                     .size(48.dp)
+                     .clip(CircleShape)
+                     .border(1.dp, Color.Gray, CircleShape)
              )
 
              Spacer(modifier = Modifier.fillMaxWidth(0.02f))

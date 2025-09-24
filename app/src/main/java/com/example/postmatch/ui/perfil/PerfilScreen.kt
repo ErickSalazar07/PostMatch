@@ -57,6 +57,7 @@ import com.example.postmatch.data.ReviewInfo
 
 data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: String, val descripcionReseniaPerfil: String, val idFoto: Int)
 
+//@Preview(showBackground = true)
 @Composable
 fun PerfilScreen(
     perfilViewModel: PerfilViewModel,
@@ -390,7 +391,7 @@ fun PickImageButton(
 }
 
 @Composable
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 fun PerfilScreenPreview(
     modifier : Modifier = Modifier
 ){

@@ -17,7 +17,7 @@ object LocalReviewProvider {
             usuarioNombre = "Luis",
             usuarioEmail = "l@noemail",
             usuarioPassword = "123",
-            usuarioFotoPerfil = "usuario1.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2Fsurprised_pp.jpg?alt=media&token=ef3ffa1a-a552-4f6a-a151-97a02bbff0ba",
             partidoNombre = "FCB vs RM",
             partidoCategoria = "Champions",
             partidoVisitante = "FCB",
@@ -25,7 +25,7 @@ object LocalReviewProvider {
             partidoGolesVisitante = 2,
             partidoGolesLocal = 1,
             partidoFecha = "05/06/2025",
-            partidoFotoUrl = "partido1.png"
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fwebley_stadium2_mp.jpg?alt=media&token=d5d1a68f-7ee0-4dce-b785-0abb3c9c349c"
         ),
         ReviewInfo(
             idReview = 2,
@@ -38,7 +38,7 @@ object LocalReviewProvider {
             usuarioNombre = "María",
             usuarioEmail = "m@noemail",
             usuarioPassword = "abc",
-            usuarioFotoPerfil = "usuario2.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2Fmico_xbox360.jpg?alt=media&token=5106a7b9-ca34-46be-a5bb-95d1c1410e34",
             partidoNombre = "PSG vs Chelsea",
             partidoCategoria = "Champions",
             partidoVisitante = "PSG",
@@ -46,7 +46,7 @@ object LocalReviewProvider {
             partidoGolesVisitante = 3,
             partidoGolesLocal = 2,
             partidoFecha = "09/08/2025",
-            partidoFotoUrl = ""
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fsoccercity_johanessburgo_mp.jpg?alt=media&token=2e28bc30-3093-4292-ae6a-347656fac9ed"
         ),
         ReviewInfo(
             idReview = 3,
@@ -59,7 +59,7 @@ object LocalReviewProvider {
             usuarioNombre = "Carlos",
             usuarioEmail = "c@noemail",
             usuarioPassword = "456",
-            usuarioFotoPerfil = "usuario3.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2Flia_pp.jpg?alt=media&token=19d837cf-20e5-44c0-9b85-6d84a604bae8",
             partidoNombre = "Liverpool vs Milan",
             partidoCategoria = "Champions",
             partidoVisitante = "Liverpool",
@@ -67,7 +67,7 @@ object LocalReviewProvider {
             partidoGolesVisitante = 4,
             partidoGolesLocal = 3,
             partidoFecha = "10/08/2025",
-            partidoFotoUrl = ""
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Frosebowl_mp.jpg?alt=media&token=0245c367-b0c3-4502-bf17-26c361b6f954"
         ),
         ReviewInfo(
             idReview = 4,
@@ -80,7 +80,7 @@ object LocalReviewProvider {
             usuarioNombre = "Ana",
             usuarioEmail = "a@noemail",
             usuarioPassword = "789",
-            usuarioFotoPerfil = "usuario4.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2FfotoPerfilGafas_pp.jpg?alt=media&token=501ce9c0-2c50-451c-880f-b56e7acb7f44",
             partidoNombre = "Bayern vs Ajax",
             partidoCategoria = "Champions",
             partidoVisitante = "Bayern",
@@ -88,7 +88,7 @@ object LocalReviewProvider {
             partidoGolesVisitante = 1,
             partidoGolesLocal = 1,
             partidoFecha = "11/08/2025",
-            partidoFotoUrl = ""
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fmelbourne_cricket_stadium_mp.jpg?alt=media&token=e065a88f-b734-4e40-bc39-72f368324bd9"
         ),
         ReviewInfo(
             idReview = 5,
@@ -101,7 +101,7 @@ object LocalReviewProvider {
             usuarioNombre = "Pedro",
             usuarioEmail = "p@noemail",
             usuarioPassword = "000",
-            usuarioFotoPerfil = "usuario5.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2Fcejaz_pp.jpg?alt=media&token=480694a5-973b-49f6-9d98-95f227322115",
             partidoNombre = "Inter vs Juventus",
             partidoCategoria = "Serie A",
             partidoVisitante = "Inter",
@@ -109,7 +109,7 @@ object LocalReviewProvider {
             partidoGolesVisitante = 2,
             partidoGolesLocal = 2,
             partidoFecha = "12/08/2025",
-            partidoFotoUrl = ""
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Frosebowl_mp.jpg?alt=media&token=0245c367-b0c3-4502-bf17-26c361b6f954"
         ),
         ReviewInfo(
             idReview = 6,
@@ -122,7 +122,7 @@ object LocalReviewProvider {
             usuarioNombre = "Sofía",
             usuarioEmail = "s@noemail",
             usuarioPassword = "111",
-            usuarioFotoPerfil = "usuario6.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2Fcalavera_xbox360.jpg?alt=media&token=6ac75d1a-08af-435a-9bff-9b596d72d714",
             partidoNombre = "Atlético vs Sevilla",
             partidoCategoria = "LaLiga",
             partidoVisitante = "Atlético",
@@ -130,7 +130,7 @@ object LocalReviewProvider {
             partidoGolesVisitante = 1,
             partidoGolesLocal = 0,
             partidoFecha = "13/08/2025",
-            partidoFotoUrl = ""
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fsoccercity_johanessburgo_mp.jpg?alt=media&token=2e28bc30-3093-4292-ae6a-347656fac9ed"
         ),
         ReviewInfo(
             idReview = 6,
@@ -143,7 +143,7 @@ object LocalReviewProvider {
             usuarioNombre = "Sofía",
             usuarioEmail = "s@noemail",
             usuarioPassword = "111",
-            usuarioFotoPerfil = "usuario6.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2FSin%20t%C3%ADtulo.jpg?alt=media&token=58c8299d-c312-4d6b-98c4-e2927809d519",
             partidoNombre = "Real Madrid vs Sevilla",
             partidoCategoria = "LaLiga",
             partidoVisitante = "Real Madrid",
@@ -151,7 +151,7 @@ object LocalReviewProvider {
             partidoGolesVisitante = 1,
             partidoGolesLocal = 0,
             partidoFecha = "13/08/2025",
-            partidoFotoUrl = ""
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fwebley_stadium2_mp.jpg?alt=media&token=d5d1a68f-7ee0-4dce-b785-0abb3c9c349c"
         )
     )
 }

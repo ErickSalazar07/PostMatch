@@ -17,7 +17,7 @@ object LocalPartidoProvider {
             tirosLocal = 15,
             tirosVisitante = 10,
             fecha = "20/05/2025",
-            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fbujit_jalil_stadium_mp.jpg?alt=media&token=3337b053-4218-4a25-9ec6-0e692d52faef"
         ),
 
         PartidoInfo(
