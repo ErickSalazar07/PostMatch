@@ -259,14 +259,6 @@ fun ReviewCard(
                 .size(80.dp)
                 .clip(RoundedCornerShape(8.dp))
         )
-        Image(
-            painter = painterResource(id = R.drawable.estadio_bernabeu),
-            contentDescription = null,
-            modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
-        )
     }
 }
 
