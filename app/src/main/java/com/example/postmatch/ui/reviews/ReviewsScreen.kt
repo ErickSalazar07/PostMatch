@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -42,6 +43,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalReviewProvider
@@ -171,6 +174,7 @@ fun ReviewCard(
 
             Spacer(modifier = Modifier.width(8.dp))
 
+            /*
             Image(
                 painter = painterResource(id = R.drawable.estadio_bernabeu),
                 contentDescription = null,
@@ -178,6 +182,19 @@ fun ReviewCard(
                     .size(80.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
+            )*/
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(reviewInfo.partidoFotoUrl)
+                    .crossfade(true)
+                    .build(),
+                error = painterResource(R.drawable.estadio_bernabeu),
+                placeholder = painterResource(R.drawable.estadio_bernabeu),
+                contentDescription = stringResource(R.string.foto_de_perfil),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
         }
 }

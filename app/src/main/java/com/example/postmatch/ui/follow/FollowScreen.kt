@@ -133,6 +133,7 @@ fun ItemReseniaFollow(
         verticalAlignment = Alignment.Top
     ) {
         // Foto de perfil
+        /*
         Image(
             painter = painterResource(id = R.drawable.ricardo_icon),
             contentDescription = stringResource(R.string.foto_de_perfil),
@@ -140,6 +141,19 @@ fun ItemReseniaFollow(
                 .size(48.dp)
                 .clip(RoundedCornerShape(8.dp)), // Hacemos la imagen un poco más cuadrada
             contentScale = ContentScale.Crop
+        )*/
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(resenha.usuarioFotoPerfil)
+                .crossfade(true)
+                .build(),
+            error = painterResource(R.drawable.user_icon),
+            placeholder = painterResource(R.drawable.user_icon),
+            contentDescription = stringResource(R.string.foto_de_perfil),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(48.dp)
+                .clip(RoundedCornerShape(8.dp)), // Hacemos la imagen un poco más cuadrada
         )
 
         Spacer(modifier = Modifier.width(8.dp))

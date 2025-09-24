@@ -116,6 +116,8 @@ fun PartidoCard(
                     .data(partido.partidoFotoUrl)
                     .crossfade(true)
                     .build(),
+                error = painterResource(R.drawable.estadio_bernabeu),
+                placeholder = painterResource(R.drawable.estadio_bernabeu),
                 contentDescription = stringResource(R.string.foto_de_perfil),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

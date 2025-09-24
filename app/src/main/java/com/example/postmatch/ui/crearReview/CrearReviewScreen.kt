@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,6 +45,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.PartidoInfo
 
@@ -142,6 +146,7 @@ fun MostrarPartidoCard(
                     )
                 }
             }
+            /*
             Image(
                 painter = painterResource(id = R.drawable.real_madrid_icon),
                 contentDescription = null,
@@ -150,6 +155,20 @@ fun MostrarPartidoCard(
                     .clip(RoundedCornerShape(12.dp))
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentScale = ContentScale.Crop
+            )*/
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(partido.partidoFotoUrl)
+                    .crossfade(true)
+                    .build(),
+                error = painterResource(R.drawable.logo_postmatch_nobackg),
+                placeholder = painterResource(R.drawable.logo_postmatch_nobackg),
+                contentDescription = stringResource(R.string.foto_de_perfil),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
             )
         }
     }
