@@ -5,7 +5,7 @@ import com.example.postmatch.data.PerfilInfo
 
 object LocalPerfilInfoData {
     val perfilInfo = PerfilInfo(
-        foto = R.drawable.ricardo_icon,
+        idFoto = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2Fsurprised_pp.jpg?alt=media&token=ef3ffa1a-a552-4f6a-a151-97a02bbff0ba",
         nombre = "Ricardo",
         arroba = "@Ricardo420",
         oficio = "Fanático madrid",

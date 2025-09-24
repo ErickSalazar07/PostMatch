@@ -48,7 +48,7 @@ object LocalPartidoProvider {
             tirosLocal = 15,
             tirosVisitante = 18,
             fecha = "19/05/2025",
-            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2FReungrado_Primero_de_Mayo_mp.jpg?alt=media&token=285d0073-5759-4265-83f9-1c1f4a685033"
         ),
         PartidoInfo(
             idPartido = 4,
@@ -78,7 +78,7 @@ object LocalPartidoProvider {
             tirosLocal = 11,
             tirosVisitante = 16,
             fecha = "17/05/2025",
-            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fsoccercity_johanessburgo_mp.jpg?alt=media&token=2e28bc30-3093-4292-ae6a-347656fac9ed"
         ),
         PartidoInfo(
             idPartido = 6,
@@ -93,8 +93,7 @@ object LocalPartidoProvider {
             tirosLocal = 13,
             tirosVisitante = 9,
             fecha = "16/05/2025",
-            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
-        ),
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fmichigan_stadium_mp.jpg?alt=media&token=0642a571-1878-4539-8f89-f743cb505eb1"),
         PartidoInfo(
             idPartido = 7,
             nombre = "Atlético de Madrid vs Sevilla",
@@ -108,7 +107,7 @@ object LocalPartidoProvider {
             tirosLocal = 9,
             tirosVisitante = 12,
             fecha = "15/05/2025",
-            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fwebley_stadium2_mp.jpg?alt=media&token=d5d1a68f-7ee0-4dce-b785-0abb3c9c349c"
         ),
         PartidoInfo(
             idPartido = 8,
@@ -123,7 +122,7 @@ object LocalPartidoProvider {
             tirosLocal = 17,
             tirosVisitante = 14,
             fecha = "14/05/2025",
-            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
+            partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Flusail_stadium_mp.webp?alt=media&token=a0825053-4cf7-47f6-bde0-fc296beeab65"
         )
     )
 }

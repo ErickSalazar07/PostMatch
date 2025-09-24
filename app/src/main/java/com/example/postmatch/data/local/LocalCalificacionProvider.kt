@@ -11,7 +11,7 @@ object LocalCalificacionProvider {
             usuarioNombre = "Pedro",
             usuarioEmail = "p@noemail",
             usuarioPassword = "54321",
-            usuarioFotoPerfil = "usuario1.png",
+            usuarioFotoPerfil = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/profileImages%2Fsan_pp.jpg?alt=media&token=ac786d04-b728-4d57-9b99-a975cb4a2ae8",
             reviewTitulo = "Mi opinion sobre FCB vs RM",
             reviewDescripcion = "Partido raro por parte del FCB",
             reviewFecha = "06/08/2025"

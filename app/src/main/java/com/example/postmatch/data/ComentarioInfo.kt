@@ -9,7 +9,7 @@ data class ComentarioInfo(
     var usuarioEmail: String,
     var usuarioPassword: String,
     var usuarioFotoPerfil: String,
-    var idUsuarioFotoPerfil: Int,
+    var idUsuarioFotoPerfil: String,
 // datos review
     var reviewTitulo: String,
     var reviewDescripcion: String,
