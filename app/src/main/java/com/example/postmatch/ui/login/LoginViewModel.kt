@@ -48,8 +48,9 @@ class LoginViewModel @Inject constructor (
                 loginButtonClick?.invoke() // navega si login fue OK
                 _uiState.update { it.copy(errorMessage = null) }
             } else {
+                val errorMsg = result.exceptionOrNull()?.message ?: "Error desconocido"
                 Log.e("LoginViewModel", "Login error")
-                _uiState.update { it.copy(errorMessage = "Correo o contraseña incorrectos") }
+                _uiState.update { it.copy(errorMessage = errorMsg) }
             }
         }
     }
