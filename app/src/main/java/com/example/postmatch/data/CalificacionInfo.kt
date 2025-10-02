@@ -1,7 +1,7 @@
 package com.example.postmatch.data
 
 data class CalificacionInfo(
-    var idCalificacion:Int,
+    var idCalificacion: String,
     var calificacion: Int,
     var fecha: String,
 // datos usuario

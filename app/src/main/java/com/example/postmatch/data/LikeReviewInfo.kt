@@ -1,7 +1,7 @@
 package com.example.postmatch.data
 
 data class LikeReviewInfo(
-    var idLikeReview: Int,
+    var idLikeReview: String,
     var fecha: String,
 // datos review
     var reviewTitulo: String,

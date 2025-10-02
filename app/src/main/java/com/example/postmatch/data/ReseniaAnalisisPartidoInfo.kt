@@ -2,7 +2,7 @@ package com.example.postmatch.data
 
 data class ReseniaAnalisisPartidoInfo (
     //Identificacion
-    var idResenia: Int,
+    var idResenia: String,
 
     //Datos del post
     var fotoPerfil:String,

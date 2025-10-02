@@ -1,7 +1,7 @@
 package com.example.postmatch.data
 
 data class ComentarioInfo(
-    var idComentario: Int,
+    var idComentario: String,
     var descripcion: String,
     var fecha: String,
 // datos usuario

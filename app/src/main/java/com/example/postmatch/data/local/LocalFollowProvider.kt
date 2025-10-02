@@ -5,7 +5,7 @@ import com.example.postmatch.data.FollowInfo
 object LocalFollowProvider {
     var follows = listOf(
         FollowInfo(
-            idFollow = 1,
+            idFollow = "1",
             fecha = "10/08/2025",
             usuarioFollowerNombre = "Pedro",
             usuarioFollowerEmail = "p@noemail",

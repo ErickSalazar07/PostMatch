@@ -25,7 +25,7 @@ class PartidoDetailViewModel @Inject constructor(): ViewModel()  {
     }
 
     fun setPartidoInfo(idPartido: Int) {
-        val partido = LocalPartidoProvider.partidos.find { it.idPartido == idPartido }
+        val partido = LocalPartidoProvider.partidos.find { it.idPartido == idPartido.toString() }
         if (partido != null) {
             _uiState.update { it.copy(partido = partido) }
         }

@@ -1,7 +1,7 @@
 package com.example.postmatch.data
 
 data class NotificacionInfo(
-    var idNotificacion: Int,
+    var idNotificacion: String,
     var nombreUsuario: String,
     var descripcion: String,
     var nSemanas: Int,

@@ -1,7 +1,7 @@
 package com.example.postmatch.data
 
 data class PartidoInfo(
-    var idPartido: Int = 0,
+    var idPartido: String = "",
     var nombre: String = "",
     var categoria: String = "",
     var visitante: String = "",

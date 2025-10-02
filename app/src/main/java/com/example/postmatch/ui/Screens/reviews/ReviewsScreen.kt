@@ -125,7 +125,7 @@ fun ReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable { onReviewClick(reviewInfo.idReview) }
+            .clickable { onReviewClick(reviewInfo.idReview.toInt()) }
             .padding(12.dp)
     ) {
             Column(
