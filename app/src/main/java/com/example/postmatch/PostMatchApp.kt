@@ -5,10 +5,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.postmatch.navigation.AppNavigation
+import com.example.postmatch.ui.navigation.AppNavigation
 import androidx.compose.runtime.*
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.postmatch.navigation.BottomNavBar
+import com.example.postmatch.ui.navigation.BottomNavBar
 
 
 @Composable

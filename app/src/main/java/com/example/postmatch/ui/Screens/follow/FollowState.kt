@@ -1,0 +1,11 @@
+package com.example.postmatch.ui.Screens.follow
+
+import com.example.postmatch.data.ReviewInfo
+import com.example.postmatch.data.UsuarioInfo
+import com.example.postmatch.data.local.LocalReviewProvider
+import com.example.postmatch.data.local.LocalUsuarioProvider
+
+data class FollowState(
+    val usuario: UsuarioInfo = UsuarioInfo(),
+    val resenhas: List<ReviewInfo> = emptyList()
+)
