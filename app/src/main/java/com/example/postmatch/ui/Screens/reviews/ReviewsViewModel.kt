@@ -25,7 +25,7 @@ class ReviewsViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             val result = reviewRepository.getReviews()
             if (result.isSuccess) {
-                _uiState.update { it.copy(reviews = result.getOrNull() ?: emptyList(), isLoading = true, errorMessage = null) }
+                _uiState.update { it.copy(reviews = result.getOrNull() ?: emptyList(), isLoading = false, errorMessage = null) }
             }else{
                 _uiState.update { it.copy(errorMessage = result.exceptionOrNull()?.message, isLoading = false)}
             }
