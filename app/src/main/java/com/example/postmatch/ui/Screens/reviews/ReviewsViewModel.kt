@@ -22,11 +22,12 @@ class ReviewsViewModel @Inject constructor(
 
     fun getAllReviews(){
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             val result = reviewRepository.getReviews()
             if (result.isSuccess) {
-                _uiState.update { it.copy(reviews = result.getOrNull() ?: emptyList()) }
+                _uiState.update { it.copy(reviews = result.getOrNull() ?: emptyList(), isLoading = true, errorMessage = null) }
             }else{
-                //_uiState.update { it.copy(errorMessage = "Error obteniedno reviews")}
+                _uiState.update { it.copy(errorMessage = result.exceptionOrNull()?.message, isLoading = false)}
             }
         }
     }

@@ -5,4 +5,6 @@ import com.example.postmatch.data.local.LocalReviewProvider
 
 data class ReviewsState(
     val reviews: List<ReviewInfo> = emptyList(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
 )

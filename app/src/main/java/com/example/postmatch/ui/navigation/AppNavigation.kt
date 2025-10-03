@@ -327,7 +327,7 @@ fun AppNavigation(
 
             // Manejo del botón atrás
             BackHandler {
-                activity?.finish()  // 🔹 Cierra la Activity → termina la app
+                activity?.finish()
             }
 
             CrearReviewScreen(
