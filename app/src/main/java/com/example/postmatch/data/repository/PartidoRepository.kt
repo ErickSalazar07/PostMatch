@@ -2,8 +2,10 @@ package com.example.postmatch.data.repository
 
 import coil.network.HttpException
 import com.example.postmatch.data.PartidoInfo
+import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.datasource.impl.PartidoRetrofitDataSourceImpl
 import com.example.postmatch.data.dtos.toPartidoInfo
+import com.example.postmatch.data.dtos.toReviewInfo
 import javax.inject.Inject
 
 class PartidoRepository @Inject constructor(
@@ -34,6 +36,19 @@ class PartidoRepository @Inject constructor(
             Result.failure(e)
         }
         catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getReviewsByPartidoId(idPartido: Int): Result<List<ReviewInfo>> {
+        return try {
+            val reviews = partidoRemoteDataSource.getReviewsByPartidoId(idPartido.toString())
+            val reviewsInfo = reviews.map { it.toReviewInfo() }
+            Result.success(reviewsInfo)
+        } catch (e: HttpException){
+            e.response.code
+            Result.failure(e)
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }

@@ -16,6 +16,7 @@ data class PartidoDto(
     val tirosLocal: Int,
     val tirosVisitante: Int,
     val fecha: String,
+    val partidoFotoUrl: String,
     val createdAt: String,
     val updatedAt: String
 )
@@ -33,6 +34,7 @@ fun PartidoDto.toPartidoInfo(): PartidoInfo {
         posesionVisitante = posesionVisitante,
         tirosLocal = tirosLocal,
         tirosVisitante = tirosVisitante,
-        fecha = fecha
+        fecha = fecha,
+        partidoFotoUrl = partidoFotoUrl
     )
 }
