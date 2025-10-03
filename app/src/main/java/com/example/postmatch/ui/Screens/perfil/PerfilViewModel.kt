@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.R
+import com.example.postmatch.data.datasource.services.ReviewRetrofitService
 import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.StorageRepository
@@ -19,7 +20,9 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class PerfilViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val storageRepository: StorageRepository
+    private val storageRepository: StorageRepository,
+    private val reviewRetrofitService: ReviewRetrofitService
+
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PerfilState(
@@ -39,6 +42,18 @@ class PerfilViewModel @Inject constructor(
             }
         }
     }
+
+    fun loadUserProfile(userId: Int) {
+        viewModelScope.launch {
+            val reviews = reviewRetrofitService.getReviewsByUser(userId)
+            _uiState.update {
+                it.copy(
+                    resenhiass = reviews
+                )
+            }
+        }
+    }
+
 
     init {
         _uiState.update {

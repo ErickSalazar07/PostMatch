@@ -15,6 +15,19 @@ data class ReviewDTO(
     val createdAt: String,
     val updatedAt: String
 )
+/*
+fun ReviewDTO.toReviewInfo(): ReviewInfo {
+    return ReviewInfo(
+        idReview = id.toString(),
+        titulo = titulo,
+        descripcion = descripcion,
+        fecha = fecha,
+        calificacion = calificacion,
+        numLikes = numLikes,
+        numComentarios = numComentarios
+    )
+    */
+
 
 fun ReviewDTO.toReviewInfo(): ReviewInfo {
     return ReviewInfo(
@@ -27,3 +40,4 @@ fun ReviewDTO.toReviewInfo(): ReviewInfo {
         numComentarios = numComentarios
     )
 }
+

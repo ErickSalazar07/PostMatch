@@ -17,6 +17,13 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
         return service.getReviewById(id.toInt())
     }
 
+    override suspend fun getReviewsByUser(userId: Int): List<ReviewDto> {
+
+        return service.getAllReviews().filter { it.idUsuario == userId }
+    }
+
+
+
     override suspend fun createReview(review: CreateReviewDto) {
         service.createReview(review)
     }

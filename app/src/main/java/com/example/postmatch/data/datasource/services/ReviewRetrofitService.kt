@@ -17,6 +17,9 @@ interface ReviewRetrofitService {
     @GET("/Reviews{id}")
     suspend fun getReviewById(@Path("id") id: Int): ReviewDto
 
+    @GET("/Reviews/User/{idUsuario}")
+    suspend fun getReviewsByUser(@Path("idUsuario") idUsuario: Int): List<ReviewDto>
+
     @POST("/Reviews")
     suspend fun createReview(@Body review: CreateReviewDto): Unit
 
