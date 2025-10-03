@@ -1,18 +1,23 @@
 package com.example.postmatch.ui.Screens.partidoDetail
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.data.local.LocalReviewProvider
+import com.example.postmatch.data.repository.PartidoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class PartidoDetailViewModel @Inject constructor(): ViewModel()  {
+class PartidoDetailViewModel @Inject constructor(
+    private val partidoRepository: PartidoRepository
+): ViewModel()  {
     private val _uiState = MutableStateFlow(PartidoDetailState())
     val uiState: StateFlow<PartidoDetailState> = _uiState
 
@@ -25,9 +30,13 @@ class PartidoDetailViewModel @Inject constructor(): ViewModel()  {
     }
 
     fun setPartidoInfo(idPartido: Int) {
-        val partido = LocalPartidoProvider.partidos.find { it.idPartido == idPartido.toString() }
-        if (partido != null) {
-            _uiState.update { it.copy(partido = partido) }
+        viewModelScope.launch {
+            val result = partidoRepository.getPartidoById(idPartido)
+            if (result.isSuccess) {
+                _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
+            } else {
+                _uiState.update { it.copy(partido = PartidoInfo()) }
+            }
         }
     }
 
@@ -38,6 +47,5 @@ class PartidoDetailViewModel @Inject constructor(): ViewModel()  {
                 resenias = LocalReviewProvider.reviews
             )
         }
-
     }
 }
