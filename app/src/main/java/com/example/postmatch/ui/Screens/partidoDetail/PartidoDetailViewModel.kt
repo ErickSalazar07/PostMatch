@@ -7,6 +7,7 @@ import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.repository.PartidoRepository
+import com.example.postmatch.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +35,12 @@ class PartidoDetailViewModel @Inject constructor(
             val result = partidoRepository.getPartidoById(idPartido)
             if (result.isSuccess) {
                 _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
+                val reseniasResult = partidoRepository.getReviewsByPartidoId(idPartido)
+                if (reseniasResult.isSuccess) {
+                    _uiState.update { it.copy(resenias = reseniasResult.getOrNull() ?: emptyList()) }
+                } else {
+                    _uiState.update { it.copy(resenias = emptyList()) }
+                }
             } else {
                 _uiState.update { it.copy(partido = PartidoInfo()) }
             }
