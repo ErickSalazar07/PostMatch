@@ -43,7 +43,7 @@ import com.example.postmatch.data.PartidoInfo
 @Composable
 fun PartidoScreen(
     partidoViewModel: PartidosViewModel,
-    onPartidoClick: (Int) -> Unit,
+    onPartidoClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -71,7 +71,7 @@ fun PartidoScreen(
 @Composable
 fun SectionPartidos(
    partidos: List<PartidoInfo>,
-   onPartidoClick: (Int) -> Unit,
+   onPartidoClick: (String) -> Unit,
    modifier: Modifier = Modifier
 ) {
 
@@ -94,7 +94,7 @@ fun SectionPartidos(
 @Composable
 fun PartidoCard(
     partido: PartidoInfo,
-    onPartidoClick: (Int) -> Unit,
+    onPartidoClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(

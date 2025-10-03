@@ -7,7 +7,7 @@ import kotlin.String
 object LocalReviewProvider {
     var reviews = listOf(
         ReviewInfo(
-            idReview = 1,
+            idReview = "1",
             titulo = "Increible partido FCB vs RM",
             descripcion = "Increible partido muy bueno para ser verdad. Espero siga ganando el FCB, me gusta mucho ese club. 🎉",
             fecha = "07/08/2025",
@@ -28,7 +28,7 @@ object LocalReviewProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fwebley_stadium2_mp.jpg?alt=media&token=d5d1a68f-7ee0-4dce-b785-0abb3c9c349c"
         ),
         ReviewInfo(
-            idReview = 2,
+            idReview = "2",
             titulo = "Victoria sufrida del PSG",
             descripcion = "El PSG ganó en el último minuto, Mbappé impresionante. Espero siga ganando el PSG, me gusta mucho ese club. ⚽🔥",
             fecha = "10/08/2025",
@@ -49,7 +49,7 @@ object LocalReviewProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fsoccercity_johanessburgo_mp.jpg?alt=media&token=2e28bc30-3093-4292-ae6a-347656fac9ed"
         ),
         ReviewInfo(
-            idReview = 3,
+            idReview = "3",
             titulo = "Remontada épica del Liverpool",
             descripcion = "Nadie lo esperaba, pero remontaron con dos goles en los últimos 5 minutos. Espero siga ganando el Liverpool, me gusta mucho ese club. 🔴",
             fecha = "11/08/2025",
@@ -70,7 +70,7 @@ object LocalReviewProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Frosebowl_mp.jpg?alt=media&token=0245c367-b0c3-4502-bf17-26c361b6f954"
         ),
         ReviewInfo(
-            idReview = 4,
+            idReview = "4",
             titulo = "Derrota inesperada del Bayern",
             descripcion = "El Bayern dominó, pero perdió en penales. Espero siga ganando el Ajax, me gusta mucho ese club. 😱",
             fecha = "12/08/2025",
@@ -91,7 +91,7 @@ object LocalReviewProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fmelbourne_cricket_stadium_mp.jpg?alt=media&token=e065a88f-b734-4e40-bc39-72f368324bd9"
         ),
         ReviewInfo(
-            idReview = 5,
+            idReview = "5",
             titulo = "Empate intenso entre Inter y Juve",
             descripcion = "Partido muy parejo, ambos equipos lo dieron todo. Espero si jugando asi la Juve, me gusta mucho ese club.👏",
             fecha = "13/08/2025",
@@ -112,7 +112,7 @@ object LocalReviewProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Frosebowl_mp.jpg?alt=media&token=0245c367-b0c3-4502-bf17-26c361b6f954"
         ),
         ReviewInfo(
-            idReview = 6,
+            idReview = "6",
             titulo = "Atlético sólido en defensa",
             descripcion = "Partido cerrado, pero Atlético supo aguantar y ganar con un golazo. Me alegro que gano el Atlético. Viva España. 🛡️",
             fecha = "14/08/2025",
@@ -133,7 +133,7 @@ object LocalReviewProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fsoccercity_johanessburgo_mp.jpg?alt=media&token=2e28bc30-3093-4292-ae6a-347656fac9ed"
         ),
         ReviewInfo(
-            idReview = 6,
+            idReview = "6",
             titulo = "Real Madrid sólido en defensa",
             descripcion = "Partido cerrado, pero Real Madrid supo aguantar y ganar con un golazo. Me alegro que gano el RM. Viva España. 🛡️",
             fecha = "14/08/2025",

@@ -1,5 +1,12 @@
 package com.example.postmatch.data.injection
 
+import androidx.compose.ui.layout.ScaleFactor
+import com.example.postmatch.data.datasource.services.ReviewRetrofitService
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,11 +22,17 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesRetrofit(): Retrofit {
+    fun providesRetroFit():Retrofit{
         return Retrofit.Builder()
             .baseUrl("http://10.0.2.2:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
-            .build();
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesReviewRetrofitService(retrofit: Retrofit): ReviewRetrofitService {
+        return retrofit.create(ReviewRetrofitService::class.java)
     }
 }

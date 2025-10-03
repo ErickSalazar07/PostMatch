@@ -5,7 +5,7 @@ import com.example.postmatch.data.CalificacionInfo
 object LocalCalificacionProvider {
     var calificaciones = listOf(
         CalificacionInfo(
-            idCalificacion = 1,
+            idCalificacion = "1",
             calificacion = 4,
             fecha = "07/08/2025",
             usuarioNombre = "Pedro",

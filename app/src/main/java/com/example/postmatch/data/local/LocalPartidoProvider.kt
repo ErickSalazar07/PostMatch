@@ -5,7 +5,7 @@ import com.example.postmatch.data.PartidoInfo
 object LocalPartidoProvider {
     val partidos = listOf(
         PartidoInfo(
-            idPartido = 1,
+            idPartido = "1",
             nombre = "Real Madrid vs FC Barcelona",
             categoria = "LaLiga",
             visitante = "Real Madrid",
@@ -21,7 +21,7 @@ object LocalPartidoProvider {
         ),
 
         PartidoInfo(
-            idPartido = 2,
+            idPartido = "2",
             nombre = "PSG vs Bayern Munich",
             categoria = "Champions League",
             visitante = "Bayern Munich",
@@ -36,7 +36,7 @@ object LocalPartidoProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
-            idPartido = 3,
+            idPartido = "3",
             nombre = "Liverpool vs Manchester City",
             categoria = "Premier League",
             visitante = "Manchester City",
@@ -51,7 +51,7 @@ object LocalPartidoProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2FReungrado_Primero_de_Mayo_mp.jpg?alt=media&token=285d0073-5759-4265-83f9-1c1f4a685033"
         ),
         PartidoInfo(
-            idPartido = 4,
+            idPartido = "4",
             nombre = "Juventus vs Inter de Milán",
             categoria = "Serie A",
             visitante = "Inter de Milán",
@@ -66,7 +66,7 @@ object LocalPartidoProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/imageUtils%2Festadio_bernabeu.jpg?alt=media&token=426e4fc1-d913-4e53-8e2e-f771c7b8d030"
         ),
         PartidoInfo(
-            idPartido = 5,
+            idPartido = "5",
             nombre = "Chelsea vs Arsenal",
             categoria = "Premier League",
             visitante = "Arsenal",
@@ -81,7 +81,7 @@ object LocalPartidoProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fsoccercity_johanessburgo_mp.jpg?alt=media&token=2e28bc30-3093-4292-ae6a-347656fac9ed"
         ),
         PartidoInfo(
-            idPartido = 6,
+            idPartido = "6",
             nombre = "Milan vs Napoli",
             categoria = "Serie A",
             visitante = "Napoli",
@@ -95,7 +95,7 @@ object LocalPartidoProvider {
             fecha = "16/05/2025",
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fmichigan_stadium_mp.jpg?alt=media&token=0642a571-1878-4539-8f89-f743cb505eb1"),
         PartidoInfo(
-            idPartido = 7,
+            idPartido = "7",
             nombre = "Atlético de Madrid vs Sevilla",
             categoria = "LaLiga",
             visitante = "Sevilla",
@@ -110,7 +110,7 @@ object LocalPartidoProvider {
             partidoFotoUrl = "https://firebasestorage.googleapis.com/v0/b/postmatch-c2ddd.firebasestorage.app/o/matchImages%2Fwebley_stadium2_mp.jpg?alt=media&token=d5d1a68f-7ee0-4dce-b785-0abb3c9c349c"
         ),
         PartidoInfo(
-            idPartido = 8,
+            idPartido = "8",
             nombre = "Borussia Dortmund vs RB Leipzig",
             categoria = "Bundesliga",
             visitante = "RB Leipzig",
