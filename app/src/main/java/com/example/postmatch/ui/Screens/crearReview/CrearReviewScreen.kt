@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -54,6 +55,15 @@ fun CrearReviewScreen(
     modifier: Modifier = Modifier
 ) {
     val state by crearReviewViewModel.uiState.collectAsState()
+
+
+    LaunchedEffect(state.navigateBack) {
+        if (state.navigateBack) {
+            onReviewCreated()
+            crearReviewViewModel.resetNavigation()
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -80,6 +90,15 @@ fun CrearReviewScreen(
             onResenhaChange = crearReviewViewModel::updateResenha
         )
         Spacer(modifier = Modifier.weight(2f))
+
+        if (state.errorMessage != null) { Text(
+                text = state.errorMessage!!,
+                color = Color.Red,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
         BotonPublicar(
             onChange = {
                 crearReviewViewModel.publicarButtonClick(

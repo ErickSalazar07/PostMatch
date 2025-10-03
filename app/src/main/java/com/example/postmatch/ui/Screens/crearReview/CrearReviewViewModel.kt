@@ -32,9 +32,9 @@ class CrearReviewViewModel @Inject constructor(
         _uiState.update { it.copy(calificacion = input) }
     }
 
-    fun setPublicarButtonClick(action: () -> Unit) {
+    /*fun setPublicarButtonClick(action: () -> Unit) {
         _uiState.update { it.copy(publicarButtonClick = action) }
-    }
+    }*/
 
     fun updateTitulo(input: String) {
         _uiState.update { it.copy(titulo = input) }
@@ -63,15 +63,18 @@ class CrearReviewViewModel @Inject constructor(
                 )
 
                 if (result.isSuccess) {
-                    Log.d("CrearReviewViewModel", "Review creada con éxito")
-                    onSuccess()
+                    _uiState.update { it.copy(navigateBack = true, errorMessage = null) }
                 } else {
-                    Log.e("CrearReviewViewModel", "Error al crear review", result.exceptionOrNull())
+                    _uiState.update { it.copy(errorMessage = "No se pudo publicar. Verifica tu conexión.") }
                 }
             } catch (e: Exception) {
-                Log.e("CrearReviewViewModel", "Excepción al crear review", e)
+                _uiState.update { it.copy(errorMessage = "Error de conexión con la base de datos.") }
             }
         }
+    }
+
+    fun resetNavigation() {
+        _uiState.update { it.copy(navigateBack = false) }
     }
 
     init {

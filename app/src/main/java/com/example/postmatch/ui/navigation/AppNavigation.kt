@@ -332,7 +332,6 @@ fun AppNavigation(
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel,
                 onReviewCreated = {
-
                     navController.navigate(Screen.Reviews.route) {
                         popUpTo(Screen.CrearReview.route) { inclusive = true }
                     }
