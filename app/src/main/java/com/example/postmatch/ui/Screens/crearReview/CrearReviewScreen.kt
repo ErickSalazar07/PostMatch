@@ -1,7 +1,6 @@
 package com.example.postmatch.ui.Screens.crearReview
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -37,7 +35,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,10 +47,10 @@ import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.PartidoInfo
 
-
 @Composable
 fun CrearReviewScreen(
     crearReviewViewModel: CrearReviewViewModel,
+    onReviewCreated: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by crearReviewViewModel.uiState.collectAsState()
@@ -67,11 +64,29 @@ fun CrearReviewScreen(
         Spacer(modifier = Modifier.height(20.dp))
         MostrarPartidoCard(partido = state.partido)
         Spacer(modifier = Modifier.height(30.dp))
-        CalificacionInput(calificacion = state.calificacion,onCalificacionChange = crearReviewViewModel::updateCalificacion)
+        CalificacionInput(
+            calificacion = state.calificacion,
+            onCalificacionChange = crearReviewViewModel::updateCalificacion
+        )
         Spacer(modifier = Modifier.height(35.dp))
-        ResenhaInput(resenha = state.resenha,onResenhaChange = crearReviewViewModel::updateResenha)
+        // 🔹 Campo de título
+        TituloInput(
+            titulo = state.titulo,
+            onTituloChange = crearReviewViewModel::updateTitulo
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        ResenhaInput(
+            resenha = state.resenha,
+            onResenhaChange = crearReviewViewModel::updateResenha
+        )
         Spacer(modifier = Modifier.weight(2f))
-        BotonPublicar(onChange =  crearReviewViewModel::publicarButtonClick)
+        BotonPublicar(
+            onChange = {
+                crearReviewViewModel.publicarButtonClick(
+                    onSuccess = onReviewCreated
+                )
+            }
+        )
     }
 }
 
@@ -146,16 +161,6 @@ fun MostrarPartidoCard(
                     )
                 }
             }
-            /*
-            Image(
-                painter = painterResource(id = R.drawable.real_madrid_icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                contentScale = ContentScale.Crop
-            )*/
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(partido.partidoFotoUrl)
@@ -181,7 +186,7 @@ fun CalificacionInput(
     modifier: Modifier = Modifier
 ) {
     val MAX_CALIFICACION: Int = 5
-    var i:Int = 1
+    var i: Int = 1
 
     Column(
         modifier = modifier
@@ -196,13 +201,13 @@ fun CalificacionInput(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            while(i <= MAX_CALIFICACION) {
+            while (i <= MAX_CALIFICACION) {
                 ReviewCalificacionButton(
                     calificacion = calificacion,
                     valorCalificacion = i,
                     onCalificacionChange = onCalificacionChange
                 )
-                if(0 < i && i < MAX_CALIFICACION)
+                if (0 < i && i < MAX_CALIFICACION)
                     Spacer(Modifier.width(5.dp))
                 i++
             }
@@ -217,16 +222,52 @@ fun ReviewCalificacionButton(
     onCalificacionChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     IconButton(
-        onClick = { onCalificacionChange(valorCalificacion)},
+        onClick = { onCalificacionChange(valorCalificacion) },
         modifier = modifier
     ) {
         Icon(
             imageVector = Icons.Filled.Star,
             contentDescription = stringResource(R.string.calificaci_n),
-            tint = if (calificacion >= valorCalificacion) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onSurface,
+            tint = if (calificacion >= valorCalificacion)
+                MaterialTheme.colorScheme.onError
+            else
+                MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.size(32.dp)
+        )
+    }
+}
+
+@Composable
+fun TituloInput(
+    titulo: String,
+    onTituloChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.titulo),
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = titulo,
+            onValueChange = onTituloChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.surfaceVariant),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                cursorColor = MaterialTheme.colorScheme.onBackground,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
         )
     }
 }
@@ -299,6 +340,7 @@ fun BotonPublicar(
 @Preview(showBackground = true)
 fun CrearReviewScreenPreview() {
     CrearReviewScreen(
-        crearReviewViewModel = viewModel()
+        crearReviewViewModel = viewModel(),
+        onReviewCreated = {}
     )
 }

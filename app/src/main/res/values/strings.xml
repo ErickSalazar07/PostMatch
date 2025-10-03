@@ -47,4 +47,5 @@
     <string name="visitante">visitante</string>
     <string name="local">local</string>
     <string name="datos_del_partido">Datos del Partido</string>
+    <string name="titulo">Título</string>
 </resources>
