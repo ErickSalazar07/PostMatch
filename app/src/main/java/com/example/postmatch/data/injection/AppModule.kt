@@ -1,6 +1,8 @@
 package com.example.postmatch.data.injection
 
 import androidx.compose.ui.layout.ScaleFactor
+import com.example.postmatch.data.datasource.PartidoRemoteDataSource
+import com.example.postmatch.data.datasource.services.PartidoRetrofitService
 import com.example.postmatch.data.datasource.services.ReviewRetrofitService
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -34,5 +36,11 @@ object AppModule {
     @Provides
     fun providesReviewRetrofitService(retrofit: Retrofit): ReviewRetrofitService {
         return retrofit.create(ReviewRetrofitService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesPartidoRetrofitService(retrofit: Retrofit): PartidoRetrofitService {
+        return retrofit.create(PartidoRetrofitService::class.java)
     }
 }

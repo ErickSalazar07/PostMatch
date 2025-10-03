@@ -157,7 +157,7 @@ fun AppNavigation(
             val partidoDetailViewModel: PartidoDetailViewModel = hiltViewModel()
             PartidoDetailScreen(
                 partidoDetailViewModel = partidoDetailViewModel,
-                idPartido = it.arguments?.getInt("idPartido") ?: 0
+                idPartido = it.arguments?.getInt("idPartido") ?: 1
             )
         }
 

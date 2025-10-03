@@ -2,12 +2,12 @@ package com.example.postmatch.data.repository
 
 import coil.network.HttpException
 import com.example.postmatch.data.PartidoInfo
-import com.example.postmatch.data.datasource.PartidoRemoteDataSource
+import com.example.postmatch.data.datasource.impl.PartidoRetrofitDataSourceImpl
 import com.example.postmatch.data.dtos.toPartidoInfo
 import javax.inject.Inject
 
 class PartidoRepository @Inject constructor(
-    private val partidoRemoteDataSource: PartidoRemoteDataSource
+    private val partidoRemoteDataSource: PartidoRetrofitDataSourceImpl
 ) {
     suspend fun getPartidos(): Result<List<PartidoInfo>> {
         return try {
