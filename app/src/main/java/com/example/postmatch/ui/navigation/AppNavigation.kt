@@ -33,9 +33,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.activity
 import com.example.postmatch.data.local.LocalPartidoProvider
-import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailViewModel
 import com.example.postmatch.ui.Screens.Buscador.BuscadorScreenContent
@@ -325,15 +325,20 @@ fun AppNavigation(
             val context = LocalContext.current
             val activity = context as? ComponentActivity
 
-            // Manejo del botón atrás
             BackHandler {
                 activity?.finish()
             }
 
             CrearReviewScreen(
-                crearReviewViewModel = crearReviewViewModel
+                crearReviewViewModel = crearReviewViewModel,
+                onReviewCreated = {
+                    navController.navigate(Screen.Reviews.route) {
+                        popUpTo(Screen.CrearReview.route) { inclusive = true }
+                    }
+                }
             )
         }
+
     }
 }
 
