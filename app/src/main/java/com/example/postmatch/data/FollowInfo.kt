@@ -1,7 +1,7 @@
 package com.example.postmatch.data
 
 data class FollowInfo(
-    var idFollow: Int,
+    var idFollow: String,
     var fecha: String,
 // datos usuario FOLLOWER
     var usuarioFollowerNombre: String,

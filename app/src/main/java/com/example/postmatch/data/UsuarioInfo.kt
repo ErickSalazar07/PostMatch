@@ -1,7 +1,7 @@
 package com.example.postmatch.data
 
 data class UsuarioInfo(
-   var idUsuario: Int = 0,
+   var idUsuario: String = "",
    var nombre: String = "",
    var email: String = "",
    var password: String = "",

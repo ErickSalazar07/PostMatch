@@ -2,7 +2,7 @@ package com.example.postmatch.ui.Screens.Buscador
 
 data class Reseña(
 
-    val id: Int,
+    val id: String,
     val titulo: String,
     val autor: String,
     val fecha: String,

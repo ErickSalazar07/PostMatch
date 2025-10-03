@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,21 +60,39 @@ fun ReviewsScreen(
 ) {
     val state by reviewsViewModel.uiState.collectAsState()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-    ) {
-        // Encabezado
-        ReviewHeader()
-        Spacer(modifier = Modifier.height(16.dp))
-        // Lista de tarjetas
-        SectionReviews(
-            reviews = state.reviews,
-            onReviewClick =  onReviewClick
-        )
+    when{
+        state.isLoading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+
+        state.errorMessage != null -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                Text(text = state.errorMessage ?: "Error desconocido")
+            }
+        }
+
+        else -> {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(16.dp)
+            ) {
+                // Encabezado
+                ReviewHeader()
+                Spacer(modifier = Modifier.height(16.dp))
+                // Lista de tarjetas
+                SectionReviews(
+                    reviews = state.reviews,
+                    onReviewClick =  onReviewClick
+                )
+            }
+        }
     }
+
+
 }
 
 @Composable
@@ -125,7 +145,7 @@ fun ReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable { onReviewClick(reviewInfo.idReview) }
+            .clickable { onReviewClick(reviewInfo.idReview.toInt()) }
             .padding(12.dp)
     ) {
             Column(

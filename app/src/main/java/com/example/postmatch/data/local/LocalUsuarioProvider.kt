@@ -5,7 +5,7 @@ import com.example.postmatch.data.UsuarioInfo
 object LocalUsuarioProvider {
     var usuarios = listOf(
         UsuarioInfo(
-            idUsuario = 1,
+            idUsuario = "1",
             nombre = "Pedro",
             email = "p@noemail",
             password = "54321",
@@ -14,7 +14,7 @@ object LocalUsuarioProvider {
             numFollowers = 5
         ),
         UsuarioInfo(
-            idUsuario = 2,
+            idUsuario = "2",
             nombre = "Juan",
             email = "j@noemail",
             password = "12345",
@@ -23,7 +23,7 @@ object LocalUsuarioProvider {
             numFollowers = 15
         ),
         UsuarioInfo(
-            idUsuario = 3,
+            idUsuario = "3",
             nombre = "Ana",
             email = "a@noemail",
             password = "password123",
@@ -32,7 +32,7 @@ object LocalUsuarioProvider {
             numFollowers = 25
         ),
         UsuarioInfo(
-            idUsuario = 4,
+            idUsuario = "4",
             nombre = "Maria",
             email = "m@noemail",
             password = "securepassword",
