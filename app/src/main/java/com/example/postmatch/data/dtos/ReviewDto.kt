@@ -8,6 +8,9 @@ data class ReviewDto(
     val titulo: String,
     val descripcion: String,
     val fecha: Date,
+    val calificacion: Int,
+    val numLikes: Int,
+    val numComentarios: Int,
     val idUsuario: Int,
     val idPartido: Int,
 )
@@ -18,6 +21,9 @@ fun ReviewDto.toReviewInfo(): ReviewInfo {
         titulo = titulo,
         descripcion = descripcion,
         fecha = fecha.toString(),
+        calificacion = calificacion,
+        numLikes = numLikes,
+        numComentarios = numComentarios
     )
 }
 
