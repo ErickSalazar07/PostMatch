@@ -23,6 +23,7 @@ class PartidosViewModel @Inject constructor(
         _uiState.update { it.copy(partidos = partidos)  }
     }
 
+
     init {
         viewModelScope.launch {
             val result = partidoRepository.getPartidos()

@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +44,7 @@ import com.example.postmatch.data.PartidoInfo
 @Composable
 fun PartidoScreen(
     partidoViewModel: PartidosViewModel,
+    onReviewPartidoClick: (String) -> Unit,
     onPartidoClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -63,7 +65,8 @@ fun PartidoScreen(
         )
         SectionPartidos(
             partidos = state.partidos,
-            onPartidoClick = onPartidoClick
+            onPartidoClick = onPartidoClick,
+            onReviewPartidoClick = onReviewPartidoClick
         )
     }
 }
@@ -72,6 +75,7 @@ fun PartidoScreen(
 fun SectionPartidos(
    partidos: List<PartidoInfo>,
    onPartidoClick: (String) -> Unit,
+   onReviewPartidoClick: (String) -> Unit,
    modifier: Modifier = Modifier
 ) {
 
@@ -84,7 +88,8 @@ fun SectionPartidos(
         items(count = partidos.size) { index -> // Lista de partidos usando datos del provider
             PartidoCard(
                 partido = partidos[index],
-                onPartidoClick = onPartidoClick
+                onPartidoClick = onPartidoClick,
+                onPartidoReviewClick = onReviewPartidoClick
             )
         }
     }
@@ -95,6 +100,7 @@ fun SectionPartidos(
 fun PartidoCard(
     partido: PartidoInfo,
     onPartidoClick: (String) -> Unit,
+    onPartidoReviewClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -132,6 +138,17 @@ fun PartidoCard(
                     text = "${partido.categoria} ⚽",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 15.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            // Botón para generar review
+            Button(
+                onClick = { onPartidoReviewClick(partido.idPartido) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Generar Review",
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
@@ -205,6 +222,7 @@ fun ResultadoPartidoCard(
 fun PartidoScreenPreview() {
     PartidoScreen(
         partidoViewModel = viewModel(),
-        onPartidoClick = {}
+        onPartidoClick = {},
+        onReviewPartidoClick = {}
     )
 }
