@@ -36,4 +36,17 @@ class ReviewRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun deleteReviewById(idReview: String): Result<Unit>{
+        return try {
+            val result = reviewRemoteDataSource.deleteReview(idReview)
+            Result.success(Unit)
+        } catch (e: HttpException){
+            e.response.code
+            Result.failure(e)
+        }
+        catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

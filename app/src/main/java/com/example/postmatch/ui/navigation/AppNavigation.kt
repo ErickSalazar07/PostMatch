@@ -68,7 +68,7 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Reviews : Screen(route = "reviews")
     object Registro : Screen(route = "registro")
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
-    object CrearReview : Screen("crearReview")          // Nueva pantalla para el "más"
+    object CrearReview : Screen("crearReview/{idPartido}")          // Nueva pantalla para el "más"
     object Partidos : Screen("partidos")
 
     object Buscador : Screen("buscador")
@@ -190,6 +190,14 @@ fun AppNavigation(
             val partidoViewModel: PartidosViewModel = hiltViewModel()
             PartidoScreen(
                 partidoViewModel = partidoViewModel,
+                onReviewPartidoClick =  { idPartido ->
+                    navController.navigate(
+                        Screen.CrearReview.route.replace(
+                            "{idPartido}",
+                            "$idPartido"
+                        )
+                    )
+                },
                 onPartidoClick = { idPartido ->
                     navController.navigate(
                         Screen.PartidoDetail.route.replace(
@@ -331,6 +339,7 @@ fun AppNavigation(
 
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel,
+                reviewPartidoId = it.arguments?.getInt("idPartido") ?: 1,
                 onReviewCreated = {
                     navController.navigate(Screen.Reviews.route) {
                         popUpTo(Screen.CrearReview.route) { inclusive = true }
