@@ -265,7 +265,8 @@ fun AppNavigation(
                         popUpTo(Screen.Perfil.route) { inclusive = true }
                     }
                 },
-                perfilViewModel = perfilViewModel
+                perfilViewModel = perfilViewModel,
+                idUsuarioPerfil = 1
             )
         }
 

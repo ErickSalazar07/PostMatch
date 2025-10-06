@@ -63,6 +63,7 @@ fun PerfilScreen(
     perfilViewModel: PerfilViewModel,
     configuracionButtonClick: () -> Unit,
     reviewButtonClick: () -> Unit,
+    idPerfilUsuario: Int,
     modifier: Modifier = Modifier
 ){
     val state by perfilViewModel.uiState.collectAsState()
@@ -399,6 +400,7 @@ fun PerfilScreenPreview(
     PerfilScreen(
         configuracionButtonClick = {},
         reviewButtonClick = {},
-        perfilViewModel = viewModel()
+        perfilViewModel = viewModel(),
+        idPerfilUsuario = 1
     )
 }
