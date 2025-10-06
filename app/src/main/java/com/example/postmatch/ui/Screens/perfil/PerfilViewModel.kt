@@ -4,10 +4,13 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.R
+import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.datasource.services.ReviewRetrofitService
 import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.repository.AuthRepository
+import com.example.postmatch.data.repository.ReviewRepository
 import com.example.postmatch.data.repository.StorageRepository
+import com.example.postmatch.data.repository.UsuarioRepository
 import com.example.postmatch.ui.Screens.partidos.PartidosState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -19,45 +22,49 @@ import kotlinx.coroutines.launch
 // PerfilViewModel.kt
 @HiltViewModel
 class PerfilViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
-    private val storageRepository: StorageRepository,
-    private val reviewRetrofitService: ReviewRetrofitService
-
+    // private val authRepository: AuthRepository,
+    // private val storageRepository: StorageRepository,
+    private val usuarioRepository: UsuarioRepository,
+    private val reviewRetrofitService: ReviewRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PerfilState(
-        fotoPerfilUrl = authRepository.currentUser?.photoUrl?.toString() ?: ""
-    ))
+    private val _uiState = MutableStateFlow(PerfilState())
     val uiState: StateFlow<PerfilState> = _uiState
-
-    // fun updateProfileImageUri(profileImageUri: Uri) {
-    //     _uiState.update { it.copy(fotoPerfilUri = profileImageUri) }
-    // }
-
-    fun uploadProfileImageToFirebase(uri: Uri) {
+    /*fun uploadProfileImageToFirebase(uri: Uri) {
         viewModelScope.launch {
             val result = storageRepository.uploadProfileImage(uri)
             if(result.isSuccess) {
                 _uiState.update { it.copy(fotoPerfilUrl = result.getOrNull()) }
             }
         }
-    }
+    }*/
 
-    fun loadUserProfile(userId: Int) {
+    fun onDeleteReview(idReview: String) {
+        val idUsuarioQuemado: Int = 2 // se cambia despues
         viewModelScope.launch {
-            val reviews = reviewRetrofitService.getReviewsByUser(userId)
-            _uiState.update {
-                it.copy(
-                    resenhiass = reviews
-                )
+            val result = reviewRetrofitService.deleteReviewById(idReview)
+            val resultReview = usuarioRepository.getReviewsByUsuarioId(idUsuarioQuemado)
+            if (result.isSuccess) {
+                _uiState.update { it.copy(reviews = resultReview.getOrNull() ?: emptyList()) }
+            } else {
+                _uiState.update { it.copy(reviews = emptyList()) }
             }
         }
     }
 
-
     init {
-        _uiState.update {
-            it.copy(resenhias = LocalReviewProvider.reviews)
+        var idUsuarioQuemado: Int = 2 // se cambia despues
+        viewModelScope.launch {
+            val result = usuarioRepository.getUsuarioById(idUsuarioQuemado)
+            if (result.isSuccess) {
+                _uiState.update { it.copy(usuarioInfo = result.getOrNull() ?: UsuarioInfo()) }
+                val resultReviews = usuarioRepository.getReviewsByUsuarioId(idUsuarioQuemado)
+                if (resultReviews.isSuccess) {
+                    _uiState.update { it.copy(reviews = resultReviews.getOrNull() ?: emptyList()) }
+                } else {
+                    _uiState.update { it.copy(reviews = emptyList()) }
+                }
+            }
         }
     }
 }

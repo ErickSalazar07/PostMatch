@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,7 +37,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
@@ -78,10 +79,10 @@ fun PerfilScreen(
         }
         item {
             ImagenPerfil(
-                fotoPerfilUrl = state.fotoPerfilUrl,
-                nombrePerfil = "Ricardo",
-                arrobaPerfil = "@Ricardo_420",
-                onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
+                fotoPerfilUrl = state.usuarioInfo.fotoPerfil,
+                nombrePerfil = state.usuarioInfo.nombre,
+                arrobaPerfil = state.usuarioInfo.email,
+                onFotoPerfilButton = {},//perfilViewModel::uploadProfileImageToFirebase,
                 oficioPerfil = "Futbolista")
         }
         item {
@@ -90,8 +91,12 @@ fun PerfilScreen(
         item {
             TextoIzquierda(stringResource(R.string.rese_as))
         }
-        items(state.resenhias) { resenhia -> // Usamos 'items' para iterar sobre la lista
-            ItemReseniaPerfil(resenhia) // Componente que recibe cada notificación
+        items(state.reviews) { resenhia -> // Usamos 'items' para iterar sobre la lista
+            ItemReseniaPerfil(
+                resenhia
+                , onDeleteReview = perfilViewModel::onDeleteReview,
+                onClickReview = {}
+            ) // Componente que recibe cada notificación
         }
     }
 
@@ -114,6 +119,8 @@ fun SeccionReseniasPerfil(
 @Composable
 fun ItemReseniaPerfil(
     reseniaPerfil: ReviewInfo,
+    onDeleteReview: (String) -> Unit,
+    onClickReview: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -156,6 +163,16 @@ fun ItemReseniaPerfil(
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            IconButton(
+                onClick = { onDeleteReview(reseniaPerfil.idReview) },
+                modifier = Modifier.size(24.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Eliminar reseña",
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
         }
 
         //Sección derecha 30%

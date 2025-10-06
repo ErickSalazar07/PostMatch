@@ -51,18 +51,19 @@ import com.example.postmatch.data.PartidoInfo
 @Composable
 fun CrearReviewScreen(
     crearReviewViewModel: CrearReviewViewModel,
+    reviewPartidoId: Int,
     onReviewCreated: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val state by crearReviewViewModel.uiState.collectAsState()
-
-
-    LaunchedEffect(state.navigateBack) {
-        if (state.navigateBack) {
+    LaunchedEffect(Unit){
+        crearReviewViewModel.updatePartido(reviewPartidoId.toString())
+        if (crearReviewViewModel.navigateBack()) {
             onReviewCreated()
             crearReviewViewModel.resetNavigation()
         }
     }
+
+    val state by crearReviewViewModel.uiState.collectAsState()
 
     Column(
         modifier = modifier
@@ -360,6 +361,7 @@ fun BotonPublicar(
 fun CrearReviewScreenPreview() {
     CrearReviewScreen(
         crearReviewViewModel = viewModel(),
+        reviewPartidoId = 1,
         onReviewCreated = {}
     )
 }

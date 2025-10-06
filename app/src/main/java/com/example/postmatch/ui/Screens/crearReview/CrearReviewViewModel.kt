@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.dtos.ReviewDto
 import com.example.postmatch.data.local.LocalPartidoProvider
+import com.example.postmatch.data.repository.PartidoRepository
 import com.example.postmatch.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,11 +19,32 @@ import java.util.Date
 
 @HiltViewModel
 class CrearReviewViewModel @Inject constructor(
-    private val reviewRepository: ReviewRepository
+    private val reviewRepository: ReviewRepository,
+    private val partidoRepository: PartidoRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CrearReviewState())
     val uiState: StateFlow<CrearReviewState> = _uiState
+
+    fun navigateBack(): Boolean {
+        return _uiState.value.navigateBack;
+    }
+
+    fun updatePartido(idPartido: String) {
+        viewModelScope.launch {
+            val result = partidoRepository.getPartidoById(idPartido.toInt())
+            if (result.isSuccess) {
+                _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
+            } else {
+                _uiState.update { it.copy(
+                    errorMessage = "No se pudo cargar el partido.",
+                    partido = PartidoInfo()
+                )
+                }
+            }
+        }
+    }
+
 
     fun updateResenha(input: String) {
         _uiState.update { it.copy(resenha = input) }
@@ -80,7 +102,4 @@ class CrearReviewViewModel @Inject constructor(
     init {
         _uiState.update { it.copy(partido = LocalPartidoProvider.partidos[0]) }
     }
-
-
-
 }

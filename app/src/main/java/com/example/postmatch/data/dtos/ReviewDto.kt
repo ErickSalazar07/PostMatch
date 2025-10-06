@@ -26,4 +26,3 @@ fun ReviewDto.toReviewInfo(): ReviewInfo {
         numComentarios = numComentarios
     )
 }
-

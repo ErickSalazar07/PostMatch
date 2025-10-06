@@ -4,6 +4,7 @@ import androidx.compose.ui.layout.ScaleFactor
 import com.example.postmatch.data.datasource.PartidoRemoteDataSource
 import com.example.postmatch.data.datasource.services.PartidoRetrofitService
 import com.example.postmatch.data.datasource.services.ReviewRetrofitService
+import com.example.postmatch.data.datasource.services.UsuarioRetrofitService
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -17,6 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
+import kotlin.jvm.java
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -42,5 +44,11 @@ object AppModule {
     @Provides
     fun providesPartidoRetrofitService(retrofit: Retrofit): PartidoRetrofitService {
         return retrofit.create(PartidoRetrofitService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesUsuarioRetrofitService(retrofit: Retrofit): UsuarioRetrofitService {
+        return retrofit.create(UsuarioRetrofitService::class.java)
     }
 }

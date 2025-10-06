@@ -1,0 +1,23 @@
+package com.example.postmatch.data.datasource.impl
+
+import com.example.postmatch.data.datasource.UsuarioRemoteDataSource
+import com.example.postmatch.data.datasource.services.UsuarioRetrofitService
+import com.example.postmatch.data.dtos.ReviewDto
+import com.example.postmatch.data.dtos.UsuarioDto
+import javax.inject.Inject
+
+class UsuarioRetrofitDataSourceImpl @Inject constructor(
+    val service: UsuarioRetrofitService
+): UsuarioRemoteDataSource {
+    override suspend fun getAllUsuarios(): List<UsuarioDto> {
+        return service.getAllUsuarios()
+    }
+
+    override suspend fun getUsuarioById(id: String): UsuarioDto {
+        return service.getUsuarioById(id.toInt())
+    }
+
+    override suspend fun getReviewsByUsuarioId(idUsuario: String): List<ReviewDto> {
+        return service.getReviewsByUsuarioId(idUsuario = idUsuario.toInt())
+    }
+}
