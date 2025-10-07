@@ -328,7 +328,10 @@ fun AppNavigation(
             )
         }
 
-        composable(Screen.CrearReview.route) {
+        composable(
+            route = Screen.CrearReview.route,
+            arguments = listOf(navArgument("idPartido") { type = NavType.IntType })
+        ) {
             val crearReviewViewModel: CrearReviewViewModel = hiltViewModel()
             val context = LocalContext.current
             val activity = context as? ComponentActivity
@@ -350,5 +353,4 @@ fun AppNavigation(
 
     }
 }
-
 
