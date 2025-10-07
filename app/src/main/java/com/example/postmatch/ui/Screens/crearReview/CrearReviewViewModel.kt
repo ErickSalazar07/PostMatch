@@ -30,6 +30,9 @@ class CrearReviewViewModel @Inject constructor(
         return _uiState.value.navigateBack;
     }
 
+
+
+
     fun updatePartido(idPartido: String) {
         viewModelScope.launch {
             val result = partidoRepository.getPartidoById(idPartido.toInt())

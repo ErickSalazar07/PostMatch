@@ -274,7 +274,7 @@ fun AppNavigation(
                     }
                 },
                 perfilViewModel = perfilViewModel,
-                idUsuarioPerfil = 1
+                idPerfilUsuario = 1
             )
         }
 
