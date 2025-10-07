@@ -40,7 +40,7 @@ class PerfilViewModel @Inject constructor(
     }*/
 
     fun onDeleteReview(idReview: String) {
-        val idUsuarioQuemado: Int = 2 // se cambia despues
+        val idUsuarioQuemado: Int = 1 // se cambia despues
         viewModelScope.launch {
             val result = reviewRetrofitService.deleteReviewById(idReview)
             val resultReview = usuarioRepository.getReviewsByUsuarioId(idUsuarioQuemado)
@@ -53,7 +53,7 @@ class PerfilViewModel @Inject constructor(
     }
 
     init {
-        var idUsuarioQuemado: Int = 2 // se cambia despues
+        var idUsuarioQuemado: Int = 1 // se cambia despues
         viewModelScope.launch {
             val result = usuarioRepository.getUsuarioById(idUsuarioQuemado)
             if (result.isSuccess) {
