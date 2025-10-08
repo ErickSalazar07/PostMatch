@@ -67,15 +67,13 @@ fun PerfilScreen(
     configuracionButtonClick: () -> Unit,
     reviewButtonClick: () -> Unit,
     idPerfilUsuario: Int,
+    onReviewClick: (String) -> Unit,
+
+
     //idPartido: Int,
     modifier: Modifier = Modifier
 ){
-   /*
-    LaunchedEffect(Unit) {
-        perfilViewModel.setPartidoInfo(idPartido)
-    }
 
-    */
 
 
     val state by perfilViewModel.uiState.collectAsState()
@@ -102,13 +100,20 @@ fun PerfilScreen(
         item {
             TextoIzquierda(stringResource(R.string.rese_as))
         }
-        items(state.reviews) { resenhia -> // Usamos 'items' para iterar sobre la lista
+        items(state.reviews) { resenhia ->
             ItemReseniaPerfil(
-                resenhia
-                , onDeleteReview = { perfilViewModel.onDeleteReview(resenhia.idReview) },   //perfilViewModel::onDeleteReview
-                onClickReview = {}
-            ) // Componente que recibe cada notificación
+                reseniaPerfil = resenhia,
+                onDeleteReview = { perfilViewModel.onDeleteReview(resenhia.idReview) }, // eliminar
+                onClickReview = { idReview ->
+                    // Acción para ver o seleccionar la reseña
+                },
+                onReviewClick = { idReview ->
+                    // Acción para editar la reseña
+                    onReviewClick(idReview) // callback que viene de PerfilScreen
+                }
+            )
         }
+
     }
 
 }
@@ -132,6 +137,8 @@ fun ItemReseniaPerfil(
     reseniaPerfil: ReviewInfo,
     onDeleteReview: (String) -> Unit,
     onClickReview: (String) -> Unit,
+    onReviewClick: (String) -> Unit,
+
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -183,7 +190,7 @@ fun ItemReseniaPerfil(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    onClick = { onClickReview(reseniaPerfil.idReview) },
+                    onClick = { onReviewClick(reseniaPerfil.idReview) },
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
@@ -438,7 +445,7 @@ fun PickImageButton(
         Text(text = "Seleccionar Imagen")
     }
 }
-
+/*
 @Composable
 //@Preview(showBackground = true)
 fun PerfilScreenPreview(
@@ -452,3 +459,6 @@ fun PerfilScreenPreview(
         idPerfilUsuario = 1
     )
 }
+
+
+ */

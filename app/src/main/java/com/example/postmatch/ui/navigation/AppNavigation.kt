@@ -40,6 +40,8 @@ import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailViewModel
 import com.example.postmatch.ui.Screens.Buscador.BuscadorScreenContent
 import com.example.postmatch.ui.Screens.Buscador.BuscarViewModel
+import com.example.postmatch.ui.Screens.actualizarReview.ActualizarReviewScreen
+import com.example.postmatch.ui.Screens.actualizarReview.ActualizarReviewViewModel
 import com.example.postmatch.ui.Screens.partidos.PartidoScreen
 import com.example.postmatch.ui.Screens.configuracionPerfil.ConfiguracionPerfilScreen
 import com.example.postmatch.ui.Screens.configuracionPerfil.ConfiguracionPerfilViewModel
@@ -68,6 +70,8 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Reviews : Screen(route = "reviews")
     object Registro : Screen(route = "registro")
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
+
+    object ActualizarReview: Screen(route = "ActualizarReview/{idReview}")
     object CrearReview : Screen("crearReview/{idPartido}")          // Nueva pantalla para el "más"
     object Partidos : Screen("partidos")
 
@@ -255,6 +259,8 @@ fun AppNavigation(
             )
         }
 
+
+
         composable(route = Screen.Perfil.route) {
             val perfilViewModel: PerfilViewModel = hiltViewModel()
             val context = LocalContext.current
@@ -274,9 +280,16 @@ fun AppNavigation(
                     }
                 },
                 perfilViewModel = perfilViewModel,
-                idPerfilUsuario = 1
+                idPerfilUsuario = 1,
+                onReviewClick = { idReview: String ->
+                    // Capturamos el id de la reseña y navegamos a la pantalla de edición
+                    navController.navigate(
+                        Screen.ActualizarReview.route.replace("{idReview}", idReview)
+                    )
+                }
             )
         }
+
 
         composable(route = Screen.Reviews.route) {
             val reviewsViewModel: ReviewsViewModel = hiltViewModel()
@@ -351,6 +364,27 @@ fun AppNavigation(
                 }
             )
         }
+
+
+        composable(
+            route = Screen.ActualizarReview.route,
+            arguments = listOf(navArgument("idReview") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val actualizarReviewViewModel: ActualizarReviewViewModel = hiltViewModel()
+            val idReview = backStackEntry.arguments?.getInt("idReview") ?: 1
+
+            ActualizarReviewScreen(
+                actualizarReviewViewModel = actualizarReviewViewModel,
+                reviewId = idReview,
+                onReviewUpdated = { navController.popBackStack() }
+            )
+        }
+
+
+
+
+
+
 
     }
 }
