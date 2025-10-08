@@ -37,10 +37,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
@@ -65,8 +67,17 @@ fun PerfilScreen(
     configuracionButtonClick: () -> Unit,
     reviewButtonClick: () -> Unit,
     idPerfilUsuario: Int,
+    //idPartido: Int,
     modifier: Modifier = Modifier
 ){
+   /*
+    LaunchedEffect(Unit) {
+        perfilViewModel.setPartidoInfo(idPartido)
+    }
+
+    */
+
+
     val state by perfilViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = modifier
@@ -94,7 +105,7 @@ fun PerfilScreen(
         items(state.reviews) { resenhia -> // Usamos 'items' para iterar sobre la lista
             ItemReseniaPerfil(
                 resenhia
-                , onDeleteReview = perfilViewModel::onDeleteReview,
+                , onDeleteReview = { perfilViewModel.onDeleteReview(resenhia.idReview) },   //perfilViewModel::onDeleteReview
                 onClickReview = {}
             ) // Componente que recibe cada notificación
         }
@@ -131,7 +142,7 @@ fun ItemReseniaPerfil(
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        //Sección izquierda 70%
+        // Sección izquierda 70%
         Column(
             modifier = Modifier
                 .weight(0.7f)
@@ -150,6 +161,7 @@ fun ItemReseniaPerfil(
                     )
                 }
             }
+
             // Título
             Text(
                 text = reseniaPerfil.titulo,
@@ -157,25 +169,44 @@ fun ItemReseniaPerfil(
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
             // Descripción
             Text(
                 text = reseniaPerfil.descripcion,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            IconButton(
-                onClick = { onDeleteReview(reseniaPerfil.idReview) },
-                modifier = Modifier.size(24.dp)
+
+            // Fila de botones (modificar y eliminar)
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Eliminar reseña",
-                    tint = MaterialTheme.colorScheme.error
-                )
+                IconButton(
+                    onClick = { onClickReview(reseniaPerfil.idReview) },
+                    modifier = Modifier.size(24.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Modificar reseña",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                IconButton(
+                    onClick = { onDeleteReview(reseniaPerfil.idReview) },
+                    modifier = Modifier.size(24.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Eliminar reseña",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
 
-        //Sección derecha 30%
+        // Sección derecha 30% (imagen)
         Box(
             modifier = Modifier
                 .weight(0.3f)

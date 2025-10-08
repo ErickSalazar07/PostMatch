@@ -90,7 +90,7 @@ fun BottomNavBar(
     val items = listOf(
         BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
         BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "Buscar"),   // Cambiado
-        BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
+        //BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
         BottomNavItem(Screen.Perfil.route, Icons.Filled.Person, "Perfil")
 
@@ -195,7 +195,7 @@ fun AppNavigation(
                         Screen.CrearReview.route.replace(
                             "{idPartido}",
                             "$idPartido"
-                        )
+                        )  ///fgggggg 2
                     )
                 },
                 onPartidoClick = { idPartido ->

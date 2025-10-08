@@ -45,7 +45,7 @@ import com.example.postmatch.data.PartidoInfo
 fun PartidoScreen(
     partidoViewModel: PartidosViewModel,
     onReviewPartidoClick: (String) -> Unit,
-    onPartidoClick: (String) -> Unit,
+    onPartidoClick: (String) -> Unit,  ///gggggg
     modifier: Modifier = Modifier
 ) {
 
