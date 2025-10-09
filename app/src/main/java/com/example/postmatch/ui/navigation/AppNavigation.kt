@@ -365,7 +365,6 @@ fun AppNavigation(
             )
         }
 
-
         composable(
             route = Screen.ActualizarReview.route,
             arguments = listOf(navArgument("idReview") { type = NavType.IntType })
@@ -376,9 +375,19 @@ fun AppNavigation(
             ActualizarReviewScreen(
                 actualizarReviewViewModel = actualizarReviewViewModel,
                 reviewId = idReview,
-                onReviewUpdated = { navController.popBackStack() }
+                onReviewUpdated = { navController.popBackStack() },
+                onReviewPartidoClick = { idPartido ->
+                    navController.navigate(
+                        Screen.CrearReview.route.replace(
+                            "{idPartido}",
+                            "$idPartido"
+                        )
+                    )
+                }
             )
         }
+
+
 
 
 

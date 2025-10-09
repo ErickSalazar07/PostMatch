@@ -62,16 +62,24 @@ fun ActualizarReviewScreen(
     actualizarReviewViewModel: ActualizarReviewViewModel,
     reviewId: Int,
     onReviewUpdated: () -> Unit,
+    onReviewPartidoClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 
 ) {
-    LaunchedEffect(Unit){
 
+
+
+    LaunchedEffect(Unit) {
         if (actualizarReviewViewModel.navigateBack()) {
             onReviewUpdated()
             actualizarReviewViewModel.resetNavigation()
         }
     }
+
+
+
+
+
 
     val state by actualizarReviewViewModel.uiState.collectAsState()
 
@@ -368,6 +376,7 @@ fun ActualizarReviewScreenPreview() {
     ActualizarReviewScreen(
         actualizarReviewViewModel = viewModel(),
         reviewId = 1,
+        onReviewPartidoClick = {},
         onReviewUpdated = {}
     )
 }

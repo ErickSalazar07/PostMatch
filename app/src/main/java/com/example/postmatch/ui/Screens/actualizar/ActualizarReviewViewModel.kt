@@ -4,48 +4,29 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.PartidoInfo
-import com.example.postmatch.data.local.LocalPartidoProvider
+import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.repository.PartidoRepository
 import com.example.postmatch.data.repository.ReviewRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.example.postmatch.data.dtos.toReviewInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Date
 
 @HiltViewModel
 class ActualizarReviewViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository,
-    private val partidoRepository: PartidoRepository
+    private val partidoRepository: PartidoRepository,
+    private val reviewRetrofitService: ReviewRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ActualizarReviewState())
     val uiState: StateFlow<ActualizarReviewState> = _uiState
 
-    private var currentReviewId: Int = -1
-
-    fun navigateBack(): Boolean {
-        return _uiState.value.navigateBack
-    }
-
-
-
-    private fun loadPartido(idPartido: Int) {
-        viewModelScope.launch {
-            val result = partidoRepository.getPartidoById(idPartido)
-            if (result.isSuccess) {
-                _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        errorMessage = "No se pudo cargar el partido.",
-                        partido = PartidoInfo()
-                    )
-                }
-            }
-        }
-    }
+    fun navigateBack(): Boolean = _uiState.value.navigateBack
 
     fun updateResenha(input: String) {
         _uiState.update { it.copy(resenha = input) }
@@ -59,20 +40,35 @@ class ActualizarReviewViewModel @Inject constructor(
         _uiState.update { it.copy(titulo = input) }
     }
 
-    private fun showState() {
-        Log.d("ActualizarReviewViewModel", "titulo: ${_uiState.value.titulo}")
-        Log.d("ActualizarReviewViewModel", "resenha: ${_uiState.value.resenha}")
-        Log.d("ActualizarReviewViewModel", "calificacion: ${_uiState.value.calificacion}")
-    }
-
-
-
-
     fun resetNavigation() {
         _uiState.update { it.copy(navigateBack = false) }
     }
 
-    init {
-        _uiState.update { it.copy(partido = LocalPartidoProvider.partidos[0]) }
+    /** Cargar review y partido asociados al reviewId */
+    fun onUpdateReview(updatedReview: ReviewInfo) {
+        viewModelScope.launch {
+            val result = reviewRepository.updateReview(
+                idReview = updatedReview.idReview,
+                titulo = updatedReview.titulo,
+                descripcion = updatedReview.descripcion,
+                fecha = Date()
+            )
+
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        titulo = updatedReview.titulo,
+                        resenha = updatedReview.descripcion
+                    )
+                }
+            } else {
+                Log.e("ActualizarReviewViewModel", "Error al actualizar reseña: ${result.exceptionOrNull()}")
+            }
+        }
     }
+
+
+
+
+
 }

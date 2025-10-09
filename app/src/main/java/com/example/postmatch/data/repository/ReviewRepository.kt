@@ -5,7 +5,6 @@ import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.datasource.impl.ReviewRetrofitDataSourceImpl
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.toReviewInfo
-import com.google.api.Http
 import java.util.Date
 import javax.inject.Inject
 
@@ -61,4 +60,23 @@ class ReviewRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun updateReview(
+        idReview: String,
+        titulo: String,
+        descripcion: String,
+        fecha: Date,
+        idUsuario: Int,
+        idPartido: Int
+    ): Result<Unit> {
+        return try {
+            val updateReviewDto = CreateReviewDto(titulo, descripcion, fecha, idUsuario, idPartido)
+            reviewRemoteDataSource.updateReview(idReview, updateReviewDto)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }
