@@ -2,7 +2,7 @@ package com.example.postmatch.data.dtos
 
 import java.util.Date
 
-data class CreateReviewDto (
+data class UpdateReviewDto(
     var titulo: String = "",
     var descripcion: String = "",
     var fecha: Date = Date(),

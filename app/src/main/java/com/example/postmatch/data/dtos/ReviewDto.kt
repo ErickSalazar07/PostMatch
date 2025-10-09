@@ -23,6 +23,8 @@ fun ReviewDto.toReviewInfo(): ReviewInfo {
         fecha = fecha.toString(),
         calificacion = calificacion,
         numLikes = numLikes,
-        numComentarios = numComentarios
+        numComentarios = numComentarios,
+        usuarioId = idUsuario,
+        partidoId = idPartido
     )
 }

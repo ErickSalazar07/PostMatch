@@ -4,6 +4,7 @@ import com.example.postmatch.data.datasource.ReviewRemoteDataSource
 import com.example.postmatch.data.datasource.services.ReviewRetrofitService
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.ReviewDto
+import com.example.postmatch.data.dtos.UpdateReviewDto
 import javax.inject.Inject
 
 class ReviewRetrofitDataSourceImpl @Inject constructor(
@@ -32,7 +33,7 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
         service.deleteReview(id.toInt())
     }
 
-    override suspend fun updateReview(id: String, review: CreateReviewDto) {
+    override suspend fun updateReview(id: String, review: UpdateReviewDto) {
         service.updateReview(id.toInt(), review)
     }
 }

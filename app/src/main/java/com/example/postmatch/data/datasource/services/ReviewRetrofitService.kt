@@ -2,6 +2,7 @@ package com.example.postmatch.data.datasource.services
 
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.ReviewDto
+import com.example.postmatch.data.dtos.UpdateReviewDto
 import com.google.android.gms.common.api.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -15,8 +16,8 @@ interface ReviewRetrofitService {
     @GET("/Reviews")
     suspend fun getAllReviews(): List<ReviewDto>
 
-    @GET("/Reviews{id}")
-    suspend fun getReviewById(@Path("id") id: Int): ReviewDto
+    @GET("/Reviews/{idReview}")
+    suspend fun getReviewById(@Path("idReview") id: Int): ReviewDto
 
     @GET("/Reviews/User/{idUsuario}")
     suspend fun getReviewsByUser(@Path("idUsuario") idUsuario: Int): List<ReviewDto>
@@ -27,6 +28,6 @@ interface ReviewRetrofitService {
     @DELETE("/Reviews/{id}")
     suspend fun deleteReview(@Path("id") id: Int): Unit
 
-    @PUT("/Review/{id}")
-    suspend fun updateReview(@Path("id")id: Int, @Body review: CreateReviewDto): Unit
+    @PUT("/Reviews/{id}")
+    suspend fun updateReview(@Path("id")id: Int, @Body review: UpdateReviewDto): Unit
 }

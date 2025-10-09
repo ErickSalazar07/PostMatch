@@ -68,8 +68,6 @@ fun PerfilScreen(
     reviewButtonClick: () -> Unit,
     idPerfilUsuario: Int,
     onReviewClick: (String) -> Unit,
-
-
     //idPartido: Int,
     modifier: Modifier = Modifier
 ){

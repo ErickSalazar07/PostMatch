@@ -68,11 +68,6 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
     // Hilt
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.compose.navigation)

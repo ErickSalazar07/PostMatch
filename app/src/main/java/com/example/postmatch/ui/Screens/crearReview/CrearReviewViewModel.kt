@@ -50,24 +50,20 @@ class CrearReviewViewModel @Inject constructor(
 
 
     fun updateResenha(input: String) {
-        _uiState.update { it.copy(resenha = input) }
+        _uiState.update { it.copy(descripcion = input) }
     }
 
     fun updateCalificacion(input: Int) {
         _uiState.update { it.copy(calificacion = input) }
     }
 
-    /*fun setPublicarButtonClick(action: () -> Unit) {
-        _uiState.update { it.copy(publicarButtonClick = action) }
-    }*/
-
     fun updateTitulo(input: String) {
         _uiState.update { it.copy(titulo = input) }
     }
 
     private fun showState() {
-        Log.d("CrearReviewViewModel", "resenha: ${_uiState.value.resenha}")
-        Log.d("CrearReviewViewModel", "calificacion: ${_uiState.value.calificacion}")
+        Log.d("CrearReviewViewModel", "resenha: ${_uiState.value.nuevaReview.descripcion}")
+        Log.d("CrearReviewViewModel", "calificacion: ${_uiState.value.nuevaReview.calificacion}")
     }
 
     fun publicarButtonClick(onSuccess: () -> Unit = {}) {
@@ -79,14 +75,12 @@ class CrearReviewViewModel @Inject constructor(
     private fun createReview(onSuccess: () -> Unit) {
         viewModelScope.launch {
             try {
-                val result = reviewRepository.createReview(
-                    titulo = _uiState.value.titulo.ifBlank { "Review de ${_uiState.value.partido.nombre}" },
-                    descripcion = _uiState.value.resenha,
-                    fecha = java.util.Date(),
-                    idUsuario = 1,
-                    idPartido = 1
-                )
-
+                _uiState.value.nuevaReview.idUsuario = 1
+                _uiState.value.nuevaReview.idPartido = _uiState.value.partido.idPartido.toInt()
+                _uiState.value.nuevaReview.titulo = _uiState.value.titulo
+                _uiState.value.nuevaReview.descripcion = _uiState.value.descripcion
+                _uiState.value.nuevaReview.calificacion = _uiState.value.calificacion
+                val result = reviewRepository.createReview(_uiState.value.nuevaReview)
                 if (result.isSuccess) {
                     _uiState.update { it.copy(navigateBack = true, errorMessage = null) }
                 } else {

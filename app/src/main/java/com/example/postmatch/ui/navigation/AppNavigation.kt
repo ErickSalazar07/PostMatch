@@ -71,7 +71,7 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Registro : Screen(route = "registro")
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
 
-    object ActualizarReview: Screen(route = "ActualizarReview/{idReview}")
+    object ActualizarReview: Screen(route = "actualizarReview/{idReview}")
     object CrearReview : Screen("crearReview/{idPartido}")          // Nueva pantalla para el "más"
     object Partidos : Screen("partidos")
 
@@ -376,14 +376,6 @@ fun AppNavigation(
                 actualizarReviewViewModel = actualizarReviewViewModel,
                 reviewId = idReview,
                 onReviewUpdated = { navController.popBackStack() },
-                onReviewPartidoClick = { idPartido ->
-                    navController.navigate(
-                        Screen.CrearReview.route.replace(
-                            "{idPartido}",
-                            "$idPartido"
-                        )
-                    )
-                }
             )
         }
 

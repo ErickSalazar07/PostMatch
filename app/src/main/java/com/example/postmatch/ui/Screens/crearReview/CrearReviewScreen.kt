@@ -66,10 +66,6 @@ fun CrearReviewScreen(
 ) {
     LaunchedEffect(Unit){
         crearReviewViewModel.updatePartido(reviewPartidoId.toString())
-        if (crearReviewViewModel.navigateBack()) {
-            onReviewCreated()
-            crearReviewViewModel.resetNavigation()
-        }
     }
 
     val state by crearReviewViewModel.uiState.collectAsState()
@@ -96,7 +92,7 @@ fun CrearReviewScreen(
         )
         Spacer(modifier = Modifier.height(20.dp))
         ResenhaInput(
-            resenha = state.resenha,
+            resenha = state.descripcion,
             onResenhaChange = crearReviewViewModel::updateResenha
         )
         Spacer(modifier = Modifier.weight(2f))
@@ -344,6 +340,12 @@ fun ResenhaInput(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BotonPublicarPreview() {
+    BotonPublicar(onChange = {})
 }
 
 @Composable
