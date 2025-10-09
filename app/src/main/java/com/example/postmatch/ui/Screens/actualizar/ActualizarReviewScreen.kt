@@ -99,7 +99,7 @@ fun ActualizarReviewScreen(
         BotonActualizar(
             onChange = {
                 actualizarReviewViewModel.onUpdateReview()
-                //onReviewUpdated()
+                onReviewUpdated()
             }
         )
     }
@@ -346,7 +346,7 @@ fun BotonActualizar(
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
-            text = stringResource(R.string.nombre),
+            text = stringResource(R.string.actualizar),
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onPrimary
         )

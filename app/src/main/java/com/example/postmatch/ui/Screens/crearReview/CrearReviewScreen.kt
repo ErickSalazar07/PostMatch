@@ -98,7 +98,7 @@ fun CrearReviewScreen(
         Spacer(modifier = Modifier.weight(2f))
 
         if (state.errorMessage != null) { Text(
-                text = state.errorMessage!!,
+                text = state.errorMessage?.toString() ?: "Error",
                 color = Color.Red,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -107,9 +107,8 @@ fun CrearReviewScreen(
 
         BotonPublicar(
             onChange = {
-                crearReviewViewModel.publicarButtonClick(
-                    onSuccess = onReviewCreated
-                )
+                crearReviewViewModel.createReview()
+                onReviewCreated()
             }
         )
     }

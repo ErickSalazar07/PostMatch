@@ -9,7 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.ui.Screens.follow.FollowScreen
 import com.example.postmatch.ui.Screens.login.LoginScreen
 import com.example.postmatch.ui.Screens.notificaciones.NotificacionesScreen
@@ -26,16 +25,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.activity
-import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailViewModel
 import com.example.postmatch.ui.Screens.Buscador.BuscadorScreenContent
@@ -66,17 +59,14 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object ConfiguracionPerfil : Screen(route = "configuracionPerfil")
     object Follow : Screen(route = "follow")
     object Notificaciones : Screen(route = "notificaciones")
-    object Perfil : Screen(route = "perfil")
+    object Perfil : Screen(route = "perfil/{idUsuarioPerfil}")
     object Reviews : Screen(route = "reviews")
     object Registro : Screen(route = "registro")
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
-
     object ActualizarReview: Screen(route = "actualizarReview/{idReview}")
     object CrearReview : Screen("crearReview/{idPartido}")          // Nueva pantalla para el "más"
     object Partidos : Screen("partidos")
-
     object Buscador : Screen("buscador")
-
 }
 
 // Modelo de item
@@ -94,16 +84,12 @@ fun BottomNavBar(
     val items = listOf(
         BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
         BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "Buscar"),   // Cambiado
-        //BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
-        BottomNavItem(Screen.Perfil.route, Icons.Filled.Person, "Perfil")
-
+        BottomNavItem(Screen.Perfil.route.replace("{idUsuarioPerfil}", "1"), Icons.Filled.Person, "Perfil")
     )
 
     NavigationBar(
-
         containerColor = colorResource(id = R.color.verde_oscuro) // Fondo negro
-
     ) {
         items.forEach { item ->
             NavigationBarItem(
@@ -137,7 +123,6 @@ fun AppNavigation(
         modifier = modifier
     ) {
 
-
         composable(route = Screen.Splash.route) {
             val logged = hiltViewModel<LoginViewModel>().currentUser != null
             SplashScreen(
@@ -154,6 +139,7 @@ fun AppNavigation(
                 }
             )
         }
+
         composable(
             route = Screen.PartidoDetail.route,
             arguments = listOf(navArgument("idPartido") { type = NavType.IntType })
@@ -168,8 +154,6 @@ fun AppNavigation(
         composable(route = Screen.ConfiguracionPerfil.route) {
 
             val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = hiltViewModel()
-            val context = LocalContext.current
-            val activity = context as? ComponentActivity
 
             configuracionPerfilViewModel.setOnLogout {
                 navController.navigate(Screen.Login.route) {
@@ -196,29 +180,26 @@ fun AppNavigation(
                 partidoViewModel = partidoViewModel,
                 onReviewPartidoClick =  { idPartido ->
                     navController.navigate(
-                        Screen.CrearReview.route.replace(
-                            "{idPartido}",
-                            "$idPartido"
-                        )  ///fgggggg 2
+                        route = Screen.CrearReview.route.replace(
+                            oldValue = "{idPartido}",
+                            newValue = idPartido
+                        )
                     )
                 },
                 onPartidoClick = { idPartido ->
                     navController.navigate(
-                        Screen.PartidoDetail.route.replace(
-                            "{idPartido}",
-                            "$idPartido"
+                        route = Screen.PartidoDetail.route.replace(
+                            oldValue = "{idPartido}",
+                            newValue = idPartido
                         )
                     )
                 }
             )
         }
 
-
-
         composable(route = Screen.Buscador.route) {
 
             val buscarViewModel: BuscarViewModel = hiltViewModel()
-            val uiState by buscarViewModel.uiState.collectAsState()
             val context = LocalContext.current
             val activity = context as? ComponentActivity
 
@@ -226,7 +207,6 @@ fun AppNavigation(
             BackHandler {
                 activity?.finish()  // 🔹 Cierra la Activity → termina la app
             }
-
 
             BuscadorScreenContent(
                 viewModel = buscarViewModel,
@@ -255,16 +235,26 @@ fun AppNavigation(
             }
 
             NotificacionesScreen(
-                notificacionesViewModel = notificacionesViewModel
+                notificacionesViewModel = notificacionesViewModel,
+                onNotificacionUsuarioClick = { idNotificacionUsuario ->
+                    navController.navigate(
+                        route = Screen.Perfil.route.replace(
+                            oldValue = "{idUsuarioPerfil}",
+                            newValue = idNotificacionUsuario
+                        )
+                    )
+                }
             )
         }
 
-
-
-        composable(route = Screen.Perfil.route) {
+        composable(
+            route = Screen.Perfil.route,
+            arguments = listOf(navArgument("idUsuarioPerfil") { type = NavType.IntType })
+        ) {
             val perfilViewModel: PerfilViewModel = hiltViewModel()
             val context = LocalContext.current
             val activity = context as? ComponentActivity
+            val idUsuarioPerfil = it.arguments?.getInt("idUsuarioPerfil")?: 1 // si no se especifica se toma el primer usuario osea el usuario por defecto
 
             // Manejo del botón atrás
             BackHandler {
@@ -280,9 +270,8 @@ fun AppNavigation(
                     }
                 },
                 perfilViewModel = perfilViewModel,
-                idPerfilUsuario = 1,
+                idPerfilUsuario = idUsuarioPerfil,
                 onReviewClick = { idReview: String ->
-                    // Capturamos el id de la reseña y navegamos a la pantalla de edición
                     navController.navigate(
                         Screen.ActualizarReview.route.replace("{idReview}", idReview)
                     )
@@ -300,8 +289,6 @@ fun AppNavigation(
             BackHandler {
                 activity?.finish()  // 🔹 Cierra la Activity → termina la app
             }
-
-
 
             ReviewsScreen(
                 reviewsViewModel = reviewsViewModel,
@@ -347,21 +334,11 @@ fun AppNavigation(
             arguments = listOf(navArgument("idPartido") { type = NavType.IntType })
         ) {
             val crearReviewViewModel: CrearReviewViewModel = hiltViewModel()
-            val context = LocalContext.current
-            val activity = context as? ComponentActivity
-
-            BackHandler {
-                activity?.finish()
-            }
 
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel,
                 reviewPartidoId = it.arguments?.getInt("idPartido") ?: 1,
-                onReviewCreated = {
-                    navController.navigate(Screen.Reviews.route) {
-                        popUpTo(Screen.CrearReview.route) { inclusive = true }
-                    }
-                }
+                onReviewCreated = { navController.navigate(Screen.Partidos.route) }
             )
         }
 
@@ -375,18 +352,9 @@ fun AppNavigation(
             ActualizarReviewScreen(
                 actualizarReviewViewModel = actualizarReviewViewModel,
                 reviewId = idReview,
-                onReviewUpdated = { navController.popBackStack() },
+                onReviewUpdated = { navController.navigate(Screen.Perfil.route.replace("{idUsuarioPerfil}", "1")) },
             )
         }
-
-
-
-
-
-
-
-
-
     }
 }
 

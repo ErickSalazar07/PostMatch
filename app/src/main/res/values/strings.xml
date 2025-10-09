@@ -48,4 +48,5 @@
     <string name="local">local</string>
     <string name="datos_del_partido">Datos del Partido</string>
     <string name="titulo">Título</string>
+    <string name="actualizar">Actualizar</string>
 </resources>

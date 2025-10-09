@@ -80,9 +80,9 @@ import com.example.postmatch.data.ReviewInfo
              }
 
              items(
-                 count = state.resenias.size,
+                 count = state.reviews.size,
              ) { index ->
-                 ItemReseniaAnalisisPartido(state.resenias[index])
+                 ItemReseniaAnalisisPartido(state.reviews[index])
                  Spacer(modifier = Modifier.height(8.dp))
              }
          }
@@ -111,16 +111,7 @@ fun AnalisisPartidoHeader(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        /*Image(
-            painter = painterResource(id = R.drawable.estadio_bernabeu),
-            contentDescription = stringResource(R.string.foto_partido),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()              // ocupa todo el ancho
-                .sizeIn(maxHeight = 200.dp)  // altura máxima
-                .clip(shape = RoundedCornerShape(8.dp))
-                .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
-        )*/
+
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(partido.partidoFotoUrl)
@@ -244,16 +235,6 @@ fun DatoEstadistica(label: String, value: String) {
          Row(
              verticalAlignment = Alignment.CenterVertically
          ) {
-             // Foto del reseñador
-             /*Image(
-                 painter = painterResource(id = R.drawable.ricardo_icon),
-                 contentDescription = "Foto de ${resenia.usuarioNombre}",
-                 modifier = Modifier
-                     .size(48.dp)
-                     .clip(CircleShape)
-                     .border(1.dp, Color.Gray, CircleShape),
-                 contentScale = ContentScale.Crop
-             )*/
              AsyncImage(
                  model = ImageRequest.Builder(LocalContext.current)
                      .data(resenia.usuarioFotoPerfil)

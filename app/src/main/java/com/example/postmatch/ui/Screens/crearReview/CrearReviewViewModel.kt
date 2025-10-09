@@ -1,11 +1,8 @@
 package com.example.postmatch.ui.Screens.crearReview
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.postmatch.data.PartidoInfo
-import com.example.postmatch.data.dtos.ReviewDto
 import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.data.repository.PartidoRepository
 import com.example.postmatch.data.repository.ReviewRepository
@@ -15,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
 
 @HiltViewModel
 class CrearReviewViewModel @Inject constructor(
@@ -25,13 +21,6 @@ class CrearReviewViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(CrearReviewState())
     val uiState: StateFlow<CrearReviewState> = _uiState
-
-    fun navigateBack(): Boolean {
-        return _uiState.value.navigateBack;
-    }
-
-
-
 
     fun updatePartido(idPartido: String) {
         viewModelScope.launch {
@@ -48,7 +37,6 @@ class CrearReviewViewModel @Inject constructor(
         }
     }
 
-
     fun updateResenha(input: String) {
         _uiState.update { it.copy(descripcion = input) }
     }
@@ -61,18 +49,7 @@ class CrearReviewViewModel @Inject constructor(
         _uiState.update { it.copy(titulo = input) }
     }
 
-    private fun showState() {
-        Log.d("CrearReviewViewModel", "resenha: ${_uiState.value.nuevaReview.descripcion}")
-        Log.d("CrearReviewViewModel", "calificacion: ${_uiState.value.nuevaReview.calificacion}")
-    }
-
-    fun publicarButtonClick(onSuccess: () -> Unit = {}) {
-        Log.d("CrearReviewViewModel", "publicarButtonClick")
-        showState()
-        createReview(onSuccess)
-    }
-
-    private fun createReview(onSuccess: () -> Unit) {
+    fun createReview() {
         viewModelScope.launch {
             try {
                 _uiState.value.nuevaReview.idUsuario = 1
@@ -90,10 +67,6 @@ class CrearReviewViewModel @Inject constructor(
                 _uiState.update { it.copy(errorMessage = "Error de conexión con la base de datos.") }
             }
         }
-    }
-
-    fun resetNavigation() {
-        _uiState.update { it.copy(navigateBack = false) }
     }
 
     init {

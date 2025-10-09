@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material3.Icon
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.lazy.items
@@ -48,19 +47,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
 
 
-data class ReseniaPerfilData(val nEstrellas: Int, val tituloReseniaPerfil: String, val descripcionReseniaPerfil: String, val idFoto: Int)
-
-//@Preview(showBackground = true)
 @Composable
 fun PerfilScreen(
     perfilViewModel: PerfilViewModel,
@@ -68,11 +62,12 @@ fun PerfilScreen(
     reviewButtonClick: () -> Unit,
     idPerfilUsuario: Int,
     onReviewClick: (String) -> Unit,
-    //idPartido: Int,
     modifier: Modifier = Modifier
 ){
 
-
+    LaunchedEffect(Unit) {
+        perfilViewModel.setUsuarioPerfil(idPerfilUsuario)
+    }
 
     val state by perfilViewModel.uiState.collectAsState()
     LazyColumn(
@@ -102,11 +97,7 @@ fun PerfilScreen(
             ItemReseniaPerfil(
                 reseniaPerfil = resenhia,
                 onDeleteReview = { perfilViewModel.onDeleteReview(resenhia.idReview) }, // eliminar
-                onClickReview = { idReview ->
-                    // Acción para ver o seleccionar la reseña
-                },
                 onReviewClick = { idReview ->
-                    // Acción para editar la reseña
                     onReviewClick(idReview) // callback que viene de PerfilScreen
                 }
             )
@@ -117,26 +108,10 @@ fun PerfilScreen(
 }
 
 @Composable
-fun SeccionReseniasPerfil(
-    modifier: Modifier = Modifier,
-    resenhias: List<ReviewInfo> // Define el tipo correctamente aquí
-) {
-    // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
-    LazyColumn(
-        modifier = modifier
-            .background(colorResource(id = R.color.verde_oscuro))
-            .padding(vertical = 8.dp)
-    ) {
-    }
-}
-
-@Composable
 fun ItemReseniaPerfil(
     reseniaPerfil: ReviewInfo,
     onDeleteReview: (String) -> Unit,
-    onClickReview: (String) -> Unit,
     onReviewClick: (String) -> Unit,
-
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -187,26 +162,28 @@ fun ItemReseniaPerfil(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    onClick = { onReviewClick(reseniaPerfil.idReview) },
-                    modifier = Modifier.size(24.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Modificar reseña",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
+                if(reseniaPerfil.usuarioId == 1) {
+                    IconButton(
+                        onClick = { onReviewClick(reseniaPerfil.idReview) },
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Modificar reseña",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
 
-                IconButton(
-                    onClick = { onDeleteReview(reseniaPerfil.idReview) },
-                    modifier = Modifier.size(24.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Eliminar reseña",
-                        tint = MaterialTheme.colorScheme.error
-                    )
+                    IconButton(
+                        onClick = { onDeleteReview(reseniaPerfil.idReview) },
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Eliminar reseña",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             }
         }

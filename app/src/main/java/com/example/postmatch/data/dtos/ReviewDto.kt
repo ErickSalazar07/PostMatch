@@ -13,6 +13,7 @@ data class ReviewDto(
     val numComentarios: Int,
     val idUsuario: Int,
     val idPartido: Int,
+    val usuario: UsuarioDto?
 )
 
 fun ReviewDto.toReviewInfo(): ReviewInfo {
@@ -25,6 +26,9 @@ fun ReviewDto.toReviewInfo(): ReviewInfo {
         numLikes = numLikes,
         numComentarios = numComentarios,
         usuarioId = idUsuario,
-        partidoId = idPartido
+        partidoId = idPartido,
+        usuarioNombre = usuario?.nombre?: "",
+        usuarioEmail = usuario?.email?: "",
+        usuarioFotoPerfil = usuario?.fotoPerfilUrl?: ""
     )
 }

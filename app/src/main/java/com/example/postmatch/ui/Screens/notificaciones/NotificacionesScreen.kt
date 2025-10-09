@@ -1,6 +1,5 @@
 package com.example.postmatch.ui.Screens.notificaciones
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,12 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.material3.Icon
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -39,12 +34,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
-import com.example.postmatch.data.NotificacionInfo
-import com.example.postmatch.data.local.LocalNotificacionProvider
+import com.example.postmatch.data.UsuarioInfo
 
 @Composable
 fun NotificacionesScreen(
     notificacionesViewModel: NotificacionesViewModel,
+    onNotificacionUsuarioClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by notificacionesViewModel.uiState.collectAsState()
@@ -55,7 +50,8 @@ fun NotificacionesScreen(
     ) {
         NotificacionesHeader()
         SeccionNotificaciones(
-            listaNotificaciones = state.notificaciones
+            listaUsuariosNotificacion = state.usuariosNotificacion,
+            onUsuarioNotificacionClick = onNotificacionUsuarioClick
         )
     }
 }
@@ -78,8 +74,6 @@ fun NotificacionesHeader(
             fontSize = 22.sp,
             modifier = Modifier.align(Alignment.Center)
         )
-
-        // Icono a la derecha
     }
 }
 
@@ -87,7 +81,8 @@ fun NotificacionesHeader(
 @Composable
 fun SeccionNotificaciones(
     modifier: Modifier = Modifier,
-    listaNotificaciones: List<NotificacionInfo> // Define el tipo correctamente aquí
+    onUsuarioNotificacionClick: (String) -> Unit,
+    listaUsuariosNotificacion: List<UsuarioInfo> // Define el tipo correctamente aquí
 ) {
     // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
@@ -95,21 +90,25 @@ fun SeccionNotificaciones(
             .background(MaterialTheme.colorScheme.background)
             .padding(vertical = 8.dp)
     ) {
-        items(listaNotificaciones) { notificacion -> // Usamos 'items' para iterar sobre la lista
-            ItemNotificacion(notificacion) // Componente que recibe cada notificación
+        items(count = listaUsuariosNotificacion.size) { index -> // Usamos 'items' para iterar sobre la lista
+            ItemNotificacion(
+                usuarioNotificacion = listaUsuariosNotificacion[index],
+                onUsuarioNotificacionClick = onUsuarioNotificacionClick
+            ) // Componente que recibe cada notificación
         }
     }
 }
 
 @Composable
 fun ItemNotificacion(
-    notificacionData: NotificacionInfo,
+    usuarioNotificacion: UsuarioInfo,
+    onUsuarioNotificacionClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ){
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable {/*accion*/ }
+            .clickable { onUsuarioNotificacionClick(usuarioNotificacion.idUsuario) }
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
 
@@ -120,15 +119,9 @@ fun ItemNotificacion(
                 .background(MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape),
             contentAlignment = Alignment.Center
         ){
-            /*Icon(
-                painter = painterResource(id = notificacionData.idFotoPerfil),
-                contentDescription = notificacionData.descripcion,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(40.dp)
-            )*/
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(notificacionData.idFotoPerfil)
+                    .data(usuarioNotificacion.fotoPerfil)
                     .crossfade(true)
                     .build(),
                 error = painterResource(R.drawable.ricardo_icon),
@@ -144,10 +137,8 @@ fun ItemNotificacion(
         Spacer(modifier = Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)){
-            Text(text = "A ${notificacionData.nombreUsuario} le gustó tu reseña", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-            //Text(text = "A ${notificacionData.idFotoPerfil} le gustó tu reseña", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-
-            Text("hace ${notificacionData.nSemanas} semanas", fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground)
+            Text(text = "A ${usuarioNotificacion.nombre} le gustó tu reseña", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
+            Text("hace 2 semanas", fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground)
         }
     }
 }
@@ -156,7 +147,8 @@ fun ItemNotificacion(
 @Preview//(showBackground= true)
 fun NotificacionesScreenPreview(){
     NotificacionesScreen(
-        notificacionesViewModel = viewModel()
+        notificacionesViewModel = viewModel(),
+        onNotificacionUsuarioClick = {}
     )
 }
 

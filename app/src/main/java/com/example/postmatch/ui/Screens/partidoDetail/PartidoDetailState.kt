@@ -7,5 +7,5 @@ import com.example.postmatch.data.local.LocalReviewProvider
 
 data class PartidoDetailState(
     val partido: PartidoInfo = PartidoInfo(),
-    val resenias: List<ReviewInfo> = emptyList()
+    val reviews: List<ReviewInfo> = emptyList()
 )
