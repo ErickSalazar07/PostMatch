@@ -2,6 +2,7 @@ package com.example.postmatch.data.repository
 
 import android.util.Log
 import com.example.postmatch.data.datasource.AuthRemoteDataSource
+import com.example.postmatch.data.injection.FirebaseHiltModule_AuthFactory.auth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -16,7 +17,9 @@ class AuthRepository @Inject constructor (
     private val authRemoteDataSource: AuthRemoteDataSource,
 ) {
 
-    val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
+    //val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
+    val currentUser: FirebaseUser?
+        get() = authRemoteDataSource.currentUser
 
     suspend fun signIn(email: String, password: String): Result<Unit> {
         return try {

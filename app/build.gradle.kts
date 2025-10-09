@@ -94,4 +94,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+    //await
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0") // o la versión más reciente
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+
 }

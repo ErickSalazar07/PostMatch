@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.repository.AuthRepository
+import com.example.postmatch.data.repository.UsuarioRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RegistroViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UsuarioRepository
 ): ViewModel()  {
 
     private val _uiState = MutableStateFlow(RegistroState())
@@ -56,7 +58,21 @@ class RegistroViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authRepository.signUp(_uiState.value.email.trim(), _uiState.value.password.trim())
             if (result.isSuccess) {
+                 val userId = authRepository.currentUser?.uid
+
+                userRepository.registerUser(
+                    nombre = state.nombre,
+                    email = state.email,
+                    userId = userId!!,
+                    password = state.password,
+
+
+
+                )
+                /*
                 onRegisterSuccess?.invoke()
+
+                 */
             } else {
                 _uiState.update { it.copy(errorMessage = "Error al registrar usuario") }
             }

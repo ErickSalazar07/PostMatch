@@ -1,16 +1,22 @@
 package com.example.postmatch.data.repository
 
+import android.util.Log
 import coil.network.HttpException
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.datasource.impl.UsuarioRetrofitDataSourceImpl
+import com.example.postmatch.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
+import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.UsuarioDto
 import com.example.postmatch.data.dtos.toReviewInfo
 import com.example.postmatch.data.dtos.toUsuarioInfo
 import javax.inject.Inject
 
+import kotlin.math.log
+
 class UsuarioRepository @Inject constructor(
-    private val usuarioRemoteDataSource: UsuarioRetrofitDataSourceImpl
+   // private val usuarioRemoteDataSource: UsuarioRetrofitDataSourceImpl
+      private val usuarioRemoteDataSource: UserFirestoreDataSourceImpl
 ){
     suspend fun getUsuarios(): Result<List<UsuarioInfo>>{
         return try {
@@ -55,5 +61,22 @@ class UsuarioRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+
+    suspend fun registerUser(nombre: String, email: String, password: String, userId: String): Result<Unit>{
+
+        return try {
+            val registerUserDto = RegisterUserDto(nombre, email, password)
+            usuarioRemoteDataSource.registerUser(registerUserDto,userId)
+            Result.success(Unit)
+        }catch (e: Exception){
+            Log.d("TAG", "getUserById: ${e.message}")
+            Result.failure(e)
+        }
+
+
+    }
 }
+
+
 
