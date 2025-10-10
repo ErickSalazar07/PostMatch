@@ -28,6 +28,7 @@ import com.example.postmatch.R
 @Composable
 fun RegistroScreen(
     registroViewModel: RegistroViewModel,
+    onSuccess: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by registroViewModel.uiState.collectAsState()
@@ -76,7 +77,10 @@ fun RegistroScreen(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        BotonRegistrar( onClick = {registroViewModel.register()})
+        BotonRegistrar( onClick = {
+            registroViewModel.register()
+            onSuccess()
+        })
 
     }
 }
@@ -177,6 +181,7 @@ fun BotonRegistrar(onClick: () -> Unit) {
 @Preview(showBackground = true)
 fun RegistroScreenPreview() {
     RegistroScreen(
-        registroViewModel = viewModel()
+        registroViewModel = viewModel(),
+        onSuccess = {}
     )
 }

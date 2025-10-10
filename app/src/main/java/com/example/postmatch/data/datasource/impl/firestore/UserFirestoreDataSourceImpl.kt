@@ -1,5 +1,6 @@
 package com.example.postmatch.data.datasource.impl.firestore
 
+import android.util.Log
 import androidx.compose.animation.core.snap
 import com.example.postmatch.data.datasource.UsuarioRemoteDataSource
 import com.example.postmatch.data.dtos.RegisterUserDto
@@ -13,6 +14,8 @@ import kotlinx.coroutines.tasks.await
 import jakarta.inject.Inject
 
 class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore): UsuarioRemoteDataSource {
+
+   /*
     override suspend fun getAllUsuarios(): List<UsuarioDto> {
         return try {
             // 🔹 Obtener todos los documentos de la colección "users"
@@ -25,6 +28,27 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             throw Exception("Error al obtener los usuarios: ${e.message}")
         }
     }
+
+    */
+
+    override suspend fun getAllUsuarios(): List<UsuarioDto> {
+        return try {
+            val snapshot = db.collection("users").get().await()
+
+            val usuarios = snapshot.documents.mapNotNull { it.toObject(UsuarioDto::class.java) }
+
+            Log.d("FirestoreDataSource", "✅ Se obtuvieron ${usuarios.size} usuarios de Firestore")
+            usuarios.forEach { user ->
+                Log.d("FirestoreDataSource", "➡️ Usuario: ${user.nombre} | Email: ${user.email}")
+            }
+
+            usuarios
+        } catch (e: Exception) {
+            Log.e("FirestoreDataSource", "❌ Error al obtener los usuarios: ${e.message}")
+            throw e
+        }
+    }
+
 
     override suspend fun getUsuarioById(id: String): UsuarioDto {
         val docRef = db.collection("users").document(id)
