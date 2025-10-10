@@ -20,20 +20,7 @@ class UsuarioRepository @Inject constructor(
    // private val usuarioRemoteDataSource: UsuarioRetrofitDataSourceImpl
       private val usuarioRemoteDataSource: UserFirestoreDataSourceImpl
 ){
-    suspend fun getUsuarios(): Result<List<UsuarioInfo>>{
-        return try {
-            val usuarios = usuarioRemoteDataSource.getAllUsuarios()
-            val usuariosInfo = usuarios.map { it.toUsuarioInfo() }
-            Result.success(usuariosInfo)
 
-        } catch (e: HttpException){
-            e.response.code
-            Result.failure(e)
-        }
-        catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 
     suspend fun getUsuarioById(idUsuario: Int): Result<UsuarioInfo>{
         return try {
@@ -89,6 +76,37 @@ class UsuarioRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+
+    /*
+    suspend fun getUsuarios(): Result<List<UsuarioInfo>>{
+        return try {
+            val usuarios = usuarioRemoteDataSource.getAllUsuarios()
+            val usuariosInfo = usuarios.map { it.toUsuarioInfo() }
+            Result.success(usuariosInfo)
+
+        } catch (e: HttpException){
+            e.response.code
+            Result.failure(e)
+        }
+        catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+     */
+
+    suspend fun getUsuarios(): Result<List<UsuarioInfo>> {
+        return try {
+            val usuarios = usuarioRemoteDataSource.getAllUsuarios()
+            val usuariosInfo = usuarios.map { it.toUsuarioInfo() }
+            Result.success(usuariosInfo)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 
 }
