@@ -66,7 +66,7 @@ fun PerfilScreen(
     perfilViewModel: PerfilViewModel,
     configuracionButtonClick: () -> Unit,
     reviewButtonClick: () -> Unit,
-    idPerfilUsuario: Int,
+    idPerfilUsuario: String,
     onReviewClick: (String) -> Unit,
     //idPartido: Int,
     modifier: Modifier = Modifier

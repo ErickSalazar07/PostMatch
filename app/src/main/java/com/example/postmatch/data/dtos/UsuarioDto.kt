@@ -10,7 +10,11 @@ data class UsuarioDto(
     val fotoPerfilUrl: String,
     val createdAt: String,
     val updatedAt: String
-)
+){
+
+
+    constructor():this(0,"","","","","","")
+}
 
 fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {
     return UsuarioInfo(

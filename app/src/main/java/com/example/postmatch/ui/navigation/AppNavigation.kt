@@ -58,6 +58,7 @@ import com.example.postmatch.ui.Screens.reviewDetail.ReviewDetailViewModel
 import com.example.postmatch.ui.Screens.reviews.ReviewsScreen
 import com.example.postmatch.ui.Screens.reviews.ReviewsViewModel
 import com.example.postmatch.ui.Screens.splash.SplashScreen
+import com.google.firebase.auth.FirebaseAuth
 
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
     object Login : Screen(route = "login")
@@ -264,6 +265,8 @@ fun AppNavigation(
         composable(route = Screen.Perfil.route) {
             val perfilViewModel: PerfilViewModel = hiltViewModel()
             val context = LocalContext.current
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val userId: String = currentUser?.uid ?: ""
             val activity = context as? ComponentActivity
 
             // Manejo del botón atrás
@@ -280,7 +283,7 @@ fun AppNavigation(
                     }
                 },
                 perfilViewModel = perfilViewModel,
-                idPerfilUsuario = 1,
+                idPerfilUsuario = userId,
                 onReviewClick = { idReview: String ->
                     // Capturamos el id de la reseña y navegamos a la pantalla de edición
                     navController.navigate(
