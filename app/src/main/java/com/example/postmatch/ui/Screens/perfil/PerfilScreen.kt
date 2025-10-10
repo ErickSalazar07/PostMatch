@@ -73,7 +73,6 @@ fun PerfilScreen(
 ){
 
 
-
     val state by perfilViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = modifier

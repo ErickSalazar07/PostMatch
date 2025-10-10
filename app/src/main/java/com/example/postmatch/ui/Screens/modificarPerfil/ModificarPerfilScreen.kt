@@ -53,13 +53,6 @@ fun ModificarPerfilScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         CampoTexto(
-            label = stringResource(R.string.email),
-            value = state.email,
-            onValueChange = modificarPerfilViewModel::updateEmail
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-
-        CampoTexto(
             label = stringResource(R.string.contrase_a),
             value = state.password,
             onValueChange = modificarPerfilViewModel::updatePassword

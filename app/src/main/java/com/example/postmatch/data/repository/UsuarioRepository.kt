@@ -21,13 +21,11 @@ class UsuarioRepository @Inject constructor(
       private val usuarioRemoteDataSource: UserFirestoreDataSourceImpl
 ){
 
-
-    suspend fun getUsuarioById(idUsuario: Int): Result<UsuarioInfo>{
+    suspend fun getUsuarioById(idUsuario: String): Result<UsuarioInfo>{
         return try {
-            val usuario = usuarioRemoteDataSource.getUsuarioById(idUsuario.toString())
+            val usuario = usuarioRemoteDataSource.getUsuarioById(idUsuario)
             val usuarioInfo = usuario.toUsuarioInfo()
             Result.success(usuarioInfo)
-
         } catch (e: HttpException){
             e.response.code
             Result.failure(e)
