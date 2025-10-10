@@ -42,6 +42,44 @@ class ModificarPerfilViewModel @Inject constructor(
     }
 
     // 🔹 Nueva función para actualizar el usuario en Firestore
+
+    fun loadUserData(userId: String) {
+        viewModelScope.launch {
+            try {
+                // 🔹 Convertimos el userId a Int (tu repositorio lo usa así)
+                val idUsuario = userId.toIntOrNull()
+                if (idUsuario == null) {
+                    _uiState.update { it.copy(errorMessage = "ID de usuario inválido") }
+                    return@launch
+                }
+
+                // 🔹 Llamamos al repositorio
+                val result = userRepository.getUsuarioById(idUsuario)
+
+                if (result.isSuccess) {
+                    val usuario = result.getOrNull()
+                    if (usuario != null) {
+                        _uiState.update {
+                            it.copy(
+                                nombre = usuario.nombre ?: "",
+                                email = usuario.email ?: "",
+                                //urlFotoPerfil = usuario.urlFotoPerfil ?: "",
+                                errorMessage = null
+                            )
+                        }
+                    } else {
+                        _uiState.update { it.copy(errorMessage = "No se encontró el usuario") }
+                    }
+                } else {
+                    _uiState.update { it.copy(errorMessage = "Error al obtener datos del usuario") }
+                }
+
+            } catch (e: Exception) {
+                _uiState.update { it.copy(errorMessage = "Error al cargar datos: ${e.message}") }
+            }
+        }
+    }
+
     fun updateUser() {
         val state = _uiState.value
         val nombre = state.nombre.trim()

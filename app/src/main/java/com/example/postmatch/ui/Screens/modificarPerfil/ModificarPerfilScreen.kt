@@ -34,6 +34,10 @@ fun ModificarPerfilScreen(
 ) {
     val state by modificarPerfilViewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        modificarPerfilViewModel.loadUserData(UserId)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -52,12 +56,8 @@ fun ModificarPerfilScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        CampoTexto(
-            label = stringResource(R.string.email),
-            value = state.email,
-            onValueChange = modificarPerfilViewModel::updateEmail
-        )
-        Spacer(modifier = Modifier.height(30.dp))
+
+
 
         CampoTexto(
             label = stringResource(R.string.contrase_a),
