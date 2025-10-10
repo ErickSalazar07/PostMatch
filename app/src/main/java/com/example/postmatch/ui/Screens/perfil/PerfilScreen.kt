@@ -72,6 +72,10 @@ fun PerfilScreen(
     modifier: Modifier = Modifier
 ){
 
+    LaunchedEffect(Unit) {
+        perfilViewModel.getUserInfo(idPerfilUsuario)
+    }
+
 
     val state by perfilViewModel.uiState.collectAsState()
     LazyColumn(

@@ -17,8 +17,8 @@ import javax.inject.Inject
 import kotlin.math.log
 
 class UsuarioRepository @Inject constructor(
-   // private val usuarioRemoteDataSource: UsuarioRetrofitDataSourceImpl
-      private val usuarioRemoteDataSource: UserFirestoreDataSourceImpl
+    // private val usuarioRemoteDataSource: UsuarioRetrofitDataSourceImpl
+    private val usuarioRemoteDataSource: UserFirestoreDataSourceImpl
 ){
 
     suspend fun getUsuarioById(idUsuario: String): Result<UsuarioInfo>{
@@ -75,39 +75,18 @@ class UsuarioRepository @Inject constructor(
         }
     }
 
-
-    /*
-    suspend fun getUsuarios(): Result<List<UsuarioInfo>>{
-        return try {
-            val usuarios = usuarioRemoteDataSource.getAllUsuarios()
-            val usuariosInfo = usuarios.map { it.toUsuarioInfo() }
-            Result.success(usuariosInfo)
-
-        } catch (e: HttpException){
-            e.response.code
-            Result.failure(e)
-        }
-        catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-
-     */
-
     suspend fun getUsuarios(): Result<List<UsuarioInfo>> {
         return try {
             val usuarios = usuarioRemoteDataSource.getAllUsuarios()
             val usuariosInfo = usuarios.map { it.toUsuarioInfo() }
             Result.success(usuariosInfo)
+        } catch (e: HttpException) {
+            e.response.code
+            Log.d("TAG", "getUsuarios: ${e.message}")
+            Result.failure(e)
         } catch (e: Exception) {
+            Log.d("TAG", "getUsuarios: ${e.message}")
             Result.failure(e)
         }
     }
-
-
-
 }
-
-
-

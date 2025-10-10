@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.navigation
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
@@ -69,9 +70,9 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object ConfiguracionPerfil : Screen(route = "configuracionPerfil")
     object Follow : Screen(route = "follow")
 
-    object  ModificarPerfil : Screen(route = "ModificarPerfil")
+    object ModificarPerfil : Screen(route = "ModificarPerfil")
     object Notificaciones : Screen(route = "notificaciones")
-    object Perfil : Screen(route = "perfil")
+    object Perfil : Screen(route = "perfil/{idUsuario}")
     object Reviews : Screen(route = "reviews")
     object Registro : Screen(route = "registro")
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
@@ -96,12 +97,15 @@ fun BottomNavBar(
     selectedRoute: String,
     onItemClick: (String) -> Unit
 ) {
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    val userId: String = currentUser?.uid ?: ""
+
     val items = listOf(
         BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
         BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "Buscar"),   // Cambiado
         //BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
-        BottomNavItem(Screen.Perfil.route, Icons.Filled.Person, "Perfil")
+        BottomNavItem(Screen.Perfil.route.replace("{idUsuario}", userId), Icons.Filled.Person, "Perfil")
 
     )
 
@@ -271,17 +275,27 @@ fun AppNavigation(
             }
 
             NotificacionesScreen(
-                notificacionesViewModel = notificacionesViewModel
+                notificacionesViewModel = notificacionesViewModel,
+                onNotificacionClick = { idUsuarioNotificacion ->
+                    Log.d("NotificationScreen", "Notificación seleccionada: $idUsuarioNotificacion")
+                    navController.navigate(
+                    route = Screen.PartidoDetail.route.replace(
+                        "{idUsuario}",
+                        "$idUsuarioNotificacion"
+                    )
+                ) }
             )
         }
 
 
 
-        composable(route = Screen.Perfil.route) {
+        composable(
+            route = Screen.Perfil.route,
+            arguments = listOf(navArgument("idUsuario") { type = NavType.StringType })
+        ) {
             val perfilViewModel: PerfilViewModel = hiltViewModel()
             val context = LocalContext.current
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            val userId: String = currentUser?.uid ?: ""
+            val userId: String = it.arguments?.getString("idUsuario") ?: ""
             val activity = context as? ComponentActivity
 
             // Manejo del botón atrás
@@ -407,9 +421,6 @@ fun AppNavigation(
 
             )
         }
-
-
-
 
 
 

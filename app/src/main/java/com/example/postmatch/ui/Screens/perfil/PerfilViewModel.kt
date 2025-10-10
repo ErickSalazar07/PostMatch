@@ -60,6 +60,17 @@ class PerfilViewModel @Inject constructor(
     }
      */
 
+    fun getUserInfo(idUsuario: String) {
+        viewModelScope.launch {
+            val result = usuarioRepository.getUsuarioById(idUsuario)
+            if(result.isSuccess) {
+                _uiState.update { it.copy(usuarioInfo = result.getOrDefault(UsuarioInfo())) }
+            } else {
+                Log.d("PerfilViewModel", "Error al cargar el usuario: ${result.exceptionOrNull()}")
+            }
+        }
+    }
+
     fun setPartidoInfo(idPartido: Int) {
         viewModelScope.launch {
             val result = partidoRepository.getPartidoById(idPartido)
