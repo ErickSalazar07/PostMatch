@@ -1,5 +1,6 @@
 package com.example.postmatch.data.datasource.impl.firestore
 
+import androidx.compose.animation.core.snap
 import com.example.postmatch.data.datasource.UsuarioRemoteDataSource
 import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.ReviewDto
@@ -16,7 +17,9 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
     }
 
     override suspend fun getUsuarioById(id: String): UsuarioDto {
-        TODO("Not yet implemented")
+        val docRef = db.collection("users").document(id)
+        val respuesta = docRef.get().await()
+        return respuesta.toObject(UsuarioDto::class.java) ?: throw Exception("No se pudo obtener el usuario")
     }
 
     override suspend fun getReviewsByUsuarioId(idUsuario: String): List<ReviewDto> {

@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 // PerfilViewModel.kt
 @HiltViewModel
 class PerfilViewModel @Inject constructor(
-    // private val authRepository: AuthRepository,
+     private val authRepository: AuthRepository,
     // private val storageRepository: StorageRepository,
     private val usuarioRepository: UsuarioRepository,
     private val reviewRetrofitService: ReviewRepository,
