@@ -30,9 +30,12 @@ import com.example.postmatch.ui.Screens.registro.RegistroState
 fun ModificarPerfilScreen(
     modificarPerfilViewModel: ModificarPerfilViewModel,
     modifier: Modifier = Modifier,
+    onSuccess: () -> Unit,
     UserId: String,
 ) {
     val state by modificarPerfilViewModel.uiState.collectAsState()
+
+   
 
     Column(
         modifier = modifier
@@ -51,6 +54,7 @@ fun ModificarPerfilScreen(
             onValueChange = modificarPerfilViewModel::updateNombre
         )
         Spacer(modifier = Modifier.height(30.dp))
+
 
         CampoTexto(
             label = stringResource(R.string.contrase_a),
@@ -75,7 +79,11 @@ fun ModificarPerfilScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         BotonGuardarCambios(
-            onClick = { modificarPerfilViewModel.updateUser() } // usa tu método actual
+            onClick = { modificarPerfilViewModel.updateUser()
+
+                onSuccess()
+            } // usa tu método actual
+
         )
     }
 }
@@ -188,6 +196,7 @@ fun BotonGuardarCambios(onClick: () -> Unit) {
 fun ModificarPerfilScreenPreview() {
     ModificarPerfilScreen(
         modificarPerfilViewModel = viewModel(),
-        UserId = ""
+        UserId = "",
+        onSuccess = {}
     )
 }

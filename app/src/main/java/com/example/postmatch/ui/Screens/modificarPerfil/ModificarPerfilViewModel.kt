@@ -39,6 +39,8 @@ class ModificarPerfilViewModel @Inject constructor(
     }
 
     // 🔹 Nueva función para actualizar el usuario en Firestore
+
+
     fun updateUser() {
         val state = _uiState.value
         val nombre = state.nombre.trim()
