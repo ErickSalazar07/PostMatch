@@ -195,6 +195,7 @@ fun AppNavigation(
                 configuracionPerfilViewModel = configuracionPerfilViewModel,
                 userId = userId,  // <-- agregas este parámetro
                 onModificarPerfilClick = { navController.navigate(Screen.ModificarPerfil.route) }
+
             )
         }
 
@@ -404,6 +405,7 @@ fun AppNavigation(
             ModificarPerfilScreen(
                 modificarPerfilViewModel = modificarPerfilViewModel,
                 UserId = userId,
+                onSuccess = { navController.navigate(Screen.Reviews.route)}
 
             )
         }
