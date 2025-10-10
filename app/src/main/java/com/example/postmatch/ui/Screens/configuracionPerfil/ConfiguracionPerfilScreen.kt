@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,9 +53,30 @@ import com.example.postmatch.data.local.LocalUsuarioProvider
 @Composable
 fun ConfiguracionPerfilScreen(
     configuracionPerfilViewModel: ConfiguracionPerfilViewModel,
-    modifier: Modifier = Modifier
+    userId: String,
+    modifier: Modifier = Modifier,
+    onModificarPerfilClick: () -> Unit, // Acción al pulsar “Modificar perfil”
 ) {
     val state by configuracionPerfilViewModel.uiState.collectAsState()
+
+    // 🔹 Cargar las secciones desde el provider local
+    val secciones = remember {
+        LocalSeccionConfiguracionProvider.seccionesConfiguracion
+    }
+
+    // 🔹 Reemplazar la acción de “Modificar perfil” con el callback real
+    val seccionesActualizadas = secciones.map { seccion ->
+        if (seccion.titulo == "Cuenta") {
+            seccion.copy(
+                opcionesConfiguracion = seccion.opcionesConfiguracion.map { opcion ->
+                    if (opcion.titulo == "Modificar perfil") {
+                        opcion.copy(onClick = onModificarPerfilClick)
+                    } else opcion
+                }
+            )
+        } else seccion
+    }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -66,12 +89,14 @@ fun ConfiguracionPerfilScreen(
                 fotoPerfilUrl = state.fotoPerfilUrl
             )
         }
-        items(count = state.secciones.size) {
-                index ->
-            SeccionConfiguracion(seccion = state.secciones[index])
+
+        // Secciones (Cuenta, Ayuda, etc.)
+        items(seccionesActualizadas) { seccion ->
+            SeccionConfiguracion(seccion = seccion)
         }
+
+        // Botón de cerrar sesión
         item {
-            // Botón Cerrar sesión
             Button(
                 onClick = configuracionPerfilViewModel::cerrarSesionButtonClick,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
@@ -79,11 +104,15 @@ fun ConfiguracionPerfilScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Text(stringResource(R.string.cerrar_sesi_n), color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    stringResource(R.string.cerrar_sesi_n),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
     }
 }
+
 
 @Composable
 fun SeccionConfiguracion(
@@ -226,7 +255,9 @@ fun ImagenPerfil(
 @Preview(showBackground = true)
 fun ConfiguracionPerfilScreenPreview() {
     ConfiguracionPerfilScreen(
-        configuracionPerfilViewModel = viewModel()
+        configuracionPerfilViewModel = viewModel(),
+        userId =  "",
+        onModificarPerfilClick = {}
     )
 }
 

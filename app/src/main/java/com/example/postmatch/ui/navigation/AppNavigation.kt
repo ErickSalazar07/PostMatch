@@ -49,6 +49,8 @@ import com.example.postmatch.ui.Screens.crearReview.CrearReviewScreen
 import com.example.postmatch.ui.Screens.crearReview.CrearReviewViewModel
 import com.example.postmatch.ui.Screens.follow.FollowViewModel
 import com.example.postmatch.ui.Screens.login.LoginViewModel
+import com.example.postmatch.ui.Screens.modificarPerfil.ModificarPerfilScreen
+import com.example.postmatch.ui.Screens.modificarPerfil.ModificarPerfilViewModel
 import com.example.postmatch.ui.Screens.notificaciones.NotificacionesViewModel
 import com.example.postmatch.ui.Screens.partidos.PartidosViewModel
 import com.example.postmatch.ui.Screens.perfil.PerfilViewModel
@@ -66,6 +68,8 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object PartidoDetail : Screen(route = "partidoDetail/{idPartido}")
     object ConfiguracionPerfil : Screen(route = "configuracionPerfil")
     object Follow : Screen(route = "follow")
+
+    object  ModificarPerfil : Screen(route = "ModificarPerfil")
     object Notificaciones : Screen(route = "notificaciones")
     object Perfil : Screen(route = "perfil")
     object Reviews : Screen(route = "reviews")
@@ -166,20 +170,31 @@ fun AppNavigation(
             )
         }
 
+
+
+
         composable(route = Screen.ConfiguracionPerfil.route) {
 
             val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = hiltViewModel()
             val context = LocalContext.current
             val activity = context as? ComponentActivity
 
+            // 🔹 Obtener el usuario autenticado actual
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val userId: String = currentUser?.uid ?: ""
+
+            // 🔹 Manejo de logout
             configuracionPerfilViewModel.setOnLogout {
                 navController.navigate(Screen.Login.route) {
                     popUpTo(0) { inclusive = true }
                 }
             }
 
+            // 🔹 Pasar el userId a la pantalla (si la necesita)
             ConfiguracionPerfilScreen(
-                configuracionPerfilViewModel = configuracionPerfilViewModel
+                configuracionPerfilViewModel = configuracionPerfilViewModel,
+                userId = userId,  // <-- agregas este parámetro
+                onModificarPerfilClick = { navController.navigate(Screen.ModificarPerfil.route) }
             )
         }
 
@@ -381,6 +396,19 @@ fun AppNavigation(
                 onReviewUpdated = { navController.popBackStack() },
             )
         }
+
+        composable(route = Screen.ModificarPerfil.route) {
+            val modificarPerfilViewModel: ModificarPerfilViewModel = hiltViewModel()
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val userId: String = currentUser?.uid ?: ""
+
+            ModificarPerfilScreen(
+                modificarPerfilViewModel = modificarPerfilViewModel,
+                UserId = userId,
+
+            )
+        }
+
 
 
 

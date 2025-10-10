@@ -6,6 +6,8 @@ import com.example.postmatch.data.OpcionConfiguracionButtonInfo
 import com.example.postmatch.data.SeccionConfiguracionInfo
 
 object LocalSeccionConfiguracionProvider {
+
+
     val seccionesConfiguracion = listOf(
         SeccionConfiguracionInfo(
             titulo = "Cuenta",

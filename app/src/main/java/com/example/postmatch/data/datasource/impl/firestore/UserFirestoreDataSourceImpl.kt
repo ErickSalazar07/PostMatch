@@ -4,6 +4,7 @@ import androidx.compose.animation.core.snap
 import com.example.postmatch.data.datasource.UsuarioRemoteDataSource
 import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.ReviewDto
+import com.example.postmatch.data.dtos.UpdateUserDto
 import com.example.postmatch.data.dtos.UsuarioDto
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -32,6 +33,25 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         val docRef = db.collection("users").document(userId)
         docRef.set(registerUserDto).await()
     }
+
+    override suspend fun updateUser(
+        userId: String,
+        updateUserDto: UpdateUserDto
+    ) {
+        val docRef = db.collection("users").document(userId)
+        try {
+            docRef.update(
+                mapOf(
+                    "nombre" to updateUserDto.nombre,
+                    "email" to updateUserDto.email,
+                    "password" to updateUserDto.password
+                )
+            ).await()
+        } catch (e: Exception) {
+            throw Exception("Error al actualizar el usuario: ${e.message}")
+        }
+    }
+
 }
 
 

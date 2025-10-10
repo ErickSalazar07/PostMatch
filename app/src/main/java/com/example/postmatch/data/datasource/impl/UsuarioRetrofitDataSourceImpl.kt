@@ -4,6 +4,7 @@ import com.example.postmatch.data.datasource.UsuarioRemoteDataSource
 import com.example.postmatch.data.datasource.services.UsuarioRetrofitService
 import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.ReviewDto
+import com.example.postmatch.data.dtos.UpdateUserDto
 import com.example.postmatch.data.dtos.UsuarioDto
 import javax.inject.Inject
 
@@ -23,6 +24,10 @@ class UsuarioRetrofitDataSourceImpl @Inject constructor(
     }
 
     override suspend fun registerUser(registerUserDto: RegisterUserDto, userId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUser(userId: String, updateUserDto: UpdateUserDto) {
         TODO("Not yet implemented")
     }
 }

@@ -7,9 +7,11 @@ import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.datasource.impl.UsuarioRetrofitDataSourceImpl
 import com.example.postmatch.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
 import com.example.postmatch.data.dtos.RegisterUserDto
+import com.example.postmatch.data.dtos.UpdateUserDto
 import com.example.postmatch.data.dtos.UsuarioDto
 import com.example.postmatch.data.dtos.toReviewInfo
 import com.example.postmatch.data.dtos.toUsuarioInfo
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 import kotlin.math.log
@@ -76,6 +78,19 @@ class UsuarioRepository @Inject constructor(
 
 
     }
+
+    suspend fun updateUser(userId: String, nombre: String, email: String, password: String): Result<Unit> {
+        return try {
+            val updateUserDto = UpdateUserDto(nombre, email, password)
+            usuarioRemoteDataSource.updateUser(userId, updateUserDto)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "updateUser: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+
 }
 
 

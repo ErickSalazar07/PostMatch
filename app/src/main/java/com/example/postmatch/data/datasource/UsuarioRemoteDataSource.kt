@@ -2,6 +2,7 @@ package com.example.postmatch.data.datasource
 
 import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.ReviewDto
+import com.example.postmatch.data.dtos.UpdateUserDto
 import com.example.postmatch.data.dtos.UsuarioDto
 
 interface UsuarioRemoteDataSource {
@@ -10,4 +11,7 @@ interface UsuarioRemoteDataSource {
     suspend fun getReviewsByUsuarioId(idUsuario: String): List<ReviewDto>
 
     suspend fun registerUser(registerUserDto: RegisterUserDto, userId: String): Unit
+
+    suspend fun updateUser(userId: String, updateUserDto: UpdateUserDto)
+
 }
