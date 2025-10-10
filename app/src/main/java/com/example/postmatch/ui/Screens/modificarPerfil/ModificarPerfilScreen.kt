@@ -34,9 +34,7 @@ fun ModificarPerfilScreen(
 ) {
     val state by modificarPerfilViewModel.uiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        modificarPerfilViewModel.loadUserData(UserId)
-    }
+   
 
     Column(
         modifier = modifier
@@ -55,8 +53,6 @@ fun ModificarPerfilScreen(
             onValueChange = modificarPerfilViewModel::updateNombre
         )
         Spacer(modifier = Modifier.height(30.dp))
-
-
 
 
         CampoTexto(

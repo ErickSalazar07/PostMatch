@@ -28,7 +28,6 @@ class PerfilViewModel @Inject constructor(
 
     private val authRepository: AuthRepository,
     private val storageRepository: StorageRepository,
-
     private val usuarioRepository: UsuarioRepository,
     private val reviewRetrofitService: ReviewRepository,
     private val partidoRepository: PartidoRepository
@@ -119,16 +118,12 @@ class PerfilViewModel @Inject constructor(
         viewModelScope.launch {
             val firebaseUser = authRepository.currentUser
             if (firebaseUser != null) {
-                val usuarioInfo = UsuarioInfo(
-                    idUsuario = "0", // o tu lógica para asignar ID si lo manejas tú
-                    nombre = firebaseUser.displayName ?: "Sin nombre",
-                    email = firebaseUser.email ?: "",
-                    fotoPerfil = firebaseUser.photoUrl?.toString() ?: "",
-                    // agrega más campos si tu modelo los tiene
-                )
-                _uiState.update { it.copy(usuarioInfo = usuarioInfo) }
-
-                Log.d("PerfilViewModel", "Usuario cargado: ${usuarioInfo.nombre}")
+                val perfilUsuarioResult = usuarioRepository.getUsuarioById(firebaseUser.uid)
+                if(perfilUsuarioResult.isSuccess) {
+                    _uiState.update { it.copy(usuarioInfo = perfilUsuarioResult.getOrDefault(UsuarioInfo())) }
+                } else {
+                    Log.d("PerfilViewModel", "Error al cargar el usuario: ${perfilUsuarioResult.exceptionOrNull()}")
+                }
             } else {
                 Log.w("PerfilViewModel", "No hay usuario autenticado")
             }

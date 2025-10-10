@@ -3,6 +3,7 @@ package com.example.postmatch.ui.Screens.modificarPerfil
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.UsuarioRepository
 import com.example.postmatch.ui.Screens.registro.RegistroState
@@ -29,10 +30,6 @@ class ModificarPerfilViewModel @Inject constructor(
         _uiState.update { it.copy(nombre = nuevoNombre) }
     }
 
-    fun updateEmail(nuevoEmail: String) {
-        _uiState.update { it.copy(email = nuevoEmail) }
-    }
-
     fun updatePassword(nuevaPassword: String) {
         _uiState.update { it.copy(password = nuevaPassword) }
     }
@@ -43,42 +40,6 @@ class ModificarPerfilViewModel @Inject constructor(
 
     // 🔹 Nueva función para actualizar el usuario en Firestore
 
-    fun loadUserData(userId: String) {
-        viewModelScope.launch {
-            try {
-                // 🔹 Convertimos el userId a Int (tu repositorio lo usa así)
-                val idUsuario = userId.toIntOrNull()
-                if (idUsuario == null) {
-                    _uiState.update { it.copy(errorMessage = "ID de usuario inválido") }
-                    return@launch
-                }
-
-                // 🔹 Llamamos al repositorio
-                val result = userRepository.getUsuarioById(idUsuario)
-
-                if (result.isSuccess) {
-                    val usuario = result.getOrNull()
-                    if (usuario != null) {
-                        _uiState.update {
-                            it.copy(
-                                nombre = usuario.nombre ?: "",
-                                email = usuario.email ?: "",
-                                //urlFotoPerfil = usuario.urlFotoPerfil ?: "",
-                                errorMessage = null
-                            )
-                        }
-                    } else {
-                        _uiState.update { it.copy(errorMessage = "No se encontró el usuario") }
-                    }
-                } else {
-                    _uiState.update { it.copy(errorMessage = "Error al obtener datos del usuario") }
-                }
-
-            } catch (e: Exception) {
-                _uiState.update { it.copy(errorMessage = "Error al cargar datos: ${e.message}") }
-            }
-        }
-    }
 
     fun updateUser() {
         val state = _uiState.value
@@ -87,7 +48,7 @@ class ModificarPerfilViewModel @Inject constructor(
         val password = state.password.trim()
 
         // Validaciones básicas
-        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (nombre.isEmpty() || password.isEmpty()) {
             _uiState.update { it.copy(errorMessage = "Todos los campos son obligatorios") }
             return
         }
@@ -126,15 +87,24 @@ class ModificarPerfilViewModel @Inject constructor(
         }
     }
 
-    fun setOnUpdateSuccess(callback: () -> Unit) {
-        onUpdateSuccess = callback
+    fun setCurrentUser() {
+        viewModelScope.launch {
+            val firebaseUser = authRepository.currentUser
+            if (firebaseUser != null) {
+                val perfilUsuarioResult = userRepository.getUsuarioById(firebaseUser.uid)
+                if(perfilUsuarioResult.isSuccess) {
+                    val perfilUsuariActual = perfilUsuarioResult.getOrDefault(UsuarioInfo())
+                    _uiState.update { it.copy(
+                        nombre = perfilUsuariActual.nombre,
+                        email = perfilUsuariActual.email,
+                        password = perfilUsuariActual.password
+                    )}
+                }
+            }
+        }
     }
 
-    fun showState() {
-        Log.d("ModificarPerfilViewModel", "Nombre: ${uiState.value.nombre}")
-        Log.d("ModificarPerfilViewModel", "Email: ${uiState.value.email}")
-        Log.d("ModificarPerfilViewModel", "Password: ${uiState.value.password}")
-        Log.d("ModificarPerfilViewModel", "URL Foto Perfil: ${uiState.value.urlFotoPerfil}")
+    init {
+        setCurrentUser()
     }
-
 }
