@@ -58,6 +58,7 @@ class RegistroViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authRepository.signUp(_uiState.value.email.trim(), _uiState.value.password.trim())
             if (result.isSuccess) {
+                showState()
                  val userId = authRepository.currentUser?.uid
 
                 userRepository.registerUser(
@@ -65,14 +66,7 @@ class RegistroViewModel @Inject constructor(
                     email = state.email,
                     userId = userId!!,
                     password = state.password,
-
-
-
                 )
-                /*
-                onRegisterSuccess?.invoke()
-
-                 */
             } else {
                 _uiState.update { it.copy(errorMessage = "Error al registrar usuario") }
             }

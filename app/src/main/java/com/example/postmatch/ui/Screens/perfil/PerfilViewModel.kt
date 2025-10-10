@@ -25,8 +25,10 @@ import kotlinx.coroutines.launch
 // PerfilViewModel.kt
 @HiltViewModel
 class PerfilViewModel @Inject constructor(
-     private val authRepository: AuthRepository,
-    // private val storageRepository: StorageRepository,
+
+    private val authRepository: AuthRepository,
+    private val storageRepository: StorageRepository,
+
     private val usuarioRepository: UsuarioRepository,
     private val reviewRetrofitService: ReviewRepository,
     private val partidoRepository: PartidoRepository
@@ -57,7 +59,6 @@ class PerfilViewModel @Inject constructor(
             }
         }
     }
-
      */
 
     fun setPartidoInfo(idPartido: Int) {
@@ -97,14 +98,11 @@ class PerfilViewModel @Inject constructor(
 
     }
 
-
-
-
-
-    init {
+    /*init {
         var idUsuarioQuemado: Int = 1 // se cambia despues
         viewModelScope.launch {
-            val result = usuarioRepository.getUsuarioById(idUsuarioQuemado)
+            val usuarioPerfil = authRepository.currentUser?: UsuarioInfo
+
             if (result.isSuccess) {
                 _uiState.update { it.copy(usuarioInfo = result.getOrNull() ?: UsuarioInfo()) }
                 val resultReviews = usuarioRepository.getReviewsByUsuarioId(idUsuarioQuemado)
@@ -115,5 +113,29 @@ class PerfilViewModel @Inject constructor(
                 }
             }
         }
+    }*/
+
+    fun cargarUsuarioActual() {
+        viewModelScope.launch {
+            val firebaseUser = authRepository.currentUser
+            if (firebaseUser != null) {
+                val usuarioInfo = UsuarioInfo(
+                    idUsuario = "0", // o tu lógica para asignar ID si lo manejas tú
+                    nombre = firebaseUser.displayName ?: "Sin nombre",
+                    email = firebaseUser.email ?: "",
+                    fotoPerfil = firebaseUser.photoUrl?.toString() ?: "",
+                    // agrega más campos si tu modelo los tiene
+                )
+                _uiState.update { it.copy(usuarioInfo = usuarioInfo) }
+
+                Log.d("PerfilViewModel", "Usuario cargado: ${usuarioInfo.nombre}")
+            } else {
+                Log.w("PerfilViewModel", "No hay usuario autenticado")
+            }
+        }
+    }
+
+    init {
+        cargarUsuarioActual()
     }
 }

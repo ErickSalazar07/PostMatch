@@ -10,8 +10,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-
 import javax.inject.Singleton
+
+
 
 
 @Module
@@ -33,4 +34,6 @@ class FirebaseHiltModule {
     fun provideFirebaseFirestore(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
     }
+
+
 }

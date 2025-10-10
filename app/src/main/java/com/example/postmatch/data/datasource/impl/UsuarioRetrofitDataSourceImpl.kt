@@ -22,7 +22,6 @@ class UsuarioRetrofitDataSourceImpl @Inject constructor(
         return service.getReviewsByUsuarioId(idUsuario = idUsuario.toInt())
     }
 
-
     override suspend fun registerUser(registerUserDto: RegisterUserDto, userId: String) {
         TODO("Not yet implemented")
     }
