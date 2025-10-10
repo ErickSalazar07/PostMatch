@@ -47,13 +47,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
 
+
+@Preview(showBackground = true)
+@Composable
+fun PerfilScreenPreview() {
+    PerfilScreen(
+        perfilViewModel = hiltViewModel(),
+        configuracionButtonClick = {},
+        reviewButtonClick = {},
+        onReviewClick = {},
+        idPerfilUsuario = 1
+    )
+}
 
 @Composable
 fun PerfilScreen(
@@ -80,12 +94,12 @@ fun PerfilScreen(
                 onReviewButtonClick = reviewButtonClick)
         }
         item {
-            ImagenPerfil(
+            ImagenPerfil(idPerfilUsuario = idPerfilUsuario,
                 fotoPerfilUrl = state.usuarioInfo.fotoPerfil,
                 nombrePerfil = state.usuarioInfo.nombre,
                 arrobaPerfil = state.usuarioInfo.email,
-                onFotoPerfilButton = {},//perfilViewModel::uploadProfileImageToFirebase,
-                oficioPerfil = "Futbolista")
+                onFotoPerfilButton = {},//perfilViewModel::uploadProfileImageToFirebase
+            )
         }
         item {
             InformacionCuenta(1002, 1293)
@@ -118,7 +132,7 @@ fun ItemReseniaPerfil(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(16.dp))
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -136,7 +150,7 @@ fun ItemReseniaPerfil(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = stringResource(R.string.estrella),
-                        tint = Color.Yellow,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -194,13 +208,18 @@ fun ItemReseniaPerfil(
                 .weight(0.3f)
                 .aspectRatio(1f)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ricardo_icon),
-                contentDescription = stringResource(R.string.imagen_rese_a),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(reseniaPerfil.usuarioFotoPerfil)
+                    .crossfade(true)
+                    .build(),
+                error = painterResource(R.drawable.user_icon),
+                placeholder = painterResource(R.drawable.user_icon),
+                contentDescription = stringResource(R.string.foto_de_perfil),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(150.dp)
+                    .clip(CircleShape)
             )
         }
     }
@@ -235,10 +254,10 @@ fun CajaInfoNumFollow(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier
-            .size(100.dp)
-            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp)),
-        contentAlignment = Alignment.Center
+        modifier = modifier,
+            //.size(100.dp)
+            //.border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp)),
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -246,12 +265,12 @@ fun CajaInfoNumFollow(
             Text(
                 text = numFollow.toString(),
                 color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = stringResource(idLabelFollow),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 12.sp
             )
         }
@@ -265,17 +284,19 @@ fun InformacionCuenta(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Caja de Seguidores
-
         CajaInfoNumFollow(
             numFollow = seguidores,
             idLabelFollow = R.string.seguidores
         )
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.width(50.dp))
         // Caja de Seguidos
         CajaInfoNumFollow(
             numFollow = seguidos,
@@ -340,17 +361,17 @@ fun PerfilHeader(
 
 @Composable
 fun ImagenPerfil(
+    idPerfilUsuario: Int,
     fotoPerfilUrl: String?,
     nombrePerfil: String,
     arrobaPerfil: String,
-    oficioPerfil: String,
     onFotoPerfilButton: (uri:Uri) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(vertical = 24.dp)
     ) {
         Column(
@@ -359,7 +380,6 @@ fun ImagenPerfil(
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(fotoPerfilUrl)
@@ -369,31 +389,28 @@ fun ImagenPerfil(
                 placeholder = painterResource(R.drawable.user_icon),
                 contentDescription = stringResource(R.string.foto_de_perfil),
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(200.dp).clip(CircleShape)
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(CircleShape)
             )
 
-            PickImageButton(action = onFotoPerfilButton)
+            if (idPerfilUsuario == 1) {
+                PickImageButton(action = onFotoPerfilButton)
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Nombre
             Text(
                 text = nombrePerfil,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground
+                fontSize = 22.sp
             )
-
-            // Usuario
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = arrobaPerfil,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = oficioPerfil,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                fontSize = 14.sp
             )
         }
     }
