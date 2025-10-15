@@ -3,7 +3,7 @@ package com.example.postmatch.data.dtos
 import com.example.postmatch.data.UsuarioInfo
 
 data class UsuarioDto(
-    val id: Int,
+    val id: String,
     val nombre: String,
     val email: String,
     val password: String,
@@ -13,12 +13,12 @@ data class UsuarioDto(
 ){
 
 
-    constructor():this(0,"","","","","","")
+    constructor():this("0","","","","","","")
 }
 
 fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {
     return UsuarioInfo(
-        idUsuario = id.toString(),
+        idUsuario = id,
         nombre = nombre,
         email = email,
         password = password,

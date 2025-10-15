@@ -280,9 +280,9 @@ fun AppNavigation(
                 onNotificacionClick = { idUsuarioNotificacion ->
                     Log.d("NotificationScreen", "Notificación seleccionada: $idUsuarioNotificacion")
                     navController.navigate(
-                    route = Screen.PartidoDetail.route.replace(
+                    route = Screen.Perfil.route.replace(
                         "{idUsuario}",
-                        "$idUsuarioNotificacion"
+                        idUsuarioNotificacion
                     )
                 ) }
             )

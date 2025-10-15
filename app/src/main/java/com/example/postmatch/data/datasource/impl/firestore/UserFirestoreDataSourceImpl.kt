@@ -32,23 +32,12 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
     */
 
     override suspend fun getAllUsuarios(): List<UsuarioDto> {
-        return try {
-            val snapshot = db.collection("users").get().await()
-
-            val usuarios = snapshot.documents.mapNotNull { it.toObject(UsuarioDto::class.java) }
-
-            Log.d("FirestoreDataSource", "✅ Se obtuvieron ${usuarios.size} usuarios de Firestore")
-            usuarios.forEach { user ->
-                Log.d("FirestoreDataSource", "➡️ Usuario: ${user.nombre} | Email: ${user.email}")
-            }
-
-            usuarios
-        } catch (e: Exception) {
-            Log.e("FirestoreDataSource", "❌ Error al obtener los usuarios: ${e.message}")
-            throw e
+        val snapshot = db.collection("users").get().await()
+        return snapshot.documents.map { doc ->
+            val user = doc.toObject(UsuarioDto::class.java)
+            user?.copy(id = doc.id) ?: throw Exception("Usuario not found")
         }
     }
-
 
     override suspend fun getUsuarioById(id: String): UsuarioDto {
         val docRef = db.collection("users").document(id)
