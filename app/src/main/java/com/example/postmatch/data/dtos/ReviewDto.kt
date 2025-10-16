@@ -19,16 +19,6 @@ data class ReviewDto(
     constructor(): this("","","",Date(),0,0,0,"","")
 }
 
-data class PartidoCreateDto(
-    val fotoUrl: String? = null
-)
-
-data class UsuarioCreateDto(
-    val nombre: String? = null,
-    val email: String? = null,
-    val fotoPerfilUrl: String? = null
-)
-
 fun ReviewDto.toReviewInfo(): ReviewInfo {
     return ReviewInfo(
         idReview = id,
