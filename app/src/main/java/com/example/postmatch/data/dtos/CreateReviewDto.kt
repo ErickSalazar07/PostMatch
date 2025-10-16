@@ -7,6 +7,19 @@ data class CreateReviewDto (
     var descripcion: String = "",
     var fecha: Date = Date(),
     var calificacion: Int = 1,
-    var idUsuario: Int = 0,
-    var idPartido: Int = 0
+    var idUsuario: String = "",
+    var idPartido: String = "",
+    var partido: PartidoCreateDto? = null,
+    var usuario: UsuarioCreateDto? = null
+)
+
+data class PartidoCreateDto(
+    val fotoUrl: String? = null,
+    val fecha: Date? = null
+)
+
+data class UsuarioCreateDto(
+    val nombre: String? = null,
+    val email: String? = null,
+    val fotoPerfilUrl: String? = null
 )

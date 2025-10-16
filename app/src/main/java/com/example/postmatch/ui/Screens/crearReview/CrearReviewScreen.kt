@@ -1,6 +1,5 @@
 package com.example.postmatch.ui.Screens.crearReview
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,13 +16,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,8 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,14 +41,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.PartidoInfo
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-
 
 @Composable
 fun CrearReviewScreen(
@@ -107,9 +96,8 @@ fun CrearReviewScreen(
 
         BotonPublicar(
             onChange = {
-                crearReviewViewModel.publicarButtonClick(
-                    onSuccess = onReviewCreated
-                )
+                crearReviewViewModel.createReview(reviewPartidoId)
+                onReviewCreated()
             }
         )
     }
@@ -212,8 +200,8 @@ fun CalificacionInput(
     onCalificacionChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val MAX_CALIFICACION: Int = 5
-    var i: Int = 1
+    val maxCalificacion = 5
+    var i = 1
 
     Column(
         modifier = modifier
@@ -228,13 +216,13 @@ fun CalificacionInput(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            while (i <= MAX_CALIFICACION) {
+            while (i <= maxCalificacion) {
                 ReviewCalificacionButton(
                     calificacion = calificacion,
                     valorCalificacion = i,
                     onCalificacionChange = onCalificacionChange
                 )
-                if (0 < i && i < MAX_CALIFICACION)
+                if (0 < i && i < maxCalificacion)
                     Spacer(Modifier.width(5.dp))
                 i++
             }
