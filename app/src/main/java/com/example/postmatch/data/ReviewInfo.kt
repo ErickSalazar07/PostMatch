@@ -23,5 +23,6 @@ data class ReviewInfo(
     var partidoGolesVisitante: Int = 0,
     var partidoGolesLocal: Int = 0,
     var partidoFecha: String = "",
-    var partidoFotoUrl: String = ""
+    var partidoFotoUrl: String = "",
+    val likedByUser: Boolean = false
 )

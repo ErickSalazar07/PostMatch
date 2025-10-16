@@ -86,7 +86,15 @@ fun ReviewsScreen(
                 // Lista de tarjetas
                 SectionReviews(
                     reviews = state.reviews,
-                    onReviewClick =  onReviewClick
+                    onReviewClick =  onReviewClick,
+                    onLikeClick = { reviewId ->
+                        // 👇 usamos el idUsuarioActual que viene como parámetro
+                        reviewsViewModel.sendOrDeleteLike(
+                            reviewId = reviewId.toString()
+
+                        )
+                    }
+
                 )
             }
         }
@@ -117,6 +125,8 @@ fun ReviewHeader(
 fun SectionReviews(
     onReviewClick: (Int) -> Unit,
     reviews: List<ReviewInfo>,
+    onLikeClick: (Int) -> Unit,
+
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -127,7 +137,8 @@ fun SectionReviews(
             index ->
             ReviewCard(
                 reviewInfo = reviews[index],
-                onReviewClick = onReviewClick
+                onReviewClick = onReviewClick,
+                onLikeClick = onLikeClick
             )
         }
     }
@@ -137,6 +148,7 @@ fun SectionReviews(
 fun ReviewCard(
     onReviewClick: (Int) -> Unit,
     reviewInfo: ReviewInfo,
+    onLikeClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -174,7 +186,7 @@ fun ReviewCard(
                         imageVector = Icons.Default.FavoriteBorder,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp).clickable { onLikeClick(reviewInfo.idReview.toInt()) }
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("${reviewInfo.numLikes}", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
@@ -220,6 +232,8 @@ fun ReviewCard(
 }
 
 
+/*
+
 @Composable
 @Preview (showBackground = true)
 fun ReviewsScreenPreview(){
@@ -228,3 +242,5 @@ fun ReviewsScreenPreview(){
         onReviewClick = {}
     )
 }
+
+ */

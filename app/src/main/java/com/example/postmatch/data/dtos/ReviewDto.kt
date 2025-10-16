@@ -14,7 +14,8 @@ data class ReviewDto(
     val idUsuario: String,
     val idPartido: String,
     val partido: PartidoCreateDto? = null,
-    val usuario: UsuarioCreateDto? = null
+    val usuario: UsuarioCreateDto? = null,
+    val likedByUser: Boolean = false
 ) {
     constructor(): this("","","",Date(),0,0,0,"","")
 }
@@ -33,6 +34,7 @@ fun ReviewDto.toReviewInfo(): ReviewInfo {
         partidoFotoUrl = partido?.fotoUrl ?: "",
         usuarioNombre = usuario?.nombre ?: "",
         usuarioEmail = usuario?.email ?: "",
-        usuarioFotoPerfil = usuario?.fotoPerfilUrl ?: ""
+        usuarioFotoPerfil = usuario?.fotoPerfilUrl ?: "",
+        likedByUser = likedByUser,
     )
 }
