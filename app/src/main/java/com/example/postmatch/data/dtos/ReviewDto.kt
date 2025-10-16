@@ -4,20 +4,34 @@ import com.example.postmatch.data.ReviewInfo
 import java.util.Date
 
 data class ReviewDto(
-    val id: Int,
+    val id: String,
     val titulo: String,
     val descripcion: String,
     val fecha: Date,
     val calificacion: Int,
     val numLikes: Int,
     val numComentarios: Int,
-    val idUsuario: Int,
-    val idPartido: Int,
+    val idUsuario: String,
+    val idPartido: String,
+    val partido: PartidoCreateDto? = null,
+    val usuario: UsuarioCreateDto? = null
+) {
+    constructor(): this("","","",Date(),0,0,0,"","")
+}
+
+data class PartidoCreateDto(
+    val fotoUrl: String? = null
+)
+
+data class UsuarioCreateDto(
+    val nombre: String? = null,
+    val email: String? = null,
+    val fotoPerfilUrl: String? = null
 )
 
 fun ReviewDto.toReviewInfo(): ReviewInfo {
     return ReviewInfo(
-        idReview = id.toString(),
+        idReview = id,
         titulo = titulo,
         descripcion = descripcion,
         fecha = fecha.toString(),
@@ -25,6 +39,10 @@ fun ReviewDto.toReviewInfo(): ReviewInfo {
         numLikes = numLikes,
         numComentarios = numComentarios,
         usuarioId = idUsuario,
-        partidoId = idPartido
+        partidoId = idPartido,
+        partidoFotoUrl = partido?.fotoUrl ?: "",
+        usuarioNombre = usuario?.nombre ?: "",
+        usuarioEmail = usuario?.email ?: "",
+        usuarioFotoPerfil = usuario?.fotoPerfilUrl ?: ""
     )
 }

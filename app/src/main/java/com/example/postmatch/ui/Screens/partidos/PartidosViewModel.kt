@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.Screens.partidos
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.PartidoInfo
@@ -33,6 +34,5 @@ class PartidosViewModel @Inject constructor(
                 _uiState.update { it.copy(partidos = emptyList()) }
             }
         }
-        _uiState.update { it.copy(partidos = LocalPartidoProvider.partidos) }
     }
 }

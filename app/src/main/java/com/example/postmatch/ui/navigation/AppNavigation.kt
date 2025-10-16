@@ -165,12 +165,12 @@ fun AppNavigation(
         }
         composable(
             route = Screen.PartidoDetail.route,
-            arguments = listOf(navArgument("idPartido") { type = NavType.IntType })
+            arguments = listOf(navArgument("idPartido") { type = NavType.StringType })
         ) {
             val partidoDetailViewModel: PartidoDetailViewModel = hiltViewModel()
             PartidoDetailScreen(
                 partidoDetailViewModel = partidoDetailViewModel,
-                idPartido = it.arguments?.getInt("idPartido") ?: 1
+                idPartido = it.arguments?.getString("idPartido") ?: ""
             )
         }
 
@@ -278,7 +278,6 @@ fun AppNavigation(
             NotificacionesScreen(
                 notificacionesViewModel = notificacionesViewModel,
                 onNotificacionClick = { idUsuarioNotificacion ->
-                    Log.d("NotificationScreen", "Notificación seleccionada: $idUsuarioNotificacion")
                     navController.navigate(
                     route = Screen.Perfil.route.replace(
                         "{idUsuario}",
@@ -363,20 +362,20 @@ fun AppNavigation(
         }
         composable(
             route = Screen.ReviewDetail.route,
-            arguments = listOf(navArgument("idReview") { type = NavType.IntType })
+            arguments = listOf(navArgument("idReview") { type = NavType.StringType })
         ) {
             val reviewDetailViewModel: ReviewDetailViewModel = hiltViewModel()
             ReviewDetailScreen(
                 reviewDetailViewModel = reviewDetailViewModel,
                 comentarioButtonClick = { navController.navigate(Screen.Follow.route) },
                 likeButtonClick = { navController.navigate(Screen.PartidoDetail.route) }, // TODO: eliminar esta accion no correspondiente
-                idReview = it.arguments?.getInt("idReview") ?: 0
+                idReview = it.arguments?.getString("idReview") ?: ""
             )
         }
 
         composable(
             route = Screen.CrearReview.route,
-            arguments = listOf(navArgument("idPartido") { type = NavType.IntType })
+            arguments = listOf(navArgument("idPartido") { type = NavType.StringType })
         ) {
             val crearReviewViewModel: CrearReviewViewModel = hiltViewModel()
             val context = LocalContext.current
@@ -388,7 +387,7 @@ fun AppNavigation(
 
             CrearReviewScreen(
                 crearReviewViewModel = crearReviewViewModel,
-                reviewPartidoId = it.arguments?.getInt("idPartido") ?: 1,
+                reviewPartidoId = it.arguments?.getString("idPartido") ?: "",
                 onReviewCreated = {
                     navController.navigate(Screen.Reviews.route) {
                         popUpTo(Screen.CrearReview.route) { inclusive = true }
@@ -399,10 +398,10 @@ fun AppNavigation(
 
         composable(
             route = Screen.ActualizarReview.route,
-            arguments = listOf(navArgument("idReview") { type = NavType.IntType })
+            arguments = listOf(navArgument("idReview") { type = NavType.StringType })
         ) { backStackEntry ->
             val actualizarReviewViewModel: ActualizarReviewViewModel = hiltViewModel()
-            val idReview = backStackEntry.arguments?.getInt("idReview") ?: 1
+            val idReview = backStackEntry.arguments?.getString("idReview") ?: ""
 
             ActualizarReviewScreen(
                 actualizarReviewViewModel = actualizarReviewViewModel,
@@ -420,16 +419,8 @@ fun AppNavigation(
                 modificarPerfilViewModel = modificarPerfilViewModel,
                 UserId = userId,
                 onSuccess = { navController.navigate(Screen.Reviews.route)}
-
             )
         }
-
-
-
-
-
-
-
     }
 }
 

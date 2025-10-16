@@ -31,13 +31,13 @@ class ActualizarReviewViewModel @Inject constructor(
         _uiState.update { it.copy(descripcion = input) }
     }
 
-    fun setReview(idReview: Int) {
+    fun setReview(idReview: String) {
         viewModelScope.launch {
-            val result = reviewRepository.getReviewById(idReview.toString())
+            val result = reviewRepository.getReviewById(idReview)
             if (result.isSuccess) {
                 val review = result.getOrNull()
                 if (review != null) {
-                    val partidoResult = partidoRepository.getPartidoById(review.partidoId)
+                    /*val partidoResult = partidoRepository.getPartidoById(review.)
                     if (partidoResult.isSuccess) {
                         val partido = partidoResult.getOrNull()
                         if (partido != null) {
@@ -53,7 +53,7 @@ class ActualizarReviewViewModel @Inject constructor(
                         }
                     } else {
                         _uiState.update { it.copy(errorMessage = "No se encontró la reseña") }
-                    }
+                    }*/
                 } else {
                     _uiState.update { it.copy(errorMessage = "Error al cargar la reseña") }
                 }
@@ -76,8 +76,8 @@ class ActualizarReviewViewModel @Inject constructor(
     /** Cargar review y partido asociados al reviewId */
     fun onUpdateReview() {
         viewModelScope.launch {
-            _uiState.value.updateReview.partidoId = _uiState.value.partido.idPartido.toInt()
-            _uiState.value.updateReview.usuarioId = 1
+            _uiState.value.updateReview.partidoId = _uiState.value.partido.idPartido
+            _uiState.value.updateReview.usuarioId = ""
             _uiState.value.updateReview.titulo = _uiState.value.titulo
             _uiState.value.updateReview.descripcion = _uiState.value.descripcion
             _uiState.value.updateReview.calificacion = _uiState.value.calificacion

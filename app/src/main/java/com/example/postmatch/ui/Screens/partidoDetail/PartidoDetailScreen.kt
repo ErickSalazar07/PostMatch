@@ -49,7 +49,7 @@ import com.example.postmatch.data.ReviewInfo
 @Composable
  fun PartidoDetailScreen(
     partidoDetailViewModel: PartidoDetailViewModel,
-    idPartido: Int,
+    idPartido: String,
     modifier: Modifier = Modifier
  ) {
 
@@ -319,13 +319,3 @@ fun DatoEstadistica(label: String, value: String) {
          }
      }
  }
-
-
-@Composable
-@Preview(showBackground = true)
-fun PartidoDetailScreenReview(){
-    PartidoDetailScreen(
-        partidoDetailViewModel = viewModel(),
-        idPartido = 0
-    )
-}

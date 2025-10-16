@@ -56,7 +56,7 @@ fun ReviewDetailScreen(
     reviewDetailViewModel: ReviewDetailViewModel,
     comentarioButtonClick: () -> Unit,
     likeButtonClick: () -> Unit,
-    idReview: Int,
+    idReview: String,
     modifier: Modifier = Modifier
 ) {
 
@@ -278,15 +278,4 @@ fun PublicacionesHeader(
             fontSize = 20.sp
         )
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ReviewDetailScreenPreview() {
-    ReviewDetailScreen(
-        reviewDetailViewModel = viewModel(),
-        comentarioButtonClick = {},
-        likeButtonClick = {},
-        idReview = 1
-    )
 }

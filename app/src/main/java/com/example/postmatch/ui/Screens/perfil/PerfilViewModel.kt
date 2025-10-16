@@ -71,7 +71,7 @@ class PerfilViewModel @Inject constructor(
         }
     }
 
-    fun setPartidoInfo(idPartido: Int) {
+    fun setPartidoInfo(idPartido: String) {
         viewModelScope.launch {
             val result = partidoRepository.getPartidoById(idPartido)
             if (result.isSuccess) {

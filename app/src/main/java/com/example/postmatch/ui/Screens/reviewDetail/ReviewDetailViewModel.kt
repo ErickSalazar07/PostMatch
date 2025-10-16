@@ -17,7 +17,7 @@ class ReviewDetailViewModel @Inject constructor(): ViewModel() {
     private val _uiState = MutableStateFlow(ReviewDetailState())
     val uiState: StateFlow<ReviewDetailState> = _uiState
 
-    fun setReviewInfo(idReview: Int) {
+    fun setReviewInfo(idReview: String) {
         val reviewInfo = LocalReviewProvider.reviews.find { it.idReview == idReview.toString() }
         if (reviewInfo != null) {
             _uiState.update { it.copy(reviewInfo = reviewInfo) }

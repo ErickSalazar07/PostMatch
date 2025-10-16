@@ -52,7 +52,7 @@ import com.example.postmatch.data.PartidoInfo
 fun ActualizarReviewScreen(
     actualizarReviewViewModel: ActualizarReviewViewModel,
     onReviewUpdated: () -> Unit,
-    reviewId: Int,
+    reviewId: String,
     modifier: Modifier = Modifier,
 ) {
 
@@ -351,14 +351,4 @@ fun BotonActualizar(
             color = MaterialTheme.colorScheme.onPrimary
         )
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ActualizarReviewScreenPreview() {
-    ActualizarReviewScreen(
-        actualizarReviewViewModel = viewModel(),
-        onReviewUpdated = {},
-        reviewId = 1,
-    )
 }

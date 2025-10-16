@@ -9,13 +9,13 @@ data class ReviewInfo(
     var numLikes: Int = 0,
     var numComentarios: Int = 0,
 // datos usuario
-    var usuarioId: Int = 0,
+    var usuarioId: String = "",
     var usuarioNombre: String = "",
     var usuarioEmail: String = "",
     var usuarioPassword: String = "",
     var usuarioFotoPerfil: String = "",
 // datos partido
-    var partidoId: Int = 0,
+    var partidoId: String = "",
     var partidoNombre: String = "",
     var partidoCategoria: String = "",
     var partidoVisitante: String = "",

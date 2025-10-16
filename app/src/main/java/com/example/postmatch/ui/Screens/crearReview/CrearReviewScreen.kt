@@ -60,12 +60,12 @@ import androidx.compose.runtime.setValue
 @Composable
 fun CrearReviewScreen(
     crearReviewViewModel: CrearReviewViewModel,
-    reviewPartidoId: Int,
+    reviewPartidoId: String,
     onReviewCreated: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(Unit){
-        crearReviewViewModel.updatePartido(reviewPartidoId.toString())
+        crearReviewViewModel.updatePartido(reviewPartidoId)
     }
 
     val state by crearReviewViewModel.uiState.collectAsState()
@@ -369,12 +369,3 @@ fun BotonPublicar(
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun CrearReviewScreenPreview() {
-    CrearReviewScreen(
-        crearReviewViewModel = viewModel(),
-        reviewPartidoId = 1,
-        onReviewCreated = {}
-    )
-}

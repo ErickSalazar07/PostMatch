@@ -7,13 +7,9 @@ data class UsuarioDto(
     val nombre: String,
     val email: String,
     val password: String,
-    val fotoPerfilUrl: String,
-    val createdAt: String,
-    val updatedAt: String
+    val fotoPerfilUrl: String
 ){
-
-
-    constructor():this("0","","","","","","")
+    constructor():this("0","","","","")
 }
 
 fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {

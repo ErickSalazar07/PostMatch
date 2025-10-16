@@ -35,7 +35,7 @@ class CrearReviewViewModel @Inject constructor(
 
     fun updatePartido(idPartido: String) {
         viewModelScope.launch {
-            val result = partidoRepository.getPartidoById(idPartido.toInt())
+            val result = partidoRepository.getPartidoById(idPartido)
             if (result.isSuccess) {
                 _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
             } else {

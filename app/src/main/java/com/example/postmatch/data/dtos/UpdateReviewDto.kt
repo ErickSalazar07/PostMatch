@@ -7,6 +7,6 @@ data class UpdateReviewDto(
     var descripcion: String = "",
     var fecha: Date = Date(),
     var calificacion: Int = 1,
-    var idUsuario: Int = 0,
-    var idPartido: Int = 0
+    var idUsuario: String = "",
+    var idPartido: String = ""
 )

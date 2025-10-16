@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.Screens.partidoDetail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.PartidoInfo
@@ -30,19 +31,15 @@ class PartidoDetailViewModel @Inject constructor(
         _uiState.update { it.copy(resenias = resenias) }
     }
 
-    fun setPartidoInfo(idPartido: Int) {
+    fun setPartidoInfo(idPartido: String) {
         viewModelScope.launch {
             val result = partidoRepository.getPartidoById(idPartido)
             if (result.isSuccess) {
                 _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
-                val reseniasResult = partidoRepository.getReviewsByPartidoId(idPartido)
-                if (reseniasResult.isSuccess) {
-                    _uiState.update { it.copy(resenias = reseniasResult.getOrNull() ?: emptyList()) }
-                } else {
-                    _uiState.update { it.copy(resenias = emptyList()) }
-                }
+                Log.d("PartidoDetailViewModel", "Partido obtenido: ${_uiState.value.partido}")
             } else {
                 _uiState.update { it.copy(partido = PartidoInfo()) }
+                Log.d("PartidoDetailViewModel", "Error al obtener el partido: ${result.exceptionOrNull()}")
             }
         }
     }

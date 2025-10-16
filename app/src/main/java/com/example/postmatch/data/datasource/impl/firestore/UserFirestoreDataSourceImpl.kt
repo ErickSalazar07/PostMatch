@@ -15,22 +15,6 @@ import jakarta.inject.Inject
 
 class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore): UsuarioRemoteDataSource {
 
-   /*
-    override suspend fun getAllUsuarios(): List<UsuarioDto> {
-        return try {
-            // 🔹 Obtener todos los documentos de la colección "users"
-            val snapshot = db.collection("users").get().await()
-
-            // 🔹 Convertir cada documento en un UsuarioDto
-            snapshot.documents.mapNotNull { it.toObject(UsuarioDto::class.java) }
-
-        } catch (e: Exception) {
-            throw Exception("Error al obtener los usuarios: ${e.message}")
-        }
-    }
-
-    */
-
     override suspend fun getAllUsuarios(): List<UsuarioDto> {
         val snapshot = db.collection("users").get().await()
         return snapshot.documents.map { doc ->
@@ -75,5 +59,4 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
     }
 
 }
-
 

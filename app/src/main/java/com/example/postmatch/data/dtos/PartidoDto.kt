@@ -2,9 +2,10 @@ package com.example.postmatch.data.dtos
 
 import com.example.postmatch.data.PartidoInfo
 import com.example.postmatch.data.UsuarioInfo
+import java.util.Date
 
 data class PartidoDto(
-    val id: Int,
+    val id: String,
     val nombre: String,
     val categoria: String,
     val visitante: String,
@@ -15,15 +16,15 @@ data class PartidoDto(
     val posesionVisitante: Int,
     val tirosLocal: Int,
     val tirosVisitante: Int,
-    val fecha: String,
-    val partidoFotoUrl: String,
-    val createdAt: String,
-    val updatedAt: String
-)
+    val fecha: Date,
+    val partidoFotoUrl: String
+) {
+    constructor(): this("","","","","",0,0,0,0,0,0,Date(),"")
+}
 
 fun PartidoDto.toPartidoInfo(): PartidoInfo {
     return PartidoInfo(
-        idPartido = id.toString(),
+        idPartido = id,
         nombre = nombre,
         categoria = categoria,
         visitante = visitante,
@@ -34,7 +35,7 @@ fun PartidoDto.toPartidoInfo(): PartidoInfo {
         posesionVisitante = posesionVisitante,
         tirosLocal = tirosLocal,
         tirosVisitante = tirosVisitante,
-        fecha = fecha,
+        fecha = fecha.toString(),
         partidoFotoUrl = partidoFotoUrl
     )
 }
