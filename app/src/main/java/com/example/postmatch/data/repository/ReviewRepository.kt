@@ -7,6 +7,7 @@ import com.example.postmatch.data.datasource.impl.ReviewRetrofitDataSourceImpl
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.UpdateReviewDto
 import com.example.postmatch.data.dtos.toReviewInfo
+import com.example.postmatch.ui.Screens.partidos.ResultadoPartidoCard
 import java.util.Date
 import javax.inject.Inject
 
@@ -89,4 +90,21 @@ class ReviewRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+
+    /*
+
+    suspend fun  sendOrDeleteLike(reviewId: String, userId: String): Result<Unit>{
+
+      return  try {
+          reviewRemoteDataSource.sendOrDeleteLike(reviewId,userId)
+          Result.success(Unit)
+      }catch (e: Exception){
+
+          Result.failure(e)
+      }
+
+    }
+
+     */
 }
