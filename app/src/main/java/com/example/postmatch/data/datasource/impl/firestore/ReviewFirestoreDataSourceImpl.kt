@@ -24,7 +24,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
     }
 
     override suspend fun createReview(review: CreateReviewDto) {
-        TODO("Not yet implemented")
+        db.collection("reviews").add(review).await() ?: throw Exception("No se pudo crear la reseña")
     }
 
     override suspend fun deleteReview(id: String) {
