@@ -4,6 +4,7 @@ import com.example.postmatch.data.datasource.ReviewRemoteDataSource
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.ReviewDto
 import com.example.postmatch.data.dtos.UpdateReviewDto
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -40,6 +41,29 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
 
     override suspend fun getReviewsByUser(userId: String): List<ReviewDto> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {
+        val reviewRef=  db.collection("reviews").document(reviewId)
+        val likesRef =  reviewRef.collection("likes").document(userId)
+
+        db.runTransaction { transaction ->
+
+
+            val likeDoc = transaction.get(likesRef)
+
+            if(likeDoc.exists()){
+                transaction.delete(likesRef)
+                transaction.update(reviewRef,"likesCount", FieldValue.increment(-1))
+
+
+            }else{
+                transaction.set(likesRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+                transaction.update(reviewRef,"likesCount", FieldValue.increment(1))
+
+            }
+
+        }
     }
 
 }

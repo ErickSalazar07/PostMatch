@@ -3,7 +3,9 @@ package com.example.postmatch.ui.Screens.reviews
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.ReviewInfo
+import com.example.postmatch.data.datasource.AuthRemoteDataSource
 import com.example.postmatch.data.local.LocalReviewProvider
+import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,7 +16,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ReviewsViewModel @Inject constructor(
-    private val reviewRepository: ReviewRepository
+    private val reviewRepository: ReviewRepository,
+    private val authRemoteDataSource: AuthRemoteDataSource
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(ReviewsState())
@@ -35,6 +38,38 @@ class ReviewsViewModel @Inject constructor(
     fun updateReviews(input: List<ReviewInfo>) {
         _uiState.update { it.copy(reviews = input) }
     }
+
+    fun sendOrDeleteLike(reviewId: String) {
+        val userId = authRemoteDataSource.currentUser?.uid?:""
+        viewModelScope.launch {
+            val result = reviewRepository.sendOrDeleteLike(reviewId, userId)
+
+            if (result.isSuccess) {
+                _uiState.update { currentState ->
+                    val updatedReviews = currentState.reviews.map { review ->
+                        if (review.idReview == reviewId) {
+                            val isLiked = !review.likedByUser
+                            val newLikes = if (isLiked) review.numLikes + 1 else review.numLikes - 1
+
+                            review.copy(
+                                numLikes = newLikes,
+                                likedByUser = isLiked
+                            )
+                        } else review
+                    }
+
+                    currentState.copy(reviews = updatedReviews)
+                }
+            } else {
+                _uiState.update {
+                    it.copy(errorMessage = "Error al enviar el like")
+                }
+            }
+        }
+    }
+
+
+
 
     init {
         getAllReviews()
