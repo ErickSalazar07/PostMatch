@@ -104,12 +104,21 @@ class PerfilViewModel @Inject constructor(
         }
     }
 
-    fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
+    fun seguirTantoDejarDeSeguirUsuario(idUsuarioSeguir: String){
         val usuarioActual = FirebaseAuth.getInstance().currentUser?.uid?: ""
 
         viewModelScope.launch{
-            val result = usuarioRepository.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = idUsuarioActual, idUsuarioSeguir = idUsuarioSeguir)
+            val result = usuarioRepository.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = usuarioActual, idUsuarioSeguir = idUsuarioSeguir)
 
+            if(result.isSuccess){
+                _uiState.value = _uiState.value.copy(
+                    usuarioInfo = _uiState.value.usuarioInfo.copy(
+                        numFollowers = if(_uiState.value.usuarioInfo.followed) _uiState.value.usuarioInfo.numFollowers - 1 else _uiState.value.usuarioInfo.numFollowers + 1,
+
+                        followed = !_uiState.value.usuarioInfo.followed
+                    )
+                )
+            }
         }
     }
 
