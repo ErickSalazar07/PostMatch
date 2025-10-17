@@ -1,6 +1,5 @@
 package com.example.postmatch.ui.navigation
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
@@ -10,7 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.ui.Screens.follow.FollowScreen
 import com.example.postmatch.ui.Screens.login.LoginScreen
 import com.example.postmatch.ui.Screens.notificaciones.NotificacionesScreen
@@ -27,16 +25,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.activity
-import com.example.postmatch.data.local.LocalPartidoProvider
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailViewModel
 import com.example.postmatch.ui.Screens.Buscador.BuscadorScreenContent
@@ -174,14 +166,9 @@ fun AppNavigation(
             )
         }
 
-
-
-
         composable(route = Screen.ConfiguracionPerfil.route) {
 
             val configuracionPerfilViewModel: ConfiguracionPerfilViewModel = hiltViewModel()
-            val context = LocalContext.current
-            val activity = context as? ComponentActivity
 
             // 🔹 Obtener el usuario autenticado actual
             val currentUser = FirebaseAuth.getInstance().currentUser
@@ -219,15 +206,15 @@ fun AppNavigation(
                     navController.navigate(
                         Screen.CrearReview.route.replace(
                             "{idPartido}",
-                            "$idPartido"
-                        )  ///fgggggg 2
+                            idPartido
+                        )
                     )
                 },
                 onPartidoClick = { idPartido ->
                     navController.navigate(
                         Screen.PartidoDetail.route.replace(
                             "{idPartido}",
-                            "$idPartido"
+                            idPartido
                         )
                     )
                 }
@@ -239,7 +226,6 @@ fun AppNavigation(
         composable(route = Screen.Buscador.route) {
 
             val buscarViewModel: BuscarViewModel = hiltViewModel()
-            val uiState by buscarViewModel.uiState.collectAsState()
             val context = LocalContext.current
             val activity = context as? ComponentActivity
 
@@ -341,7 +327,7 @@ fun AppNavigation(
                     navController.navigate(
                         Screen.ReviewDetail.route.replace(
                             "{idReview}",
-                            "$idReview"
+                            idReview
                         )
                     )
                 }

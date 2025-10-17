@@ -1,8 +1,5 @@
 package com.example.postmatch.ui.Screens.reviews
 
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,14 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,11 +28,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,13 +41,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
-import com.example.postmatch.data.local.LocalReviewProvider
 
 
 @Composable
 fun ReviewsScreen(
     reviewsViewModel: ReviewsViewModel,
-    onReviewClick: (Int) -> Unit,
+    onReviewClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by reviewsViewModel.uiState.collectAsState()
@@ -115,7 +106,7 @@ fun ReviewHeader(
 
 @Composable
 fun SectionReviews(
-    onReviewClick: (Int) -> Unit,
+    onReviewClick: (String) -> Unit,
     reviews: List<ReviewInfo>,
     modifier: Modifier = Modifier
 ) {
@@ -135,7 +126,7 @@ fun SectionReviews(
 
 @Composable
 fun ReviewCard(
-    onReviewClick: (Int) -> Unit,
+    onReviewClick: (String) -> Unit,
     reviewInfo: ReviewInfo,
     modifier: Modifier = Modifier
 ) {
@@ -145,7 +136,7 @@ fun ReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable { onReviewClick(reviewInfo.idReview.toInt()) }
+            .clickable { onReviewClick(reviewInfo.idReview) }
             .padding(12.dp)
     ) {
             Column(
@@ -194,15 +185,6 @@ fun ReviewCard(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            /*
-            Image(
-                painter = painterResource(id = R.drawable.estadio_bernabeu),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )*/
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(reviewInfo.partidoFotoUrl)
