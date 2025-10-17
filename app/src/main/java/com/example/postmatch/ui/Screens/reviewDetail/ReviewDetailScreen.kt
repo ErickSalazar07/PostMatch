@@ -217,7 +217,7 @@ fun ReviewCard(
                 }
             }
             Text(
-                text = reviewInfo.fecha,
+                text = reviewInfo.fecha.split(" ").take(3).joinToString(" "),
                 style = MaterialTheme.typography.bodySmall
             )
             Text(

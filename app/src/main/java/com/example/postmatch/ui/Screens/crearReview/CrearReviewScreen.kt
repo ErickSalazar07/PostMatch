@@ -145,7 +145,7 @@ fun MostrarPartidoCard(
         ) {
             Column {
                 Text(
-                    text = partido.fecha,
+                    text = partido.fecha.split(" ").take(3).joinToString(" "),
                     color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 14.sp
                 )
