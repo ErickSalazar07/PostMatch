@@ -19,4 +19,6 @@ class PartidoRetrofitDataSourceImpl @Inject constructor(
     override suspend fun getReviewsByPartidoId(idPartido: String): List<ReviewDto> {
         return service.getReviewsByPartidoId(idPartido.toInt())
     }
+
+
 }

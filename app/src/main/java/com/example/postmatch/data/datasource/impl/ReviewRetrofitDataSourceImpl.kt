@@ -23,6 +23,9 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
         return service.getAllReviews().filter { it.idUsuario == userId }
     }
 
+    override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {
+        TODO("Not yet implemented")
+    }
 
 
     override suspend fun createReview(review: CreateReviewDto) {

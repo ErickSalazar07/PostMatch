@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.Screens.reviews
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,10 +34,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
@@ -77,7 +76,14 @@ fun ReviewsScreen(
                 // Lista de tarjetas
                 SectionReviews(
                     reviews = state.reviews,
-                    onReviewClick =  onReviewClick
+                    onReviewClick =  onReviewClick,
+                    onLikeClick = { reviewId ->
+                        Log.d("LIKES_DEBUG", "SectionReviews -> onLikeClick recibido con reviewId=$reviewId")
+                        reviewsViewModel.sendOrDeleteLike(
+                            reviewId = reviewId
+                        )
+                    }
+
                 )
             }
         }
@@ -108,6 +114,8 @@ fun ReviewHeader(
 fun SectionReviews(
     onReviewClick: (String) -> Unit,
     reviews: List<ReviewInfo>,
+    onLikeClick: (String) -> Unit,
+
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -118,7 +126,8 @@ fun SectionReviews(
             index ->
             ReviewCard(
                 reviewInfo = reviews[index],
-                onReviewClick = onReviewClick
+                onReviewClick = onReviewClick,
+                onLikeClick = onLikeClick
             )
         }
     }
@@ -128,6 +137,7 @@ fun SectionReviews(
 fun ReviewCard(
     onReviewClick: (String) -> Unit,
     reviewInfo: ReviewInfo,
+    onLikeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -165,7 +175,8 @@ fun ReviewCard(
                         imageVector = Icons.Default.FavoriteBorder,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp).clickable { Log.d("LIKES_DEBUG", "Click en corazón - reviewId=${reviewInfo.idReview}")
+                            onLikeClick(reviewInfo.idReview) }
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("${reviewInfo.numLikes}", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
@@ -199,14 +210,4 @@ fun ReviewCard(
                     .clip(RoundedCornerShape(8.dp))
             )
         }
-}
-
-
-@Composable
-@Preview (showBackground = true)
-fun ReviewsScreenPreview(){
-    ReviewsScreen(
-       reviewsViewModel = viewModel(),
-        onReviewClick = {}
-    )
 }

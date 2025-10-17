@@ -3,10 +3,8 @@ package com.example.postmatch.ui.Screens.reviewDetail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.postmatch.data.ComentarioInfo
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.local.LocalComentarioProvider
-import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

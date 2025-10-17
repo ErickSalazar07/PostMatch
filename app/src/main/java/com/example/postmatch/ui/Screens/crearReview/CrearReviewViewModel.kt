@@ -77,7 +77,6 @@ class CrearReviewViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(errorMessage = "Error de conexión con la base de datos.") }
-                Log.d("CrearReviewViewModel", "Error: ${e.message}")
             }
         }
     }
