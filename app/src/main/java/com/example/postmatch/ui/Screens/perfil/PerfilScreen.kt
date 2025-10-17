@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -85,7 +86,13 @@ fun PerfilScreen(
                 nombrePerfil = state.usuarioInfo.nombre,
                 arrobaPerfil = state.usuarioInfo.email,
                 onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
-                oficioPerfil = "Futbolista")
+                oficioPerfil = "Futbolista",
+
+                modifier =
+                if(state.isCurrentUser)
+                    Modifier.clickable{ perfilViewModel.seguirTantoDejarDeSeguirUsuario(state.usuarioInfo.idUsuario)}
+                else Modifier
+            )
         }
         item {
             InformacionCuenta(1002, 1293)

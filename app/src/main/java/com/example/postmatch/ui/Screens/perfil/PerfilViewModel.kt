@@ -12,7 +12,7 @@ import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.PartidoRepository
 import com.example.postmatch.data.repository.ReviewRepository
-import com.example.postmatch.data.repository.
+import com.example.postmatch.data.repository.StorageRepository
 import com.example.postmatch.data.repository.UsuarioRepository
 import com.example.postmatch.ui.Screens.partidos.PartidosState
 import com.google.firebase.auth.FirebaseAuth
@@ -110,11 +110,11 @@ class PerfilViewModel @Inject constructor(
         }
     }
 
-    fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
+    fun seguirTantoDejarDeSeguirUsuario(idUsuarioSeguir: String){
         val usuarioActual = FirebaseAuth.getInstance().currentUser?.uid?: ""
 
         viewModelScope.launch{
-            val result = usuarioRepository.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = idUsuarioActual, idUsuarioSeguir = idUsuarioSeguir)
+            val result = usuarioRepository.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = usuarioActual, idUsuarioSeguir = idUsuarioSeguir)
 
         }
     }
