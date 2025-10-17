@@ -30,12 +30,14 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
     }
 
     override suspend fun getReviewsByUsuarioId(idUsuario: String): List<ReviewDto> {
-        TODO("Not yet implemented")
+        val snapshot = db.collection("reviews").whereEqualTo("idUsuario", idUsuario).get().await()
+        return snapshot.documents.map { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.copy(id = doc.id) ?: throw Exception("Review not found")
+        }
     }
 
-    override suspend fun registerUser(
-        registerUserDto: RegisterUserDto,
-        userId: String) {
+    override suspend fun registerUser(registerUserDto: RegisterUserDto, userId: String) {
         val docRef = db.collection("users").document(userId)
         docRef.set(registerUserDto).await()
     }

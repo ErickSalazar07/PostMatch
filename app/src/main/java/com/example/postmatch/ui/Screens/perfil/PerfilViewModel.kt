@@ -25,115 +25,82 @@ import kotlinx.coroutines.launch
 // PerfilViewModel.kt
 @HiltViewModel
 class PerfilViewModel @Inject constructor(
-
     private val authRepository: AuthRepository,
     private val storageRepository: StorageRepository,
     private val usuarioRepository: UsuarioRepository,
-    private val reviewRetrofitService: ReviewRepository,
-    private val partidoRepository: PartidoRepository
+    private val reviewRepository: ReviewRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PerfilState())
     val uiState: StateFlow<PerfilState> = _uiState
-    /*fun uploadProfileImageToFirebase(uri: Uri) {
+
+    fun uploadProfileImageToFirebase(uri: Uri) {
         viewModelScope.launch {
             val result = storageRepository.uploadProfileImage(uri)
-            if(result.isSuccess) {
+            if (result.isSuccess) {
                 _uiState.update { it.copy(fotoPerfilUrl = result.getOrNull()) }
             }
         }
-    }*/
+    }
 
-    /*
     fun onDeleteReview(idReview: String) {
-        val idUsuarioQuemado: Int = 1 // se cambia despues
         viewModelScope.launch {
-            val result = reviewRetrofitService.deleteReviewById(idReview)
-            val resultReview = usuarioRepository.getReviewsByUsuarioId(idUsuarioQuemado)
+            val result = reviewRepository.deleteReviewById(idReview)
             if (result.isSuccess) {
-                _uiState.update { it.copy(reviews = resultReview.getOrNull() ?: emptyList()) }
+                _uiState.update { currentState ->
+                    val nuevaLista = currentState.reviews.filterNot { it.idReview == idReview }
+                    currentState.copy(reviews = nuevaLista)
+                }
             } else {
-                //_uiState.update { it.copy(reviews = emptyList()) }
-                Log.e("PerfilViewModel", "Error al eliminar la reseña: ${result.exceptionOrNull()}")
+                Log.d("PerfilViewModel", "Error al eliminar la reseña: ${result.exceptionOrNull()}")
             }
         }
     }
-     */
 
     fun getUserInfo(idUsuario: String) {
         viewModelScope.launch {
             val result = usuarioRepository.getUsuarioById(idUsuario)
-            if(result.isSuccess) {
-                _uiState.update { it.copy(usuarioInfo = result.getOrDefault(UsuarioInfo())) }
-            } else {
-                Log.d("PerfilViewModel", "Error al cargar el usuario: ${result.exceptionOrNull()}")
-            }
-        }
-    }
-
-    fun setPartidoInfo(idPartido: String) {
-        viewModelScope.launch {
-            val result = partidoRepository.getPartidoById(idPartido)
             if (result.isSuccess) {
-                _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
-                val reseniasResult = partidoRepository.getReviewsByPartidoId(idPartido)
-                if (reseniasResult.isSuccess) {
-                    _uiState.update { it.copy(resenias = reseniasResult.getOrNull() ?: emptyList()) }
-                } else {
-                    _uiState.update { it.copy(resenias = emptyList()) }
-                }
-            } else {
-                _uiState.update { it.copy(partido = PartidoInfo()) }
-            }
-        }
-    }
-    fun onDeleteReview(idReview: String) {
-        viewModelScope.launch {
-            val result = runCatching { reviewRetrofitService.deleteReviewById(idReview) }
-
-            if (result.isSuccess) {
-                _uiState.update { currentState ->
-                    val nuevaLista = currentState.reviews.filterNot { it.idReview == idReview }
-                    currentState.copy(reviews = nuevaLista)
-                }
-            } else {
-                Log.e("PerfilViewModel", "Error al eliminar la reseña: ${result.exceptionOrNull()}")
-                // 👇 aún así la eliminamos localmente si la API falló por body null
-                _uiState.update { currentState ->
-                    val nuevaLista = currentState.reviews.filterNot { it.idReview == idReview }
-                    currentState.copy(reviews = nuevaLista)
-                }
-            }
-        }
-
-    }
-
-    /*init {
-        var idUsuarioQuemado: Int = 1 // se cambia despues
-        viewModelScope.launch {
-            val usuarioPerfil = authRepository.currentUser?: UsuarioInfo
-
-            if (result.isSuccess) {
-                _uiState.update { it.copy(usuarioInfo = result.getOrNull() ?: UsuarioInfo()) }
-                val resultReviews = usuarioRepository.getReviewsByUsuarioId(idUsuarioQuemado)
+                _uiState.update { it.copy(
+                    usuarioInfo = result.getOrDefault(UsuarioInfo()),
+                    isCurrentUser = idUsuario == authRepository.currentUser?.uid
+                )}
+                val resultReviews = usuarioRepository.getReviewsByUsuarioId(idUsuario)
                 if (resultReviews.isSuccess) {
-                    _uiState.update { it.copy(reviews = resultReviews.getOrNull() ?: emptyList()) }
+                    _uiState.update { it.copy(reviews = resultReviews.getOrDefault(emptyList())) }
                 } else {
                     _uiState.update { it.copy(reviews = emptyList()) }
+                    Log.d(
+                        "PerfilViewModel",
+                        "Error al cargar las reseñas: ${resultReviews.exceptionOrNull()}"
+                    )
                 }
+            } else {
+                Log.d(
+                    "PerfilViewModel",
+                    "Error al cargar el usuario: ${result.exceptionOrNull()}"
+                )
             }
         }
-    }*/
+    }
 
     fun cargarUsuarioActual() {
         viewModelScope.launch {
             val firebaseUser = authRepository.currentUser
             if (firebaseUser != null) {
                 val perfilUsuarioResult = usuarioRepository.getUsuarioById(firebaseUser.uid)
-                if(perfilUsuarioResult.isSuccess) {
-                    _uiState.update { it.copy(usuarioInfo = perfilUsuarioResult.getOrDefault(UsuarioInfo())) }
+                if (perfilUsuarioResult.isSuccess) {
+                    _uiState.update {
+                        it.copy(
+                            usuarioInfo = perfilUsuarioResult.getOrDefault(UsuarioInfo()),
+                            isCurrentUser = true
+                        )
+                    }
                 } else {
-                    Log.d("PerfilViewModel", "Error al cargar el usuario: ${perfilUsuarioResult.exceptionOrNull()}")
+                    Log.d(
+                        "PerfilViewModel",
+                        "Error al cargar el usuario: ${perfilUsuarioResult.exceptionOrNull()}"
+                    )
                 }
             } else {
                 Log.w("PerfilViewModel", "No hay usuario autenticado")
@@ -144,4 +111,5 @@ class PerfilViewModel @Inject constructor(
     init {
         cargarUsuarioActual()
     }
+
 }

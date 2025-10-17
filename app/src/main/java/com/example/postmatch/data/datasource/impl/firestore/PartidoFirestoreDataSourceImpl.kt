@@ -25,6 +25,10 @@ class PartidoFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getReviewsByPartidoId(idPartido: String): List<ReviewDto> {
-        TODO("Not yet implemented")
+        val snapshot = db.collection("reviews").whereEqualTo("idPartido", idPartido).get().await()
+        return snapshot.documents.map { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.copy(id = doc.id) ?: throw Exception("Review not found")
+        }
     }
 }
