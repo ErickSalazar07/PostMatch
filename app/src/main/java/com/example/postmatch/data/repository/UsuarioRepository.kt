@@ -35,33 +35,30 @@ class UsuarioRepository @Inject constructor(
         }
     }
 
-    suspend fun getReviewsByUsuarioId(idUsuario: Int): Result<List<ReviewInfo>>{
+    suspend fun getReviewsByUsuarioId(idUsuario: String): Result<List<ReviewInfo>>{
         return try {
-            val reviews = usuarioRemoteDataSource.getReviewsByUsuarioId(idUsuario.toString())
+            val reviews = usuarioRemoteDataSource.getReviewsByUsuarioId(idUsuario)
             val reviewsInfo = reviews.map { it.toReviewInfo() }
             Result.success(reviewsInfo)
         } catch (e: HttpException){
             e.response.code
             Result.failure(e)
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
 
-    suspend fun registerUser(nombre: String, email: String, password: String, userId: String): Result<Unit>{
+    suspend fun registerUser(nombre: String, email: String, password: String, userId: String, fotoPerfilUrl: String): Result<Unit>{
 
         return try {
-            val registerUserDto = RegisterUserDto(nombre, email, password)
+            val registerUserDto = RegisterUserDto(nombre, email, password, fotoPerfilUrl)
             usuarioRemoteDataSource.registerUser(registerUserDto,userId)
             Result.success(Unit)
         }catch (e: Exception){
             Log.d("TAG", "getUserById: ${e.message}")
             Result.failure(e)
         }
-
-
     }
 
     suspend fun updateUser(userId: String, nombre: String, email: String, password: String): Result<Unit> {

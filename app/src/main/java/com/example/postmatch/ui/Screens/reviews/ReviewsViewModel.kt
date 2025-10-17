@@ -74,10 +74,7 @@ class ReviewsViewModel @Inject constructor(
         }
     }
 
-
-
-
     init {
-        getAllReviews()
+        _uiState.update { it.copy(reviews = emptyList()) }
     }
 }

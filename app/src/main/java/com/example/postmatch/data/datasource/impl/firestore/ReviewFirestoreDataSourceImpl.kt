@@ -29,7 +29,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
     }
 
     override suspend fun deleteReview(id: String) {
-        TODO("Not yet implemented")
+        db.collection("reviews").document(id).delete().await() ?: throw Exception("No se pudo eliminar la reseña")
     }
 
     override suspend fun updateReview(

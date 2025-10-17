@@ -65,6 +65,7 @@ class RegistroViewModel @Inject constructor(
                     nombre = state.nombre,
                     email = state.email,
                     userId = userId!!,
+                    fotoPerfilUrl = "",
                     password = state.password,
                 )
             } else {

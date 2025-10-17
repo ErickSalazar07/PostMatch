@@ -9,8 +9,8 @@ import com.example.postmatch.data.dtos.ReviewDto
 data class PerfilState(
     val usuarioInfo: UsuarioInfo = UsuarioInfo(),
     val reviews: List<ReviewInfo> = emptyList(),
-    val partido: PartidoInfo = PartidoInfo(),
-    val resenias: List<ReviewInfo> = emptyList()
+    val fotoPerfilUrl: String? = null,
+    val isCurrentUser: Boolean = false
 )
 
 
