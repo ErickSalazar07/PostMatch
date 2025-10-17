@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.Screens.reviews
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.ReviewInfo
@@ -41,15 +42,19 @@ class ReviewsViewModel @Inject constructor(
 
     fun sendOrDeleteLike(reviewId: String) {
         val userId = authRemoteDataSource.currentUser?.uid?:""
+        Log.d("LIKES_DEBUG", "ViewModel -> Iniciando sendOrDeleteLike con reviewId=$reviewId y userId=$userId")
         viewModelScope.launch {
             val result = reviewRepository.sendOrDeleteLike(reviewId, userId)
+            Log.d("LIKES_DEBUG", "ViewModel -> Resultado del repositorio: $result")
 
             if (result.isSuccess) {
+                Log.d("LIKES_DEBUG", "Like enviado/eliminado correctamente")
                 _uiState.update { currentState ->
                     val updatedReviews = currentState.reviews.map { review ->
                         if (review.idReview == reviewId) {
                             val isLiked = !review.likedByUser
                             val newLikes = if (isLiked) review.numLikes + 1 else review.numLikes - 1
+                            Log.d("LIKES_DEBUG", "Actualizando reviewId=$reviewId con newLikes=$newLikes y liked=$isLiked")
 
                             review.copy(
                                 numLikes = newLikes,
@@ -61,6 +66,7 @@ class ReviewsViewModel @Inject constructor(
                     currentState.copy(reviews = updatedReviews)
                 }
             } else {
+                Log.e("LIKES_DEBUG", "Error al enviar/eliminar like: ${result.exceptionOrNull()?.message}")
                 _uiState.update {
                     it.copy(errorMessage = "Error al enviar el like")
                 }

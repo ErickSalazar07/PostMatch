@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.Screens.reviews
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -55,7 +56,7 @@ import com.example.postmatch.data.local.LocalReviewProvider
 @Composable
 fun ReviewsScreen(
     reviewsViewModel: ReviewsViewModel,
-    onReviewClick: (Int) -> Unit,
+    onReviewClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by reviewsViewModel.uiState.collectAsState()
@@ -88,10 +89,9 @@ fun ReviewsScreen(
                     reviews = state.reviews,
                     onReviewClick =  onReviewClick,
                     onLikeClick = { reviewId ->
-                        // 👇 usamos el idUsuarioActual que viene como parámetro
+                        Log.d("LIKES_DEBUG", "SectionReviews -> onLikeClick recibido con reviewId=$reviewId")
                         reviewsViewModel.sendOrDeleteLike(
                             reviewId = reviewId.toString()
-
                         )
                     }
 
@@ -123,9 +123,9 @@ fun ReviewHeader(
 
 @Composable
 fun SectionReviews(
-    onReviewClick: (Int) -> Unit,
+    onReviewClick: (String) -> Unit,
     reviews: List<ReviewInfo>,
-    onLikeClick: (Int) -> Unit,
+    onLikeClick: (String) -> Unit,
 
     modifier: Modifier = Modifier
 ) {
@@ -146,9 +146,9 @@ fun SectionReviews(
 
 @Composable
 fun ReviewCard(
-    onReviewClick: (Int) -> Unit,
+    onReviewClick: (String) -> Unit,
     reviewInfo: ReviewInfo,
-    onLikeClick: (Int) -> Unit,
+    onLikeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -157,7 +157,7 @@ fun ReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable { onReviewClick(reviewInfo.idReview.toInt()) }
+            .clickable { onReviewClick(reviewInfo.idReview) }
             .padding(12.dp)
     ) {
             Column(
@@ -186,7 +186,8 @@ fun ReviewCard(
                         imageVector = Icons.Default.FavoriteBorder,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp).clickable { onLikeClick(reviewInfo.idReview.toInt()) }
+                        modifier = Modifier.size(16.dp).clickable { Log.d("LIKES_DEBUG", "Click en corazón - reviewId=${reviewInfo.idReview}")
+                            onLikeClick(reviewInfo.idReview) }
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("${reviewInfo.numLikes}", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
