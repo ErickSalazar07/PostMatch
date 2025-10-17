@@ -116,6 +116,15 @@ class PerfilViewModel @Inject constructor(
         viewModelScope.launch{
             val result = usuarioRepository.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = usuarioActual, idUsuarioSeguir = idUsuarioSeguir)
 
+            if(result.isSuccess){
+                _uiState.value = _uiState.value.copy(
+                    usuarioInfo = _uiState.value.usuarioInfo.copy(
+                        numFollowers = if(_uiState.value.usuarioInfo.followed) _uiState.value.usuarioInfo.numFollowers - 1 else _uiState.value.usuarioInfo.numFollowers + 1,
+
+                        followed = !_uiState.value.usuarioInfo.followed
+                    )
+                )
+            }
         }
     }
 
