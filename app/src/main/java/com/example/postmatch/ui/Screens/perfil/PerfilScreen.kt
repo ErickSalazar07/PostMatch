@@ -39,6 +39,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
@@ -63,53 +64,77 @@ fun PerfilScreen(
     idPerfilUsuario: String,
     onReviewClick: (String) -> Unit,
     modifier: Modifier = Modifier
-){
+) {
+    val state by perfilViewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
         perfilViewModel.getUserInfo(idPerfilUsuario)
     }
 
-    val state by perfilViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-    ){
+    ) {
         item {
-            PerfilHeader(onConfiguracionButtonClick = configuracionButtonClick,
-                onReviewButtonClick = reviewButtonClick)
-        }
-        item {
-            ImagenPerfil(
-                fotoPerfilUrl = state.usuarioInfo.fotoPerfil,
-                nombrePerfil = state.usuarioInfo.nombre,
-                arrobaPerfil = state.usuarioInfo.email,
-                onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
-                oficioPerfil = "Futbolista")
-        }
-        item {
-            InformacionCuenta(1002, 1293)
-        }
-        item {
-            TextoIzquierda(stringResource(R.string.rese_as))
-        }
-        items(state.reviews) { review ->
-            ItemReseniaPerfil(
-                reseniaPerfil = review,
-                onDeleteReview = { perfilViewModel.onDeleteReview(review.idReview) }, // eliminar
-                onClickReview = { idReview ->
-                    // Acción para ver o seleccionar la reseña
-                },
-                onReviewClick = { idReview ->
-                    // Acción para editar la reseña
-                    onReviewClick(idReview) // callback que viene de PerfilScreen
-                },
-                isCurrentUser = state.isCurrentUser
+            PerfilHeader(
+                onConfiguracionButtonClick = configuracionButtonClick,
+                onReviewButtonClick = reviewButtonClick
             )
         }
 
-    }
+        item {
+            // 🔹 Sección del perfil
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                ImagenPerfil(
+                    fotoPerfilUrl = state.usuarioInfo.fotoPerfil,
+                    nombrePerfil = state.usuarioInfo.nombre,
+                    arrobaPerfil = state.usuarioInfo.email,
+                    onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
+                    oficioPerfil = "Futbolista"
+                )
 
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // 🔹 Botón solo si NO es el usuario actual
+                if (!state.isCurrentUser) {
+                    SeguirButton(
+                        seguido = state.usuarioInfo.followed,
+                        onClick = {
+                            perfilViewModel.seguirTantoDejarDeSeguirUsuario(
+                                idUsuarioActual = perfilViewModel.uiState.value.usuarioInfo.idUsuario,
+                                idUsuarioSeguir = idPerfilUsuario
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        item {
+            InformacionCuenta(
+                state.usuarioInfo.numFollowers,
+                state.usuarioInfo.numFollowed
+            )
+        }
+
+        item {
+            TextoIzquierda(stringResource(R.string.rese_as))
+        }
+
+        items(state.reviews) { review ->
+            ItemReseniaPerfil(
+                reseniaPerfil = review,
+                onDeleteReview = { perfilViewModel.onDeleteReview(review.idReview) },
+                onClickReview = { /* ver reseña */ },
+                onReviewClick = { onReviewClick(review.idReview) },
+                isCurrentUser = state.isCurrentUser
+            )
+        }
+    }
 }
 
 @Composable
@@ -403,6 +428,33 @@ fun ImagenPerfil(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+    }
+}
+
+@Composable
+fun SeguirButton(
+    seguido: Boolean,
+    onClick: () -> Unit
+) {
+    val textoBoton = if (seguido) "Siguiendo" else "Seguir"
+    val colorFondo = if (seguido) Color.Gray else MaterialTheme.colorScheme.primary
+
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorFondo
+        ),
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .height(45.dp)
+    ) {
+        Text(
+            text = textoBoton,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 

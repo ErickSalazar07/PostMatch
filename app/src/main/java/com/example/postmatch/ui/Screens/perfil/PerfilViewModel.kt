@@ -12,7 +12,7 @@ import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.PartidoRepository
 import com.example.postmatch.data.repository.ReviewRepository
-import com.example.postmatch.data.repository.
+import com.example.postmatch.data.repository.StorageRepository
 import com.example.postmatch.data.repository.UsuarioRepository
 import com.example.postmatch.ui.Screens.partidos.PartidosState
 import com.google.firebase.auth.FirebaseAuth
@@ -116,6 +116,15 @@ class PerfilViewModel @Inject constructor(
         viewModelScope.launch{
             val result = usuarioRepository.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = idUsuarioActual, idUsuarioSeguir = idUsuarioSeguir)
 
+            if(result.isSuccess){
+                _uiState.value = _uiState.value.copy(
+                    usuarioInfo = _uiState.value.usuarioInfo.copy(
+                        numFollowers = if(_uiState.value.usuarioInfo.followed) _uiState.value.usuarioInfo.numFollowers - 1 else _uiState.value.usuarioInfo.numFollowers + 1,
+
+                        followed = !_uiState.value.usuarioInfo.followed
+                    )
+                )
+            }
         }
     }
 
