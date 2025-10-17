@@ -14,7 +14,9 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
         val snapshot = db.collection("reviews").get().await()
         return snapshot.documents.map { doc ->
             val review = doc.toObject(ReviewDto::class.java)
-            review?.copy(id = doc.id) ?: throw Exception("Review not found")
+            val likesSnapshot = doc.reference.collection("likes").get().await()
+            val likesCount = likesSnapshot.size()
+            review?.copy(id = doc.id, numLikes = likesCount) ?: throw Exception("Review not found")
         }
     }
 
