@@ -28,7 +28,9 @@ class CrearReviewViewModel @Inject constructor(
         viewModelScope.launch {
             val result = partidoRepository.getPartidoById(idPartido)
             if (result.isSuccess) {
-                _uiState.update { it.copy(partido = result.getOrNull() ?: PartidoInfo()) }
+                _uiState.update { it.copy(
+                    partido = result.getOrNull() ?: PartidoInfo()
+                ) }
             } else {
                 _uiState.update { it.copy(
                     errorMessage = "No se pudo cargar el partido.",
@@ -56,13 +58,13 @@ class CrearReviewViewModel @Inject constructor(
         Log.d("CrearReviewViewModel", "calificacion: ${_uiState.value.nuevaReview.calificacion}")
     }
 
-    fun createReview() {
+    fun createReview(idPartido: String) {
         Log.d("CrearReviewViewModel", "publicarButtonClick")
         showState()
         viewModelScope.launch {
             try {
                 val nuevaReview = CreateReviewDto()
-                nuevaReview.idPartido = _uiState.value.partido.idPartido
+                nuevaReview.idPartido = idPartido
                 nuevaReview.titulo = _uiState.value.titulo
                 nuevaReview.descripcion = _uiState.value.descripcion
                 nuevaReview.calificacion = _uiState.value.calificacion
@@ -75,7 +77,6 @@ class CrearReviewViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(errorMessage = "Error de conexión con la base de datos.") }
-                Log.d("CrearReviewViewModel", "Error: ${e.message}")
             }
         }
     }

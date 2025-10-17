@@ -14,7 +14,8 @@ data class CreateReviewDto (
 )
 
 data class PartidoCreateDto(
-    val fotoUrl: String? = null
+    val fotoUrl: String? = null,
+    val fecha: Date? = null
 )
 
 data class UsuarioCreateDto(

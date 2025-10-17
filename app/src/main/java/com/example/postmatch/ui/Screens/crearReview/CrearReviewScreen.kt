@@ -96,7 +96,7 @@ fun CrearReviewScreen(
 
         BotonPublicar(
             onChange = {
-                crearReviewViewModel.createReview()
+                crearReviewViewModel.createReview(reviewPartidoId)
                 onReviewCreated()
             }
         )

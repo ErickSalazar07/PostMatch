@@ -55,7 +55,7 @@ class ReviewRepository @Inject constructor(
             createReviewDto.idUsuario = authRemoteDataSource.currentUser?.uid ?: ""
             val partidoDto = partidoRemoteDataSource.getPartidoById(createReviewDto.idPartido)
             val usuarioDto = usuarioRemoteDataSource.getUsuarioById(createReviewDto.idUsuario)
-            val createPartidoDto = PartidoCreateDto(partidoDto.partidoFotoUrl)
+            val createPartidoDto = PartidoCreateDto(partidoDto.partidoFotoUrl, partidoDto.fecha)
             val createUsuarioDto = UsuarioCreateDto(usuarioDto.nombre, usuarioDto.email, usuarioDto.fotoPerfilUrl)
             createReviewDto.partido = createPartidoDto
             createReviewDto.usuario = createUsuarioDto
