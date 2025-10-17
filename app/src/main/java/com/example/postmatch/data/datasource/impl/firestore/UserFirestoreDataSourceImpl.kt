@@ -99,6 +99,33 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             }
         }
     }
+    override suspend fun getFollowersOfUserById(idUser: String): List<UsuarioDto> {
+        val followersSnapshot = db.collection("users")
+            .document(idUser)
+            .collection("follower")
+            .get()
+            .await()
 
+        // 2️⃣ Extraer los IDs de los followers
+        val followerIds = followersSnapshot.documents.map { it.id }
+
+
+        if (followerIds.isEmpty()) return emptyList()
+
+        val followersList = mutableListOf<UsuarioDto>()
+
+        for (followerId in followerIds) {
+            val followerDoc = db.collection("users").document(followerId).get().await()
+            val followerUser = followerDoc.toObject(UsuarioDto::class.java)
+            followerUser?.let {
+                it.id = followerDoc.id
+                followersList.add(it)
+            }
+        }
+
+        // 5️⃣ Devolver la lista de followers encontrados
+        return followersList
+
+    }
 }
 

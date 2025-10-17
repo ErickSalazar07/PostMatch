@@ -52,6 +52,8 @@ import com.example.postmatch.ui.Screens.reviewDetail.ReviewDetailScreen
 import com.example.postmatch.ui.Screens.reviewDetail.ReviewDetailViewModel
 import com.example.postmatch.ui.Screens.reviews.ReviewsScreen
 import com.example.postmatch.ui.Screens.reviews.ReviewsViewModel
+import com.example.postmatch.ui.Screens.reviewsFollow.ReviewsFollowScreen
+import com.example.postmatch.ui.Screens.reviewsFollow.ReviewsFollowViewModel
 import com.example.postmatch.ui.Screens.splash.SplashScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -68,6 +70,8 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Reviews : Screen(route = "reviews")
     object Registro : Screen(route = "registro")
     object ReviewDetail : Screen(route = "reviewDetail/{idReview}")
+
+    object ReviewsFollow: Screen(route = "reviewsFollow")
 
     object ActualizarReview: Screen(route = "actualizarReview/{idReview}")
     object CrearReview : Screen("crearReview/{idPartido}")          // Nueva pantalla para el "más"
@@ -94,7 +98,8 @@ fun BottomNavBar(
 
     val items = listOf(
         BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
-        BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "Buscar"),   // Cambiado
+        BottomNavItem(Screen.ReviewsFollow.route, Icons.Filled.Home, "seguidas"),
+        BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "reviewsFollow"),   // Cambiado
         //BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
         BottomNavItem(Screen.Perfil.route.replace("{idUsuario}", userId), Icons.Filled.Person, "Perfil")
@@ -333,6 +338,30 @@ fun AppNavigation(
                 }
             )
         }
+
+        composable(route = Screen.ReviewsFollow.route) {
+            val reviewsFollowViewModel: ReviewsFollowViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            BackHandler {
+                activity?.finish()
+            }
+
+            ReviewsFollowScreen(
+                reviewsFollowViewModel = reviewsFollowViewModel,
+                onReviewClick = { idReview ->
+                    navController.navigate(
+                        Screen.ReviewDetail.route.replace(
+                            "{idReview}",
+                            idReview
+                        )
+                    )
+                }
+            )
+        }
+
+
 
         composable(route = Screen.Registro.route) {
             val registroViewModel: RegistroViewModel = hiltViewModel()

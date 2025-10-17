@@ -12,6 +12,7 @@ import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.PartidoCreateDto
 import com.example.postmatch.data.dtos.UpdateReviewDto
 import com.example.postmatch.data.dtos.UsuarioCreateDto
+import com.example.postmatch.data.dtos.UsuarioDto
 import com.example.postmatch.data.dtos.toReviewInfo
 import com.example.postmatch.ui.Screens.partidos.ResultadoPartidoCard
 import java.util.Date
@@ -120,6 +121,29 @@ class ReviewRepository @Inject constructor(
           Result.failure(e)
       }
 
+    }
+    suspend fun getReviewsFromFollowedUsers(): Result<List<ReviewInfo>> {
+        return try {
+            val currentUserId = authRemoteDataSource.currentUser?.uid
+                ?: return Result.failure(Exception("Usuario no autenticado"))
+
+            val followedUsers = usuarioRemoteDataSource.getFollowersOfUserById(currentUserId)
+            val followedUserIds = followedUsers.map { it.id }
+
+            if (followedUserIds.isEmpty()) {
+                return Result.success(emptyList())
+            }
+
+            val allReviews = mutableListOf<ReviewInfo>()
+            for (userId in followedUserIds) {
+                val userReviews = reviewRemoteDataSource.getReviewsByUser(userId)
+                allReviews.addAll(userReviews.map { it.toReviewInfo() })
+            }
+
+            Result.success(allReviews)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
 

@@ -16,4 +16,5 @@ interface UsuarioRemoteDataSource {
 
     suspend fun  seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String): Unit
 
+    suspend fun getFollowersOfUserById(idUsuario: String): List<UsuarioDto>
 }
