@@ -7,6 +7,7 @@ import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.ReviewDto
 import com.example.postmatch.data.dtos.UpdateUserDto
 import com.example.postmatch.data.dtos.UsuarioDto
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -23,10 +24,18 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         }
     }
 
-    override suspend fun getUsuarioById(id: String): UsuarioDto {
+    override suspend fun getUsuarioById(id: String, idUsuarioActual: String): UsuarioDto {
         val docRef = db.collection("users").document(id)
         val respuesta = docRef.get().await()
-        return respuesta.toObject(UsuarioDto::class.java) ?: throw Exception("No se pudo obtener el usuario")
+        val user = respuesta.toObject(UsuarioDto::class.java) ?: throw Exception("No se pudo obtener el usuario")
+
+        val followerDoc = db.collection("user").document(id).collection("followers").document(idUsuarioActual).get().await()
+
+        val exists = followerDoc.exists()
+
+        user.followed = exists
+
+        return user
     }
 
     override suspend fun getReviewsByUsuarioId(idUsuario: String): List<ReviewDto> {
@@ -57,6 +66,37 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             ).await()
         } catch (e: Exception) {
             throw Exception("Error al actualizar el usuario: ${e.message}")
+        }
+    }
+
+    override suspend fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
+        val usuarioActualRef = db.collection("users").document(idUsuarioActual)
+        val usuarioSeguirRef = db.collection("users").document(idUsuarioSeguir)
+
+        val followingRef = usuarioActualRef.collection("following").document(idUsuarioSeguir)
+        val followerRef = usuarioSeguirRef.collection("follower").document(idUsuarioActual)
+
+        db.runTransaction { transaction ->
+            val followingDoc = transaction.get(followingRef)
+
+            if(followingDoc.exists()){
+
+                transaction.delete(followingRef)
+                transaction.delete(followerRef)
+
+                transaction.update(usuarioActualRef ,"numFollowed", FieldValue.increment(-1))
+                transaction.update(usuarioSeguirRef ,"numFollowers", FieldValue.increment(-1))
+
+            }
+            else{
+
+                transaction.set(followingRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+                transaction.set(followerRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+
+                transaction.update(usuarioActualRef ,"numFollowed", FieldValue.increment(1))
+                transaction.update(usuarioSeguirRef ,"numFollowers", FieldValue.increment(1))
+
+            }
         }
     }
 

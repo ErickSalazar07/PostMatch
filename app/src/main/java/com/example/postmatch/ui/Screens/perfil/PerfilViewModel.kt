@@ -12,10 +12,12 @@ import com.example.postmatch.data.local.LocalReviewProvider
 import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.PartidoRepository
 import com.example.postmatch.data.repository.ReviewRepository
-import com.example.postmatch.data.repository.StorageRepository
+import com.example.postmatch.data.repository.
 import com.example.postmatch.data.repository.UsuarioRepository
 import com.example.postmatch.ui.Screens.partidos.PartidosState
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -105,6 +107,15 @@ class PerfilViewModel @Inject constructor(
             } else {
                 Log.w("PerfilViewModel", "No hay usuario autenticado")
             }
+        }
+    }
+
+    fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
+        val usuarioActual = FirebaseAuth.getInstance().currentUser?.uid?: ""
+
+        viewModelScope.launch{
+            val result = usuarioRepository.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = idUsuarioActual, idUsuarioSeguir = idUsuarioSeguir)
+
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.postmatch.data.datasource.impl
+package com.example.postmatch.data.datasource.impl.retrofit
 
 import com.example.postmatch.data.datasource.UsuarioRemoteDataSource
 import com.example.postmatch.data.datasource.services.UsuarioRetrofitService
@@ -15,7 +15,7 @@ class UsuarioRetrofitDataSourceImpl @Inject constructor(
         return service.getAllUsuarios()
     }
 
-    override suspend fun getUsuarioById(id: String): UsuarioDto {
+    override suspend fun getUsuarioById(id: String, idUsuarioActual: String): UsuarioDto {
         return service.getUsuarioById(id.toInt())
     }
 
@@ -29,5 +29,9 @@ class UsuarioRetrofitDataSourceImpl @Inject constructor(
 
     override suspend fun updateUser(userId: String, updateUserDto: UpdateUserDto) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
+        TODO("not implemented yet")
     }
 }

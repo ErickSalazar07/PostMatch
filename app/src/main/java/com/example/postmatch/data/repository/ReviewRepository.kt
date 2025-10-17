@@ -4,7 +4,7 @@ import android.util.Log
 import coil.network.HttpException
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.datasource.AuthRemoteDataSource
-import com.example.postmatch.data.datasource.impl.ReviewRetrofitDataSourceImpl
+import com.example.postmatch.data.datasource.impl.retrofit.ReviewRetrofitDataSourceImpl
 import com.example.postmatch.data.datasource.impl.firestore.PartidoFirestoreDataSourceImpl
 import com.example.postmatch.data.datasource.impl.firestore.ReviewFirestoreDataSourceImpl
 import com.example.postmatch.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
@@ -54,7 +54,7 @@ class ReviewRepository @Inject constructor(
         return try {
             createReviewDto.idUsuario = authRemoteDataSource.currentUser?.uid ?: ""
             val partidoDto = partidoRemoteDataSource.getPartidoById(createReviewDto.idPartido)
-            val usuarioDto = usuarioRemoteDataSource.getUsuarioById(createReviewDto.idUsuario)
+            val usuarioDto = usuarioRemoteDataSource.getUsuarioById(createReviewDto.idUsuario, createReviewDto.idUsuario)
             val createPartidoDto = PartidoCreateDto(partidoDto.partidoFotoUrl, partidoDto.fecha)
             val createUsuarioDto = UsuarioCreateDto(usuarioDto.nombre, usuarioDto.email, usuarioDto.fotoPerfilUrl)
             createReviewDto.partido = createPartidoDto
