@@ -21,28 +21,6 @@ class NotificacionesViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(NotificacionesState())
     val uiState: StateFlow<NotificacionesState> = _uiState
 
-    /*
-
-    fun getUsuariosNotificacion() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-            val result = usuarioRepository.getUsuarios()
-            if(result.isSuccess) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = null,
-                        usuariosNotificacion = result.getOrDefault(emptyList())
-                    )
-                }
-            } else {
-                _uiState.update { it.copy(isLoading = false, errorMessage = "Error desconocido") }
-            }
-        }
-    }
-
-     */
-
     fun getUsuariosNotificacion() {
         viewModelScope.launch {
             val resultUsuariosNotificacion = usuarioRepository.getUsuarios()

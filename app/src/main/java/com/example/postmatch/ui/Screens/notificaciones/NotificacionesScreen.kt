@@ -54,17 +54,6 @@ fun NotificacionesScreen(
 ) {
     val state by notificacionesViewModel.uiState.collectAsState()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        NotificacionesHeader()
-        SeccionNotificaciones(
-            listaNotificaciones = state.usuariosNotificacion,
-            onNotificacionClick = onNotificacionClick
-        )
-    }
 
     when {
         // 🔹 Estado de carga
@@ -93,15 +82,20 @@ fun NotificacionesScreen(
 
         // 🔹 Éxito — mostramos las notificaciones
         else -> {
-            SeccionNotificaciones(
-                listaNotificaciones = state.usuariosNotificacion,
-                onNotificacionClick = onNotificacionClick
-            )
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                NotificacionesHeader()
+                SeccionNotificaciones(
+                    listaNotificaciones = state.usuariosNotificacion,
+                    onNotificacionClick = onNotificacionClick
+                )
+            }
         }
     }
 }
-
-
 
 @Composable
 fun NotificacionesHeader(
