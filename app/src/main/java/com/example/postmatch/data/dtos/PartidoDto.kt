@@ -1,7 +1,6 @@
 package com.example.postmatch.data.dtos
 
 import com.example.postmatch.data.PartidoInfo
-import com.example.postmatch.data.UsuarioInfo
 import java.util.Date
 
 data class PartidoDto(

@@ -38,10 +38,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
@@ -51,7 +49,6 @@ import com.example.postmatch.data.PartidoInfo
 @Composable
 fun ActualizarReviewScreen(
     actualizarReviewViewModel: ActualizarReviewViewModel,
-    onReviewUpdated: () -> Unit,
     reviewId: String,
     modifier: Modifier = Modifier,
 ) {
@@ -202,8 +199,8 @@ fun CalificacionInput(
     onCalificacionChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val MAX_CALIFICACION: Int = 5
-    var i: Int = 1
+    val maxCalificacion = 5
+    var i = 1
 
     Column(
         modifier = modifier
@@ -218,13 +215,13 @@ fun CalificacionInput(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            while (i <= MAX_CALIFICACION) {
+            while (i <= maxCalificacion) {
                 ReviewCalificacionButton(
                     calificacion = calificacion,
                     valorCalificacion = i,
                     onCalificacionChange = onCalificacionChange
                 )
-                if (0 < i && i < MAX_CALIFICACION)
+                if (0 < i && i < maxCalificacion)
                     Spacer(Modifier.width(5.dp))
                 i++
             }

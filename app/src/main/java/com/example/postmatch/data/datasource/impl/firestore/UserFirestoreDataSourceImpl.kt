@@ -1,7 +1,5 @@
 package com.example.postmatch.data.datasource.impl.firestore
 
-import android.util.Log
-import androidx.compose.animation.core.snap
 import com.example.postmatch.data.datasource.UsuarioRemoteDataSource
 import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.ReviewDto
@@ -99,9 +97,9 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             }
         }
     }
-    override suspend fun getFollowersOfUserById(idUser: String): List<UsuarioDto> {
+    override suspend fun getFollowersOfUserById(idUsuario: String): List<UsuarioDto> {
         val followersSnapshot = db.collection("users")
-            .document(idUser)
+            .document(idUsuario)
             .collection("following")
             .get()
             .await()

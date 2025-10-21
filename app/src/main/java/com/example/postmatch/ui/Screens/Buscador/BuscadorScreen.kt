@@ -102,8 +102,6 @@ fun BuscadorScreenContent(
             FiltroChip(text = "Destacados",
                 onClick = onDestacadosClick
             )
-
-
         }
 
         Spacer(Modifier.height(12.dp))
