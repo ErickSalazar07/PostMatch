@@ -1,4 +1,4 @@
-package com.example.postmatch.data.datasource.impl
+package com.example.postmatch.data.datasource.impl.retrofit
 
 import com.example.postmatch.data.datasource.PartidoRemoteDataSource
 import com.example.postmatch.data.datasource.services.PartidoRetrofitService

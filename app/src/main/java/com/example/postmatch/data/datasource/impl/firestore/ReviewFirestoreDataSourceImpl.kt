@@ -1,11 +1,16 @@
 package com.example.postmatch.data.datasource.impl.firestore
 
+import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.datasource.ReviewRemoteDataSource
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.ReviewDto
 import com.example.postmatch.data.dtos.UpdateReviewDto
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -14,7 +19,9 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
         val snapshot = db.collection("reviews").get().await()
         return snapshot.documents.map { doc ->
             val review = doc.toObject(ReviewDto::class.java)
-            review?.copy(id = doc.id) ?: throw Exception("Review not found")
+            val likesSnapshot = doc.reference.collection("likes").get().await()
+            val likesCount = likesSnapshot.size()
+            review?.copy(id = doc.id, numLikes = likesCount) ?: throw Exception("Review not found")
         }
     }
 
@@ -40,7 +47,19 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
     }
 
     override suspend fun getReviewsByUser(userId: String): List<ReviewDto> {
-        TODO("Not yet implemented")
+        val snapshot = db.collection("reviews")
+            .whereEqualTo("idUsuario", userId)
+            .get()
+            .await()
+
+        return snapshot.documents.mapNotNull { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.let {
+                val likesSnapshot = doc.reference.collection("likes").get().await()
+                val likesCount = likesSnapshot.size()
+                it.copy(id = doc.id, numLikes = likesCount)
+            }
+        }
     }
 
     override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {
@@ -65,5 +84,33 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
 
         }
     }
+
+    override suspend fun listenReviews(): Flow<List<ReviewDto>> = callbackFlow {
+        val listener = db.collection("reviews")
+            .addSnapshotListener { snapshot, error ->
+
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    launch {
+                        val reviews = snapshot.documents.mapNotNull { doc ->
+                            val review = doc.toObject(ReviewDto::class.java)
+                            review?.let {
+                                val likesSnapshot = doc.reference.collection("likes").get().await()
+                                val likesCount = likesSnapshot.size()
+                                it.copy(id = doc.id, numLikes = likesCount)
+                            }
+                        }
+                        trySend(reviews).isSuccess
+                    }
+                }
+            }
+
+        awaitClose { listener.remove() }
+    }
+
 
 }

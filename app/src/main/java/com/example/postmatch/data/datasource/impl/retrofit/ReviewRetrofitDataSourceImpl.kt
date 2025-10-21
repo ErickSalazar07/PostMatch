@@ -1,10 +1,12 @@
-package com.example.postmatch.data.datasource.impl
+package com.example.postmatch.data.datasource.impl.retrofit
 
+import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.datasource.ReviewRemoteDataSource
 import com.example.postmatch.data.datasource.services.ReviewRetrofitService
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.ReviewDto
 import com.example.postmatch.data.dtos.UpdateReviewDto
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ReviewRetrofitDataSourceImpl @Inject constructor(
@@ -24,6 +26,10 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
     }
 
     override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun listenReviews(): Flow<List<ReviewDto>> {
         TODO("Not yet implemented")
     }
 

@@ -4,7 +4,7 @@ import android.util.Log
 import coil.network.HttpException
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.UsuarioInfo
-import com.example.postmatch.data.datasource.impl.UsuarioRetrofitDataSourceImpl
+import com.example.postmatch.data.datasource.impl.retrofit.UsuarioRetrofitDataSourceImpl
 import com.example.postmatch.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
 import com.example.postmatch.data.dtos.RegisterUserDto
 import com.example.postmatch.data.dtos.UpdateUserDto
@@ -18,12 +18,16 @@ import kotlin.math.log
 
 class UsuarioRepository @Inject constructor(
     // private val usuarioRemoteDataSource: UsuarioRetrofitDataSourceImpl
-    private val usuarioRemoteDataSource: UserFirestoreDataSourceImpl
+    private val usuarioRemoteDataSource: UserFirestoreDataSourceImpl,
+    private val authRepository: AuthRepository
 ){
 
     suspend fun getUsuarioById(idUsuario: String): Result<UsuarioInfo>{
+
+        val usuarioActual = authRepository.currentUser?.uid?: ""
+
         return try {
-            val usuario = usuarioRemoteDataSource.getUsuarioById(idUsuario)
+            val usuario = usuarioRemoteDataSource.getUsuarioById(idUsuario, usuarioActual)
             val usuarioInfo = usuario.toUsuarioInfo()
             Result.success(usuarioInfo)
         } catch (e: HttpException){
@@ -83,6 +87,17 @@ class UsuarioRepository @Inject constructor(
             Result.failure(e)
         } catch (e: Exception) {
             Log.d("TAG", "getUsuarios: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String) : Result<Unit>{
+        return try{
+            usuarioRemoteDataSource.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = idUsuarioActual, idUsuarioSeguir = idUsuarioSeguir)
+            Result.success(Unit)
+        }
+        catch(e : Exception){
+            Log.e("seguirTantoDejarDeSeguir", "Falló aquí en => seguirTantoDejarDeSeguirUsuario")
             Result.failure(e)
         }
     }

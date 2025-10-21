@@ -4,6 +4,7 @@ import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.dtos.CreateReviewDto
 import com.example.postmatch.data.dtos.ReviewDto
 import com.example.postmatch.data.dtos.UpdateReviewDto
+import kotlinx.coroutines.flow.Flow
 
 interface ReviewRemoteDataSource {
     suspend fun getAllReviews(): List<ReviewDto>
@@ -15,6 +16,8 @@ interface ReviewRemoteDataSource {
     suspend fun getReviewsByUser(userId: String): List<ReviewDto>
 
     suspend fun sendOrDeleteLike(reviewId : String, userId: String): Unit
+    suspend fun listenReviews(): Flow<List<ReviewDto>>
+
 
 
 }
