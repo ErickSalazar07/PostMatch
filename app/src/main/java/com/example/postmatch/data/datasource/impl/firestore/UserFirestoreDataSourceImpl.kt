@@ -102,7 +102,7 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
     override suspend fun getFollowersOfUserById(idUser: String): List<UsuarioDto> {
         val followersSnapshot = db.collection("users")
             .document(idUser)
-            .collection("follower")
+            .collection("following")
             .get()
             .await()
 

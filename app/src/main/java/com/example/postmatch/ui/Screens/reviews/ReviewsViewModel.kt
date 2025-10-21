@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,15 +25,22 @@ class ReviewsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ReviewsState())
     val uiState: StateFlow<ReviewsState> = _uiState
 
-    fun getAllReviews(){
+    fun getAllReviews() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-            val result = reviewRepository.getReviews()
-            if (result.isSuccess) {
-                _uiState.update { it.copy(reviews = result.getOrNull() ?: emptyList(), isLoading = false, errorMessage = null) }
-            }else{
-                _uiState.update { it.copy(errorMessage = result.exceptionOrNull()?.message, isLoading = false)}
-            }
+            reviewRepository.getReviewsOnline()
+                .catch { e ->
+                    _uiState.update { it.copy(errorMessage = e.message, isLoading = false) }
+                }
+                .collect { reviews ->
+                    _uiState.update {
+                        it.copy(
+                            reviews = reviews,
+                            isLoading = false,
+                            errorMessage = null
+                        )
+                    }
+                }
         }
     }
 

@@ -23,6 +23,7 @@ import androidx.compose.ui.res.colorResource
 import com.example.postmatch.R
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Notifications
@@ -98,7 +99,7 @@ fun BottomNavBar(
 
     val items = listOf(
         BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
-        BottomNavItem(Screen.ReviewsFollow.route, Icons.Filled.Home, "seguidas"),
+        BottomNavItem(Screen.ReviewsFollow.route,  Icons.Filled.FilterList, "seguidas"),
         BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "reviewsFollow"),   // Cambiado
         //BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
