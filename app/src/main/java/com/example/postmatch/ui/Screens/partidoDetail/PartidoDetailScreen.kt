@@ -1,4 +1,4 @@
-package com.example.postmatch.ui.Screens.partidoDetail
+ package com.example.postmatch.ui.Screens.partidoDetail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
