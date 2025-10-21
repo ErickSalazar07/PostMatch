@@ -34,4 +34,8 @@ class UsuarioRetrofitDataSourceImpl @Inject constructor(
     override suspend fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
         TODO("not implemented yet")
     }
+
+    override suspend fun getFollowersOfUserById(idUsuario: String): List<UsuarioDto> {
+        TODO("Not yet implemented")
+    }
 }

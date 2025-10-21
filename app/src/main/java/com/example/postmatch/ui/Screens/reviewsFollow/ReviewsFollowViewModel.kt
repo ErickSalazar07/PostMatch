@@ -1,23 +1,24 @@
-package com.example.postmatch.ui.Screens.reviews
+package com.example.postmatch.ui.Screens.reviewsFollow
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.util.CoilUtils.result
 import com.example.postmatch.data.ReviewInfo
 import com.example.postmatch.data.datasource.AuthRemoteDataSource
-import com.example.postmatch.data.local.LocalReviewProvider
-import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.ReviewRepository
+import com.example.postmatch.ui.Screens.reviews.ReviewsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class ReviewsViewModel @Inject constructor(
+class ReviewsFollowViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository,
     private val authRemoteDataSource: AuthRemoteDataSource
 ): ViewModel() {
@@ -41,6 +42,47 @@ class ReviewsViewModel @Inject constructor(
                         )
                     }
                 }
+        }
+    }
+
+
+
+
+    /*
+    viewModelScope.launch {
+
+        val result = reviewRepository.getReviews()
+        if (result.isSuccess) {
+            _uiState.update { it.copy(reviews = result.getOrNull() ?: emptyList(), isLoading = false, errorMessage = null) }
+        }else{
+            _uiState.update { it.copy(errorMessage = result.exceptionOrNull()?.message, isLoading = false)}
+        }
+    }
+
+     */
+
+
+
+    fun getFollowedReviews() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            val result = reviewRepository.getReviewsFromFollowedUsers()
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        reviews = result.getOrNull() ?: emptyList(),
+                        isLoading = false,
+                        errorMessage = null
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = result.exceptionOrNull()?.message,
+                        isLoading = false
+                    )
+                }
+            }
         }
     }
 
