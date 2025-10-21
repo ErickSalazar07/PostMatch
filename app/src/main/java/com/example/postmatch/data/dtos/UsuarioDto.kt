@@ -8,9 +8,12 @@ data class UsuarioDto(
     val email: String,
     val password: String,
     val fotoPerfilUrl: String,
-    var followed : Boolean
+    var followed : Boolean,
+    var numFollowed: Int,
+    var numFollowers: Int
+
 ){
-    constructor():this("0", "", "", "", "", false)
+    constructor():this("0", "", "", "", "", false, 0, 0)
 }
 
 fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {
@@ -20,6 +23,8 @@ fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {
         email = email,
         password = password,
         fotoPerfil = fotoPerfilUrl,
-        followed = followed
+        followed = followed,
+        numFollowers = numFollowers,
+        numFollowed = numFollowed
     )
 }
