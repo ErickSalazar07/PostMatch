@@ -33,7 +33,9 @@ class PerfilViewModel @Inject constructor(
     fun uploadProfileImageToFirebase(uri: Uri) {
         viewModelScope.launch {
             val result = storageRepository.uploadProfileImage(uri)
+            Log.d("PerfilViewModel", "uploadProfileImageToFirebase: $result")
             if (result.isSuccess) {
+                Log.d("PerfilViewModel", "uploadProfileImageToFirebase: ${result.getOrNull()}")
                 _uiState.update { it.copy(fotoPerfilUrl = result.getOrNull()) }
             }
         }
@@ -59,6 +61,7 @@ class PerfilViewModel @Inject constructor(
             if (result.isSuccess) {
                 _uiState.update { it.copy(
                     usuarioInfo = result.getOrDefault(UsuarioInfo()),
+                    fotoPerfilUrl = it.usuarioInfo.fotoPerfil,
                     isCurrentUser = idUsuario == authRepository.currentUser?.uid
                 )}
                 val resultReviews = usuarioRepository.getReviewsByUsuarioId(idUsuario)

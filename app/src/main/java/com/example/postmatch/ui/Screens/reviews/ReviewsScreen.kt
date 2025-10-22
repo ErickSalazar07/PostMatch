@@ -52,6 +52,7 @@ fun ReviewsScreen(
     LaunchedEffect(Unit) {
         reviewsViewModel.getAllReviews()
     }
+
     val state by reviewsViewModel.uiState.collectAsState()
     when{
         state.isLoading -> {
@@ -118,7 +119,6 @@ fun SectionReviews(
     onReviewClick: (String) -> Unit,
     reviews: List<ReviewInfo>,
     onLikeClick: (String) -> Unit,
-
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -149,7 +149,6 @@ fun ReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable { onReviewClick(reviewInfo.idReview) }
             .padding(12.dp)
     ) {
             Column(
@@ -211,6 +210,7 @@ fun ReviewCard(
                 modifier = Modifier
                     .size(200.dp)
                     .clip(RoundedCornerShape(8.dp))
+                    .clickable { onReviewClick(reviewInfo.idReview) }
             )
         }
 }

@@ -49,6 +49,7 @@ import com.example.postmatch.data.PartidoInfo
 @Composable
 fun ActualizarReviewScreen(
     actualizarReviewViewModel: ActualizarReviewViewModel,
+    onReviewUpdated: () -> Unit,
     reviewId: String,
     modifier: Modifier = Modifier,
 ) {
@@ -96,7 +97,7 @@ fun ActualizarReviewScreen(
         BotonActualizar(
             onChange = {
                 actualizarReviewViewModel.onUpdateReview()
-                //onReviewUpdated()
+                onReviewUpdated()
             }
         )
     }

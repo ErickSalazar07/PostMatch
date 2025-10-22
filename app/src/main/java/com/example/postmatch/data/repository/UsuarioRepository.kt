@@ -65,6 +65,16 @@ class UsuarioRepository @Inject constructor(
         }
     }
 
+    suspend fun updateFotoPerfilById(idUsuario: String, fotoPerfilUrl: String): Result<Unit> {
+        return try {
+            usuarioRemoteDataSource.updateFotoPerfilById(idUsuario, fotoPerfilUrl)
+            Result.success(Unit)
+        } catch(e: Exception) {
+            Log.d("TAG", "updateFotoPerfilById: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
     suspend fun updateUser(userId: String, nombre: String, email: String, password: String): Result<Unit> {
         return try {
             val updateUserDto = UpdateUserDto(nombre, email, password)
@@ -95,8 +105,7 @@ class UsuarioRepository @Inject constructor(
         return try{
             usuarioRemoteDataSource.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = idUsuarioActual, idUsuarioSeguir = idUsuarioSeguir)
             Result.success(Unit)
-        }
-        catch(e : Exception){
+        } catch(e : Exception) {
             Log.e("seguirTantoDejarDeSeguir", "Falló aquí en => seguirTantoDejarDeSeguirUsuario")
             Result.failure(e)
         }

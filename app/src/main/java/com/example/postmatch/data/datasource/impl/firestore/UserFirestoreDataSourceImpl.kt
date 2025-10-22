@@ -67,6 +67,19 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         }
     }
 
+    override suspend fun updateFotoPerfilById(idUsuario: String,fotoPerfilUrl: String) {
+        val docRef = db.collection("users").document(idUsuario)
+        try {
+            docRef.update(
+                mapOf(
+                    "fotoPerfil" to fotoPerfilUrl
+                )
+            ).await()
+        } catch(e: Exception) {
+            throw Exception("Error al actualizar el usuario: ${e.message}")
+        }
+    }
+
     override suspend fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
         val usuarioActualRef = db.collection("users").document(idUsuarioActual)
         val usuarioSeguirRef = db.collection("users").document(idUsuarioSeguir)
@@ -104,7 +117,6 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             .get()
             .await()
 
-        // 2️⃣ Extraer los IDs de los followers
         val followerIds = followersSnapshot.documents.map { it.id }
 
 
@@ -121,7 +133,6 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             }
         }
 
-        // 5️⃣ Devolver la lista de followers encontrados
         return followersList
 
     }

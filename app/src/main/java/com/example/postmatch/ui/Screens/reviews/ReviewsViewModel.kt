@@ -27,18 +27,29 @@ class ReviewsViewModel @Inject constructor(
 
     fun getAllReviews() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             reviewRepository.getReviewsOnline()
                 .catch { e ->
                     _uiState.update { it.copy(errorMessage = e.message, isLoading = false) }
                 }
                 .collect { reviews ->
+                    // Evita sobrescribir si el usuario acaba de hacer like
+                    val currentReviews = _uiState.value.reviews
+                    val mergedReviews = reviews.map { newReview ->
+                        val localReview = currentReviews.find { it.idReview == newReview.idReview }
+                        if (localReview != null) {
+                            // Conserva el valor de likedByUser temporal si no hay diferencia en el conteo
+                            if (localReview.likedByUser != newReview.likedByUser &&
+                                (localReview.numLikes == newReview.numLikes ||
+                                        localReview.numLikes == newReview.numLikes + 1 ||
+                                        localReview.numLikes == newReview.numLikes - 1)
+                            ) {
+                                localReview
+                            } else newReview
+                        } else newReview
+                    }
+
                     _uiState.update {
-                        it.copy(
-                            reviews = reviews,
-                            isLoading = false,
-                            errorMessage = null
-                        )
+                        it.copy(reviews = mergedReviews, isLoading = false)
                     }
                 }
         }
@@ -49,35 +60,24 @@ class ReviewsViewModel @Inject constructor(
     }
 
     fun sendOrDeleteLike(reviewId: String) {
-        val userId = authRemoteDataSource.currentUser?.uid?:""
-        Log.d("LIKES_DEBUG", "ViewModel -> Iniciando sendOrDeleteLike con reviewId=$reviewId y userId=$userId")
+        val userId = authRemoteDataSource.currentUser?.uid ?: return
         viewModelScope.launch {
+            // Espera al resultado real del repositorio
             val result = reviewRepository.sendOrDeleteLike(reviewId, userId)
-            Log.d("LIKES_DEBUG", "ViewModel -> Resultado del repositorio: $result")
 
             if (result.isSuccess) {
-                Log.d("LIKES_DEBUG", "Like enviado/eliminado correctamente")
-                _uiState.update { currentState ->
-                    val updatedReviews = currentState.reviews.map { review ->
+                _uiState.update { state ->
+                    val updatedReviews = state.reviews.map { review ->
                         if (review.idReview == reviewId) {
-                            val isLiked = !review.likedByUser
-                            val newLikes = if (isLiked) review.numLikes + 1 else review.numLikes - 1
-                            Log.d("LIKES_DEBUG", "Actualizando reviewId=$reviewId con newLikes=$newLikes y liked=$isLiked")
-
-                            review.copy(
-                                numLikes = newLikes,
-                                likedByUser = isLiked
-                            )
+                            val newLikedState = !review.likedByUser
+                            val newLikes = if (newLikedState) review.numLikes + 1 else review.numLikes - 1
+                            review.copy(numLikes = newLikes, likedByUser = newLikedState)
                         } else review
                     }
-
-                    currentState.copy(reviews = updatedReviews)
+                    state.copy(reviews = updatedReviews)
                 }
             } else {
-                Log.e("LIKES_DEBUG", "Error al enviar/eliminar like: ${result.exceptionOrNull()?.message}")
-                _uiState.update {
-                    it.copy(errorMessage = "Error al enviar el like")
-                }
+                _uiState.update { it.copy(errorMessage = "Error al enviar el like") }
             }
         }
     }

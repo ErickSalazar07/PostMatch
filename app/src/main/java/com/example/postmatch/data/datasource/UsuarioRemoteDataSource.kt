@@ -12,6 +12,8 @@ interface UsuarioRemoteDataSource {
 
     suspend fun registerUser(registerUserDto: RegisterUserDto, userId: String): Unit
 
+    suspend fun updateFotoPerfilById(idUsuario: String,fotoPerfilUrl: String)
+
     suspend fun updateUser(userId: String, updateUserDto: UpdateUserDto)
 
     suspend fun  seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String): Unit
