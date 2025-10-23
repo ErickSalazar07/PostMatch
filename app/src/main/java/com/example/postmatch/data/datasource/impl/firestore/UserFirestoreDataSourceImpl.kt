@@ -27,7 +27,7 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         val respuesta = docRef.get().await()
         val user = respuesta.toObject(UsuarioDto::class.java) ?: throw Exception("No se pudo obtener el usuario")
 
-        val followerDoc = db.collection("user").document(id).collection("followers").document(idUsuarioActual).get().await()
+        val followerDoc = db.collection("users").document(id).collection("followers").document(idUsuarioActual).get().await()
 
         val exists = followerDoc.exists()
 
@@ -85,7 +85,7 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         val usuarioSeguirRef = db.collection("users").document(idUsuarioSeguir)
 
         val followingRef = usuarioActualRef.collection("following").document(idUsuarioSeguir)
-        val followerRef = usuarioSeguirRef.collection("follower").document(idUsuarioActual)
+        val followerRef = usuarioSeguirRef.collection("followers").document(idUsuarioActual)
 
         db.runTransaction { transaction ->
             val followingDoc = transaction.get(followingRef)
