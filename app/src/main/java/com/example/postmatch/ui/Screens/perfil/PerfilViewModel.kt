@@ -33,10 +33,12 @@ class PerfilViewModel @Inject constructor(
     fun uploadProfileImageToFirebase(uri: Uri) {
         viewModelScope.launch {
             val result = storageRepository.uploadProfileImage(uri)
-            Log.d("PerfilViewModel", "uploadProfileImageToFirebase: $result")
+            Log.d("PerfilViewModel-uploadProfileImageToFirebase", "uploadProfileImageToFirebase: $result")
             if (result.isSuccess) {
-                Log.d("PerfilViewModel", "uploadProfileImageToFirebase: ${result.getOrNull()}")
+                Log.d("PerfilViewModel-uploadProfileImageToFirebase", "uploadProfileImageToFirebase: ${result.getOrNull()}")
                 _uiState.update { it.copy(fotoPerfilUrl = result.getOrNull()) }
+            } else {
+                Log.d("PerfilViewModel-uploadProfileImageToFirebase", "Error al subir la imagen: ${result.exceptionOrNull()}")
             }
         }
     }
@@ -59,9 +61,11 @@ class PerfilViewModel @Inject constructor(
         viewModelScope.launch {
             val result = usuarioRepository.getUsuarioById(idUsuario)
             if (result.isSuccess) {
+                val usuarioInfo = result.getOrDefault(UsuarioInfo())
+                Log.d("PerfilViewModel-getUserInfo", "fotoPerfilUrl: ${usuarioInfo.fotoPerfil}")
                 _uiState.update { it.copy(
-                    usuarioInfo = result.getOrDefault(UsuarioInfo()),
-                    fotoPerfilUrl = it.usuarioInfo.fotoPerfil,
+                    usuarioInfo = usuarioInfo,
+                    fotoPerfilUrl = usuarioInfo.fotoPerfil,
                     isCurrentUser = idUsuario == authRepository.currentUser?.uid
                 )}
                 val resultReviews = usuarioRepository.getReviewsByUsuarioId(idUsuario)
@@ -82,6 +86,8 @@ class PerfilViewModel @Inject constructor(
             }
         }
     }
+
+
 
     fun cargarUsuarioActual() {
         viewModelScope.launch {
@@ -117,7 +123,6 @@ class PerfilViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(
                     usuarioInfo = _uiState.value.usuarioInfo.copy(
                         numFollowers = if(_uiState.value.usuarioInfo.followed) _uiState.value.usuarioInfo.numFollowers - 1 else _uiState.value.usuarioInfo.numFollowers + 1,
-
                         followed = !_uiState.value.usuarioInfo.followed
                     )
                 )

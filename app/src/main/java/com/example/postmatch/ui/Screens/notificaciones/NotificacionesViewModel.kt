@@ -23,6 +23,7 @@ class NotificacionesViewModel @Inject constructor(
 
     fun getUsuariosNotificacion() {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             val resultUsuariosNotificacion = usuarioRepository.getUsuarios()
             if(resultUsuariosNotificacion.isSuccess) {
                 _uiState.update {

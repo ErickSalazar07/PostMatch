@@ -10,7 +10,9 @@ data class PerfilState(
     val usuarioInfo: UsuarioInfo = UsuarioInfo(),
     val reviews: List<ReviewInfo> = emptyList(),
     val fotoPerfilUrl: String? = null,
-    val isCurrentUser: Boolean = false
+    val isCurrentUser: Boolean = false,
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
 )
 
 

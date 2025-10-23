@@ -65,11 +65,11 @@ fun PerfilScreen(
     onReviewClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val state by perfilViewModel.uiState.collectAsState()
-
     LaunchedEffect(Unit) {
         perfilViewModel.getUserInfo(idPerfilUsuario)
     }
+
+    val state by perfilViewModel.uiState.collectAsState()
 
     LazyColumn(
         modifier = modifier
@@ -97,7 +97,8 @@ fun PerfilScreen(
                     nombrePerfil = state.usuarioInfo.nombre,
                     arrobaPerfil = state.usuarioInfo.email,
                     onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
-                    oficioPerfil = "Futbolista"
+                    oficioPerfil = "Futbolista",
+                    isCurrentUser = state.isCurrentUser
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -380,6 +381,7 @@ fun ImagenPerfil(
     nombrePerfil: String,
     arrobaPerfil: String,
     oficioPerfil: String,
+    isCurrentUser: Boolean,
     onFotoPerfilButton: (uri:Uri) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -408,7 +410,7 @@ fun ImagenPerfil(
                 modifier = Modifier.size(200.dp).clip(CircleShape)
             )
 
-            PickImageButton(action = onFotoPerfilButton)
+            if(isCurrentUser) PickImageButton(action = onFotoPerfilButton)
 
             Spacer(modifier = Modifier.height(8.dp))
 
