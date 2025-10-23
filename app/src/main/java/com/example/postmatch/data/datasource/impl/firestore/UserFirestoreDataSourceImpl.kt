@@ -72,7 +72,7 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         try {
             docRef.update(
                 mapOf(
-                    "fotoPerfil" to fotoPerfilUrl
+                    "fotoPerfilUrl" to fotoPerfilUrl
                 )
             ).await()
         } catch(e: Exception) {

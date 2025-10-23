@@ -74,9 +74,11 @@ class CrearReviewViewModel @Inject constructor(
                     _uiState.update { it.copy(navigateBack = true, errorMessage = null) }
                 } else {
                     _uiState.update { it.copy(errorMessage = "No se pudo publicar. Verifica tu conexión.") }
+                    Log.d("CrearReviewViewModel", "Error al publicar la reseña: ${result.exceptionOrNull()}")
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(errorMessage = "Error de conexión con la base de datos.") }
+                Log.d("CrearReviewViewModel", "Error al publicar la reseña: ${e.message}")
             }
         }
     }

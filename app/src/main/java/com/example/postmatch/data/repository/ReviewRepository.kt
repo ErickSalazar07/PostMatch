@@ -66,6 +66,7 @@ class ReviewRepository @Inject constructor(
             reviewRemoteDataSource.createReview(createReviewDto)
             Result.success(Unit)
         } catch (e: Exception){
+            Log.d("ReviewRepository", "createReview: ${e.message}")
             Result.failure(e)
         }
     }
