@@ -1,5 +1,6 @@
 package com.example.postmatch.data.injection
 
+import com.example.postmatch.data.datasource.services.HistoriaRetrofitService
 import com.example.postmatch.data.datasource.services.PartidoRetrofitService
 import com.example.postmatch.data.datasource.services.ReviewRetrofitService
 import com.example.postmatch.data.datasource.services.UsuarioRetrofitService
@@ -43,5 +44,11 @@ object AppModule {
     @Provides
     fun providesUsuarioRetrofitService(retrofit: Retrofit): UsuarioRetrofitService {
         return retrofit.create(UsuarioRetrofitService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesHistoriaRetrofitService(retrofit: Retrofit): HistoriaRetrofitService {
+        return retrofit.create(HistoriaRetrofitService::class.java)
     }
 }
