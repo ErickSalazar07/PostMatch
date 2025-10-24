@@ -10,10 +10,11 @@ data class UsuarioDto(
     val fotoPerfilUrl: String,
     var followed : Boolean,
     var numFollowed: Int,
-    var numFollowers: Int
+    var numFollowers: Int,
+    val historiaActiva : Boolean
 
 ){
-    constructor():this("0", "", "", "", "", false, 0, 0)
+    constructor():this("0", "", "", "", "", false, 0, 0, false)
 }
 
 fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {
@@ -25,6 +26,7 @@ fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {
         fotoPerfil = fotoPerfilUrl,
         followed = followed,
         numFollowers = numFollowers,
-        numFollowed = numFollowed
+        numFollowed = numFollowed,
+        historiaActiva = historiaActiva
     )
 }

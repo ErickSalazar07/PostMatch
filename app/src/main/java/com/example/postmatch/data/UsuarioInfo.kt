@@ -8,5 +8,6 @@ data class UsuarioInfo(
    var fotoPerfil: String = "",
    var numFollowed: Int = 0,
    var numFollowers: Int = 0,
-   val followed : Boolean = false
+   val followed : Boolean = false,
+   val historiaActiva : Boolean = false
 )

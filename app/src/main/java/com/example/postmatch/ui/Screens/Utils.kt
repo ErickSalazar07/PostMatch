@@ -1,4 +1,4 @@
-package com.example.postmatch.data.repository
+package com.example.postmatch.ui.Screens
 
 fun horasComoTexto(horas: Long): String {
     return when {

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.postmatch.data.UsuarioInfo
 
 import com.example.postmatch.data.repository.AuthRepository
+import com.example.postmatch.data.repository.HistoriaRepository
 import com.example.postmatch.data.repository.ReviewRepository
 import com.example.postmatch.data.repository.StorageRepository
 import com.example.postmatch.data.repository.UsuarioRepository
@@ -25,6 +26,7 @@ class PerfilViewModel @Inject constructor(
     private val storageRepository: StorageRepository,
     private val usuarioRepository: UsuarioRepository,
     private val reviewRepository: ReviewRepository,
+    private val historiaRepository: HistoriaRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PerfilState())
@@ -144,6 +146,8 @@ class PerfilViewModel @Inject constructor(
             }
         }
     }
+
+    fun setHistoriaActiva(idUsuario){}
 
 
     init {
