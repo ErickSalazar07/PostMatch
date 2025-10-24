@@ -68,7 +68,7 @@ class PerfilViewModel @Inject constructor(
                 _uiState.update { it.copy(
                     usuarioInfo = usuarioInfo,
                     fotoPerfilUrl = usuarioInfo.fotoPerfil,
-                    isCurrentUser = idUsuario == authRepository.currentUser?.uid
+                    isCurrentUser = idUsuario == authRepository.currentUser?.uid,
                 )}
                 val resultReviews = usuarioRepository.getReviewsByUsuarioId(idUsuario)
                 if (resultReviews.isSuccess) {
@@ -147,7 +147,28 @@ class PerfilViewModel @Inject constructor(
         }
     }
 
-    fun setHistoriaActiva(idUsuario){}
+    fun setHistoriaActiva(usuario : UsuarioInfo){
+        viewModelScope.launch{
+            val historias = historiaRepository.getHistorias(usuario.idUsuario)
+            val historiaActivaBool = historias.getOrNull()?.isEmpty() ?: true
+
+            _uiState.update {
+                it.copy(
+                    usuarioInfo = UsuarioInfo(
+                        idUsuario = usuario.idUsuario,
+                        nombre = usuario.nombre,
+                        email = usuario.email,
+                        password = usuario.password,
+                        fotoPerfil = usuario.fotoPerfil,
+                        numFollowed = usuario.numFollowed,
+                        numFollowers = usuario.numFollowers,
+                        followed = usuario.followed,
+                        historiaActiva = historiaActivaBool
+                    )
+                )
+            }
+        }
+    }
 
 
     init {

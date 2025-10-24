@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -39,6 +40,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -58,6 +60,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
+import androidx.compose.ui.graphics.Brush
 
 
 @Composable
@@ -67,6 +70,7 @@ fun PerfilScreen(
     reviewButtonClick: () -> Unit,
     idPerfilUsuario: String,
     onReviewClick: (String) -> Unit,
+    onClickHistoria: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(Unit) {
@@ -105,7 +109,10 @@ fun PerfilScreen(
                     arrobaPerfil = state.usuarioInfo.email,
                     onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
                     oficioPerfil = "Futbolista",
-                    isCurrentUser = state.isCurrentUser
+                    isCurrentUser = state.isCurrentUser,
+                    idUsuario = idPerfilUsuario,
+                    onClickHistoria = onClickHistoria ,
+                    historiaActiva = state.usuarioInfo.historiaActiva
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -439,8 +446,8 @@ fun PerfilHeader(
     }
 }
 
-
-@Composable
+//Función antigua cambiar si necesario
+/*@Composable
 fun ImagenPerfil(
     fotoPerfilUrl: String?,
     nombrePerfil: String,
@@ -448,6 +455,7 @@ fun ImagenPerfil(
     oficioPerfil: String,
     isCurrentUser: Boolean,
     onFotoPerfilButton: (uri:Uri) -> Unit,
+    onClickHistoria: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -493,6 +501,126 @@ fun ImagenPerfil(
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            Text(
+                text = oficioPerfil,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+*/
+
+@Composable
+fun ImagenPerfil(
+    fotoPerfilUrl: String?,
+    nombrePerfil: String,
+    arrobaPerfil: String,
+    oficioPerfil: String,
+    isCurrentUser: Boolean,
+    historiaActiva: Boolean, // 👈 añadimos este parámetro
+    onFotoPerfilButton: (uri: Uri) -> Unit,
+    onClickHistoria: (String) -> Unit,
+    idUsuario: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 24.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Box(
+                modifier = Modifier.size(210.dp), // Espacio para el borde + foto
+                contentAlignment = Alignment.Center
+            ) {
+                // 🔵 Borde degradado (solo si hay historia activa)
+                if (historiaActiva) {
+                    Box(
+                        modifier = Modifier
+                            .size(210.dp)
+                            .clip(CircleShape)
+                            .background(
+                                brush = Brush.linearGradient(
+                                    colors = listOf(
+                                        Color(0xFF00FF99), // Verde brillante
+                                        Color(0xFF00CC66)  // Verde más oscuro
+                                    )
+                                )
+                            )
+                    )
+                }
+
+                // 🟣 Imagen de perfil
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(fotoPerfilUrl)
+                        .crossfade(true)
+                        .build(),
+                    error = painterResource(R.drawable.user_icon),
+                    placeholder = painterResource(R.drawable.user_icon),
+                    contentDescription = stringResource(R.string.foto_de_perfil),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(200.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .then(
+                            if (!historiaActiva)
+                                Modifier.border(
+                                    2.dp,
+                                    MaterialTheme.colorScheme.outline,
+                                    CircleShape
+                                )
+                            else Modifier
+                        )
+                )
+
+                // 👁️ Ícono de ver historia
+                if (historiaActiva) {
+                    Icon(
+                        imageVector = Icons.Default.Visibility,
+                        contentDescription = "Ver historia",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .offset(x = (-8).dp, y = 8.dp)
+                            .size(28.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xAA000000))
+                            .clickable { onClickHistoria(idUsuario) }
+                    )
+                }
+            }
+
+            // 📸 Botón de cambiar foto (solo si es el usuario actual)
+            if (isCurrentUser) PickImageButton(action = onFotoPerfilButton)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Nombre
+            Text(
+                text = nombrePerfil,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            // Usuario
+            Text(
+                text = arrobaPerfil,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            // Oficio
             Text(
                 text = oficioPerfil,
                 fontSize = 14.sp,

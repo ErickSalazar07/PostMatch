@@ -310,7 +310,9 @@ fun AppNavigation(
                     navController.navigate(
                         Screen.ActualizarReview.route.replace("{idReview}", idReview)
                     )
-                }
+                },
+                onClickHistoria = {TODO("Me quiero dormir :´v")}
+
             )
         }
 
