@@ -114,5 +114,42 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
         awaitClose { listener.remove() }
     }
 
+    suspend fun getReviewsFromFollowedUsers(currentUserId: String): List<ReviewDto> {
+        // 🔹 Obtener los usuarios que el usuario actual sigue
+        val followingSnapshot = db.collection("users")
+            .document(currentUserId)
+            .collection("following")
+            .get()
+            .await()
+
+        val followedUserIds = followingSnapshot.documents.map { it.id }
+
+        if (followedUserIds.isEmpty()) {
+            return emptyList()
+        }
+
+        // 🔹 Consultar solo los reviews de esos usuarios
+        val reviewsSnapshot = db.collection("reviews")
+            .whereIn("idUsuario", followedUserIds.take(10))
+            .get()
+            .await()
+
+        val currentUserUid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
+
+        return reviewsSnapshot.documents.mapNotNull { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.let {
+                val likesSnapshot = doc.reference.collection("likes").get().await()
+                val likesCount = likesSnapshot.size()
+                val likedByUser = likesSnapshot.any { it.id == currentUserUid }
+
+                it.copy(
+                    id = doc.id,
+                    numLikes = likesCount,
+                    likedByUser = likedByUser
+                )
+            }
+        }
+    }
 
 }
