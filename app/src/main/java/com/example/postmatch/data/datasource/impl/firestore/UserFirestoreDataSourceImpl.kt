@@ -8,11 +8,10 @@ import com.example.postmatch.data.dtos.UsuarioDto
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-
-
 import jakarta.inject.Inject
 
-class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore): UsuarioRemoteDataSource {
+class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore) :
+    UsuarioRemoteDataSource {
 
     override suspend fun getAllUsuarios(): List<UsuarioDto> {
         val snapshot = db.collection("users").get().await()
@@ -27,10 +26,10 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         val respuesta = docRef.get().await()
         val user = respuesta.toObject(UsuarioDto::class.java) ?: throw Exception("No se pudo obtener el usuario")
 
-        val followerDoc = db.collection("users").document(id).collection("followers").document(idUsuarioActual).get().await()
+        val followerDoc =
+            db.collection("users").document(id).collection("followers").document(idUsuarioActual).get().await()
 
         val exists = followerDoc.exists()
-
         user.followed = exists
 
         return user
@@ -67,7 +66,7 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         }
     }
 
-    override suspend fun updateFotoPerfilById(idUsuario: String,fotoPerfilUrl: String) {
+    override suspend fun updateFotoPerfilById(idUsuario: String, fotoPerfilUrl: String) {
         val docRef = db.collection("users").document(idUsuario)
         try {
             docRef.update(
@@ -75,12 +74,12 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
                     "fotoPerfilUrl" to fotoPerfilUrl
                 )
             ).await()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             throw Exception("Error al actualizar el usuario: ${e.message}")
         }
     }
 
-    override suspend fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String){
+    override suspend fun seguirTantoDejarDeSeguirUsuario(idUsuarioActual: String, idUsuarioSeguir: String) {
         val usuarioActualRef = db.collection("users").document(idUsuarioActual)
         val usuarioSeguirRef = db.collection("users").document(idUsuarioSeguir)
 
@@ -90,40 +89,34 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         db.runTransaction { transaction ->
             val followingDoc = transaction.get(followingRef)
 
-            if(followingDoc.exists()){
-
+            if (followingDoc.exists()) {
                 transaction.delete(followingRef)
                 transaction.delete(followerRef)
 
-                transaction.update(usuarioActualRef ,"numFollowed", FieldValue.increment(-1))
-                transaction.update(usuarioSeguirRef ,"numFollowers", FieldValue.increment(-1))
-
-            }
-            else{
-
+                transaction.update(usuarioActualRef, "numFollowed", FieldValue.increment(-1))
+                transaction.update(usuarioSeguirRef, "numFollowers", FieldValue.increment(-1))
+            } else {
                 transaction.set(followingRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
                 transaction.set(followerRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
 
-                transaction.update(usuarioActualRef ,"numFollowed", FieldValue.increment(1))
-                transaction.update(usuarioSeguirRef ,"numFollowers", FieldValue.increment(1))
-
+                transaction.update(usuarioActualRef, "numFollowed", FieldValue.increment(1))
+                transaction.update(usuarioSeguirRef, "numFollowers", FieldValue.increment(1))
             }
-        }
+        }.await()
     }
+
+    // 🔹 Obtener lista de seguidores
     override suspend fun getFollowersOfUserById(idUsuario: String): List<UsuarioDto> {
         val followersSnapshot = db.collection("users")
             .document(idUsuario)
-            .collection("following")
+            .collection("follower")
             .get()
             .await()
 
-        val followerIds = followersSnapshot.documents.map { it.id }
-
-
+        val followerIds = followersSnapshot.documents   .map { it.id }
         if (followerIds.isEmpty()) return emptyList()
 
         val followersList = mutableListOf<UsuarioDto>()
-
         for (followerId in followerIds) {
             val followerDoc = db.collection("users").document(followerId).get().await()
             val followerUser = followerDoc.toObject(UsuarioDto::class.java)
@@ -132,9 +125,29 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
                 followersList.add(it)
             }
         }
-
         return followersList
+    }
 
+    // 🔹 Obtener lista de seguidos
+    suspend fun getFollowingOfUserById(idUsuario: String): List<UsuarioDto> {
+        val followingSnapshot = db.collection("users")
+            .document(idUsuario)
+            .collection("following")
+            .get()
+            .await()
+
+        val followingIds = followingSnapshot.documents.map { it.id }
+        if (followingIds.isEmpty()) return emptyList()
+
+        val followingList = mutableListOf<UsuarioDto>()
+        for (followingId in followingIds) {
+            val followingDoc = db.collection("users").document(followingId).get().await()
+            val followingUser = followingDoc.toObject(UsuarioDto::class.java)
+            followingUser?.let {
+                it.id = followingDoc.id
+                followingList.add(it)
+            }
+        }
+        return followingList
     }
 }
-

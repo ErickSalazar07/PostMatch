@@ -12,7 +12,9 @@ data class PerfilState(
     val fotoPerfilUrl: String? = null,
     val isCurrentUser: Boolean = false,
     val isLoading: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val seguidoresList: List<UsuarioInfo> = emptyList(),
+    val seguidosList: List<UsuarioInfo> = emptyList(),
 )
 
 

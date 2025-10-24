@@ -130,6 +130,22 @@ class PerfilViewModel @Inject constructor(
         }
     }
 
+    fun getSeguidoresYSeguidos(idUsuario: String) {
+        viewModelScope.launch {
+            val result = usuarioRepository.getSeguidoresYSeguidos(idUsuario)
+            if (result.isSuccess) {
+                val (seguidores, seguidos) = result.getOrNull()!!
+                _uiState.update {
+                    it.copy(
+                        seguidoresList = seguidores,
+                        seguidosList = seguidos
+                    )
+                }
+            }
+        }
+    }
+
+
     init {
         cargarUsuarioActual()
     }

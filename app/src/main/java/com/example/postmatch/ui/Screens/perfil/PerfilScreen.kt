@@ -2,11 +2,13 @@ package com.example.postmatch.ui.Screens.perfil
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.material3.AlertDialog
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,6 +47,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -70,6 +74,9 @@ fun PerfilScreen(
     }
 
     val state by perfilViewModel.uiState.collectAsState()
+    val mostrarDialogo = remember { mutableStateOf(false) }
+    val mostrandoSeguidores = remember { mutableStateOf(true) }
+
 
     LazyColumn(
         modifier = modifier
@@ -118,9 +125,20 @@ fun PerfilScreen(
         // 🔹 Estadísticas del perfil
         item {
             InformacionCuenta(
-                state.usuarioInfo.numFollowers,
-                state.usuarioInfo.numFollowed
+                seguidores = state.usuarioInfo.numFollowers,
+                seguidos = state.usuarioInfo.numFollowed,
+                onClickSeguidores = {
+                    mostrandoSeguidores.value = true
+                    mostrarDialogo.value = true
+                    perfilViewModel.getSeguidoresYSeguidos(idPerfilUsuario)
+                },
+                onClickSeguidos = {
+                    mostrandoSeguidores.value = false
+                    mostrarDialogo.value = true
+                    perfilViewModel.getSeguidoresYSeguidos(idPerfilUsuario)
+                }
             )
+
         }
 
         // 🔹 Título de reseñas
@@ -138,6 +156,51 @@ fun PerfilScreen(
                 isCurrentUser = state.isCurrentUser
             )
         }
+    }
+
+    if (mostrarDialogo.value) {
+        AlertDialog(
+            onDismissRequest = { mostrarDialogo.value = false },
+            title = {
+                Text(if (mostrandoSeguidores.value) "Seguidores" else "Seguidos")
+            },
+            text = {
+                val listaUsuarios = if (mostrandoSeguidores.value)
+                    state.seguidoresList
+                else
+                    state.seguidosList
+
+                if (listaUsuarios.isEmpty()) {
+                    Text("No hay usuarios en esta lista.")
+                } else {
+                    LazyColumn {
+                        items(listaUsuarios) { usuario ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 6.dp)
+                            ) {
+                                AsyncImage(
+                                    model = usuario.fotoPerfil,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(usuario.nombre, fontWeight = FontWeight.Medium)
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(onClick = { mostrarDialogo.value = false }) {
+                    Text("Cerrar")
+                }
+            }
+        )
     }
 }
 
@@ -299,6 +362,8 @@ fun CajaInfoNumFollow(
 fun InformacionCuenta(
     seguidores: Int,
     seguidos: Int,
+    onClickSeguidores: () -> Unit,
+    onClickSeguidos: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -306,20 +371,20 @@ fun InformacionCuenta(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Caja de Seguidores
-
         CajaInfoNumFollow(
             numFollow = seguidores,
-            idLabelFollow = R.string.seguidores
+            idLabelFollow = R.string.seguidores,
+            modifier = Modifier.clickable { onClickSeguidores() }
         )
         Spacer(modifier = Modifier.width(24.dp))
-        // Caja de Seguidos
         CajaInfoNumFollow(
             numFollow = seguidos,
-            idLabelFollow = R.string.seguidos
+            idLabelFollow = R.string.seguidos,
+            modifier = Modifier.clickable { onClickSeguidos() }
         )
     }
 }
+
 
 
 

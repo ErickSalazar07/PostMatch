@@ -106,8 +106,18 @@ class UsuarioRepository @Inject constructor(
             usuarioRemoteDataSource.seguirTantoDejarDeSeguirUsuario(idUsuarioActual = idUsuarioActual, idUsuarioSeguir = idUsuarioSeguir)
             Result.success(Unit)
         } catch(e : Exception) {
-            Log.e("seguirTantoDejarDeSeguir", "Falló aquí en => seguirTantoDejarDeSeguirUsuario")
             Result.failure(e)
         }
     }
+
+    suspend fun getSeguidoresYSeguidos(idUsuario: String): Result<Pair<List<UsuarioInfo>, List<UsuarioInfo>>> {
+        return try {
+            val seguidores = usuarioRemoteDataSource.getFollowersOfUserById(idUsuario).map { it.toUsuarioInfo() }
+            val seguidos = usuarioRemoteDataSource.getFollowingOfUserById(idUsuario).map { it.toUsuarioInfo() }
+            Result.success(seguidores to seguidos)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
