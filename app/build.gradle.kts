@@ -71,6 +71,7 @@ dependencies {
     // Hilt
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.compose.navigation)
+    implementation(libs.androidx.room.ktx)
     kapt(libs.dagger.kapt)
 
     // Firebase
