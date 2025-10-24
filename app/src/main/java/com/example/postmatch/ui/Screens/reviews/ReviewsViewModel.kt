@@ -62,7 +62,12 @@ class ReviewsViewModel @Inject constructor(
     fun sendOrDeleteLike(reviewId: String) {
         val userId = authRemoteDataSource.currentUser?.uid ?: return
         viewModelScope.launch {
-            // Espera al resultado real del repositorio
+            _uiState.update { state ->
+                val updated = state.reviews.map {
+                    if (it.idReview == reviewId) it.copy(isLiking = true) else it
+                }
+                state.copy(reviews = updated)
+            }
             val result = reviewRepository.sendOrDeleteLike(reviewId, userId)
 
             if (result.isSuccess) {

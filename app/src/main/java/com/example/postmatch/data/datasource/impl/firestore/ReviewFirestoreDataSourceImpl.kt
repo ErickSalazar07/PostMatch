@@ -86,6 +86,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
     }
 
     override suspend fun listenReviews(): Flow<List<ReviewDto>> = callbackFlow {
+        val currentUserId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
         val listener = db.collection("reviews")
             .addSnapshotListener { snapshot, error ->
 
@@ -101,7 +102,8 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
                             review?.let {
                                 val likesSnapshot = doc.reference.collection("likes").get().await()
                                 val likesCount = likesSnapshot.size()
-                                it.copy(id = doc.id, numLikes = likesCount)
+                                val likedByUser = likesSnapshot.any { it.id == currentUserId }
+                                it.copy(id = doc.id, numLikes = likesCount, likedByUser = likedByUser)
                             }
                         }
                         trySend(reviews).isSuccess

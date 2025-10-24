@@ -24,5 +24,7 @@ data class ReviewInfo(
     var partidoGolesLocal: Int = 0,
     var partidoFecha: String = "",
     var partidoFotoUrl: String = "",
-    val likedByUser: Boolean = false
+    val likedByUser: Boolean = false,
+    val isLiking: Boolean = false
+
 )

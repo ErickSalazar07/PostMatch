@@ -41,6 +41,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 
 
 @Composable
@@ -174,11 +176,15 @@ fun ReviewCard(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = Icons.Default.FavoriteBorder,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp).clickable { Log.d("LIKES_DEBUG", "Click en corazón - reviewId=${reviewInfo.idReview}")
-                            onLikeClick(reviewInfo.idReview) }
+                        imageVector = if (reviewInfo.likedByUser) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = if (reviewInfo.likedByUser) "Quitar like" else "Dar like",
+                        tint = if (reviewInfo.likedByUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                Log.d("LIKES_DEBUG", "Click en corazón - reviewId=${reviewInfo.idReview}")
+                                onLikeClick(reviewInfo.idReview)
+                            }
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("${reviewInfo.numLikes}", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
