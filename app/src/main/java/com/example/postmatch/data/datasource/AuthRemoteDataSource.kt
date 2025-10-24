@@ -37,4 +37,14 @@ class AuthRemoteDataSource @Inject constructor (
                 .build()
         )?.await()
     }
+
+    suspend fun fetchUserByEmail(email: String): Boolean {
+        return try {
+            val result = auth.fetchSignInMethodsForEmail(email).await()
+            result.signInMethods?.isNotEmpty() == true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
 }

@@ -45,7 +45,7 @@ class LoginViewModel @Inject constructor (
         viewModelScope.launch {
             val result = authRepository.signIn(_uiState.value.correo.trim(), _uiState.value.password.trim())
             if(result.isSuccess) {
-                loginButtonClick?.invoke() // navega si login fue OK
+                loginButtonClick?.invoke()
                 _uiState.update { it.copy(errorMessage = null) }
             } else {
                 val errorMsg = result.exceptionOrNull()?.message ?: "Error desconocido"

@@ -11,6 +11,7 @@ import com.example.postmatch.data.dtos.UpdateUserDto
 import com.example.postmatch.data.dtos.UsuarioDto
 import com.example.postmatch.data.dtos.toReviewInfo
 import com.example.postmatch.data.dtos.toUsuarioInfo
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -56,7 +57,8 @@ class UsuarioRepository @Inject constructor(
     suspend fun registerUser(nombre: String, email: String, password: String, userId: String, fotoPerfilUrl: String): Result<Unit>{
 
         return try {
-            val registerUserDto = RegisterUserDto(nombre, email, password, fotoPerfilUrl)
+            val fcmToken = FirebaseMessaging.getInstance().token.await()
+            val registerUserDto = RegisterUserDto(nombre, email, password, fotoPerfilUrl, fcmToken)
             usuarioRemoteDataSource.registerUser(registerUserDto,userId)
             Result.success(Unit)
         }catch (e: Exception){

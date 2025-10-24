@@ -6,4 +6,6 @@ plugins {
     alias(libs.plugins.dagger) apply false
     alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
+    //messaging
+    alias(libs.plugins.google.services) apply false
 }

@@ -56,11 +56,9 @@ class RegistroViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            val result = authRepository.signUp(_uiState.value.email.trim(), _uiState.value.password.trim())
+            val result = authRepository.signUp(state.email, state.password)
             if (result.isSuccess) {
-                showState()
-                 val userId = authRepository.currentUser?.uid
-
+                val userId = authRepository.currentUser?.uid
                 userRepository.registerUser(
                     nombre = state.nombre,
                     email = state.email,
@@ -68,10 +66,13 @@ class RegistroViewModel @Inject constructor(
                     fotoPerfilUrl = "",
                     password = state.password,
                 )
+                onRegisterSuccess?.invoke()
             } else {
-                _uiState.update { it.copy(errorMessage = "Error al registrar usuario") }
+                val errorMsg = result.exceptionOrNull()?.message ?: "Error al registrar"
+                _uiState.update { it.copy(errorMessage = errorMsg) }
             }
         }
+
     }
 
     fun setOnRegisterSuccess(callback: () -> Unit) {
