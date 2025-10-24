@@ -6,7 +6,3 @@ data class RegisterUserDto(
   val password: String,
   val fotoPerfilUrl: String
 )
-
-
-
-
