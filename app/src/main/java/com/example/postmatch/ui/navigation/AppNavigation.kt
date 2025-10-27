@@ -34,6 +34,8 @@ import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailScreen
 import com.example.postmatch.ui.Screens.partidoDetail.PartidoDetailViewModel
 import com.example.postmatch.ui.Screens.Buscador.BuscadorScreenContent
 import com.example.postmatch.ui.Screens.Buscador.BuscarViewModel
+import com.example.postmatch.ui.Screens.Historia.HistoriaScreen
+import com.example.postmatch.ui.Screens.Historia.HistoriaViewModel
 import com.example.postmatch.ui.Screens.actualizarReview.ActualizarReviewScreen
 import com.example.postmatch.ui.Screens.actualizarReview.ActualizarReviewViewModel
 import com.example.postmatch.ui.Screens.partidos.PartidoScreen
@@ -79,6 +81,8 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Partidos : Screen("partidos")
 
     object Buscador : Screen("buscador")
+
+    object Historia : Screen(route = "historia/{idUsuario}")
 
 }
 
@@ -311,9 +315,34 @@ fun AppNavigation(
                         Screen.ActualizarReview.route.replace("{idReview}", idReview)
                     )
                 },
-                onClickHistoria = {TODO("Me quiero dormir :´v")}
+                onClickHistoria = { idUsuario: String ->
+                    navController.navigate(
+                        Screen.Historia.route.replace("{idUsuario}", idUsuario)
+                    )
+                }
 
             )
+        }
+
+        composable(
+            route = Screen.Historia.route,
+            arguments = listOf(navArgument("idUsuario") { type = NavType.StringType })
+        ){
+            val historiaViewModel : HistoriaViewModel = hiltViewModel()
+            val context = LocalContext.current
+            val activity = context as? ComponentActivity
+
+            val idUsuario: String = it.arguments?.getString("idUsuario") ?: ""
+
+            BackHandler {
+                navController.popBackStack()
+            }
+
+            HistoriaScreen(
+                historiaViewModel = historiaViewModel,
+                idUsuario = idUsuario
+            )
+
         }
 
 

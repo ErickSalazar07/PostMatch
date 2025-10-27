@@ -518,7 +518,7 @@ fun ImagenPerfil(
     arrobaPerfil: String,
     oficioPerfil: String,
     isCurrentUser: Boolean,
-    historiaActiva: Boolean, // 👈 añadimos este parámetro
+    historiaActiva: Boolean, // añadimos este parámetro
     onFotoPerfilButton: (uri: Uri) -> Unit,
     onClickHistoria: (String) -> Unit,
     idUsuario: String,
@@ -595,7 +595,7 @@ fun ImagenPerfil(
                             .size(28.dp)
                             .clip(CircleShape)
                             .background(Color(0xAA000000))
-                            .clickable { onClickHistoria(idUsuario) }
+                            .clickable { onClickHistoria(idUsuario) } //Aquí se ejecuta la función para navegar a historias
                     )
                 }
             }

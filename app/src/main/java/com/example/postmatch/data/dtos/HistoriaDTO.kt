@@ -1,5 +1,6 @@
 package com.example.postmatch.data.dtos
 
+import android.util.Log
 import com.example.postmatch.data.Historia
 import com.google.firebase.Timestamp
 import java.util.concurrent.TimeUnit
@@ -18,16 +19,25 @@ data class HistoriaDTO (
 
 fun HistoriaDTO.toHistoria() : Historia
 {
-    return Historia(
+    Log.d("HistoriaScreen", "HistoriaDTO.toHistoria() entrada")
+
+    val historiaDevolver : Historia = Historia(
         idHistoria = idHistoria,
         idUsuario = idUsuario,
         imagenHistoria = imagenHistoria,
         horasHistoria = retornarHorasHistoria(timestamp)
     )
+
+    Log.d("HistoriaScreen", "HistoriaDTO.toHistoria() salida: ${historiaDevolver}")
+
+    return historiaDevolver
 }
 
 //Diferencia de horas, es decir, las horas que ha estado al aire la historia
 fun retornarHorasHistoria(timestamp : Timestamp) : Long{
+
+    Log.d("HistoriaScreen", "retornarHorasHistoria() entrada")
+
      if(timestamp == null){
          throw Exception("No hay tiempo de subida")
      }

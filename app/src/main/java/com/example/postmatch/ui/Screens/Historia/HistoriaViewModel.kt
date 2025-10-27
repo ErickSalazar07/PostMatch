@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.Screens.Historia
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,14 +25,20 @@ class HistoriaViewModel @Inject constructor(
             val result = historiaRepository.getHistorias( idUsuario )
 
             if(result.isSuccess){
+                Log.d("HistoriaScreen", " HistoriaViewModel - getHistorias() entrada if: ${result.getOrNull()?: emptyList()}")
                 _uiState.update { it.copy(historias = result.getOrNull()?: emptyList()) }
             }
             else{
                 _uiState.update { it.copy(historias = emptyList()) }
             }
+
         }
+
+
+
     }
     init {
+        Log.d("HistoriaScreen", "HistoriaViewModel inicializado")
 
     }
 }
