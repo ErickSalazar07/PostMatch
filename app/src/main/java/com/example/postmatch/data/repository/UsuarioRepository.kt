@@ -25,6 +25,9 @@ class UsuarioRepository @Inject constructor(
 
         return try {
             val usuario = usuarioRemoteDataSource.getUsuarioById(idUsuario, usuarioActual)
+            if (usuario == null) {
+                return Result.failure(Exception("Usuario no encontrado"))
+            }
             Result.success(usuario.toUsuarioInfo())
         } catch (_: FirebaseFirestoreException) {
             Log.e("UsuarioRepository", "Error al obtener el usuario desde Firestore")
