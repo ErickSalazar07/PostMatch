@@ -81,7 +81,7 @@ class HistoriaFirestoreDataSourceImpl @Inject constructor(
                 val historiaRef = db
                     .collection("users")
                     .document(idUsuario)
-                    .collection("historias")
+                    .collection("historia")
                     .document()
 
                 // Datos a guardar
