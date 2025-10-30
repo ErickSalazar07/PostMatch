@@ -15,7 +15,7 @@ class UsuarioRetrofitDataSourceImpl @Inject constructor(
         return service.getAllUsuarios()
     }
 
-    override suspend fun getUsuarioById(id: String, idUsuarioActual: String): UsuarioDto {
+    override suspend fun getUsuarioById(id: String, idUsuarioActual: String): UsuarioDto? {
         return service.getUsuarioById(id.toInt())
     }
 

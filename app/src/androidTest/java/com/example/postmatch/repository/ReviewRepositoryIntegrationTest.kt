@@ -20,7 +20,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.Date
 
-class ReviewRepositoryIntegrationTest {
+class  ReviewRepositoryIntegrationTest {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
     private lateinit var reviewRepository: ReviewRepository

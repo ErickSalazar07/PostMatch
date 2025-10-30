@@ -22,7 +22,7 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         }
     }
 
-    override suspend fun getUsuarioById(id: String, idUsuarioActual: String): UsuarioDto {
+    override suspend fun getUsuarioById(id: String, idUsuarioActual: String): UsuarioDto? {
         val docRef = db.collection("users").document(id)
         val respuesta = docRef.get().await()
         val user = respuesta.toObject(UsuarioDto::class.java) ?: throw Exception("No se pudo obtener el usuario")

@@ -7,7 +7,7 @@ data class UsuarioDto(
     val nombre: String,
     val email: String,
     val password: String,
-    val fotoPerfilUrl: String,
+    val fotoPerfilUrl: String?,
     var followed : Boolean,
     var numFollowed: Int,
     var numFollowers: Int
@@ -22,7 +22,7 @@ fun UsuarioDto.toUsuarioInfo(): UsuarioInfo {
         nombre = nombre,
         email = email,
         password = password,
-        fotoPerfil = fotoPerfilUrl,
+        fotoPerfil = fotoPerfilUrl?: "No hay Imagen",
         followed = followed,
         numFollowers = numFollowers,
         numFollowed = numFollowed
