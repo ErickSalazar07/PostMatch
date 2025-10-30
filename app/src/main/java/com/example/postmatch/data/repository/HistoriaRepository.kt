@@ -1,11 +1,15 @@
 package com.example.postmatch.data.repository
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import coil.network.HttpException
 import com.example.postmatch.data.Historia
 import com.example.postmatch.data.datasource.HistoriaRemoteDataSource
 import com.example.postmatch.data.datasource.impl.firestore.HistoriaFirestoreDataSourceImpl
+import com.example.postmatch.data.dtos.HistoriaDTO
 import com.example.postmatch.data.dtos.toHistoria
+import com.google.firebase.Timestamp
 import javax.inject.Inject
 
 class HistoriaRepository @Inject constructor(
@@ -36,4 +40,27 @@ class HistoriaRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun subirHistoria(
+        idUsuario: String,
+        imageUri: Uri
+    ): Result<Unit> {
+        return try {
+            val imagenUrl = historiaRemoteDataSource.subirImagenStorage(imageUri)
+
+            val historiaDTO = HistoriaDTO(
+                idHistoria = "",
+                idUsuario = idUsuario,
+                imagenHistoria = imagenUrl,
+                timestamp = Timestamp.now()
+            )
+
+            historiaRemoteDataSource.guardarHistoriaFirestore(idUsuario, historiaDTO)
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
@@ -71,6 +72,7 @@ fun PerfilScreen(
     idPerfilUsuario: String,
     onReviewClick: (String) -> Unit,
     onClickHistoria: (String) -> Unit,
+    onClickSubirHistoria: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(Unit) {
@@ -112,6 +114,7 @@ fun PerfilScreen(
                     isCurrentUser = state.isCurrentUser,
                     idUsuario = idPerfilUsuario,
                     onClickHistoria = onClickHistoria ,
+                    onClickSubirHistoria = onClickSubirHistoria,
                     historiaActiva = state.usuarioInfo.historiaActiva
                 )
 
@@ -446,71 +449,7 @@ fun PerfilHeader(
     }
 }
 
-//Función antigua cambiar si necesario
-/*@Composable
-fun ImagenPerfil(
-    fotoPerfilUrl: String?,
-    nombrePerfil: String,
-    arrobaPerfil: String,
-    oficioPerfil: String,
-    isCurrentUser: Boolean,
-    onFotoPerfilButton: (uri:Uri) -> Unit,
-    onClickHistoria: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(vertical = 24.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(fotoPerfilUrl)
-                    .crossfade(true)
-                    .build(),
-                error = painterResource(R.drawable.user_icon),
-                placeholder = painterResource(R.drawable.user_icon),
-                contentDescription = stringResource(R.string.foto_de_perfil),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(200.dp).clip(CircleShape)
-            )
-
-            if(isCurrentUser) PickImageButton(action = onFotoPerfilButton)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Nombre
-            Text(
-                text = nombrePerfil,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            // Usuario
-            Text(
-                text = arrobaPerfil,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = oficioPerfil,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-*/
-
+/*
 @Composable
 fun ImagenPerfil(
     fotoPerfilUrl: String?,
@@ -596,6 +535,143 @@ fun ImagenPerfil(
                             .clip(CircleShape)
                             .background(Color(0xAA000000))
                             .clickable { onClickHistoria(idUsuario) } //Aquí se ejecuta la función para navegar a historias
+                    )
+                }
+            }
+
+            // 📸 Botón de cambiar foto (solo si es el usuario actual)
+            if (isCurrentUser) PickImageButton(action = onFotoPerfilButton)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Nombre
+            Text(
+                text = nombrePerfil,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            // Usuario
+            Text(
+                text = arrobaPerfil,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            // Oficio
+            Text(
+                text = oficioPerfil,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+*/
+
+@Composable
+fun ImagenPerfil(
+    fotoPerfilUrl: String?,
+    nombrePerfil: String,
+    arrobaPerfil: String,
+    oficioPerfil: String,
+    isCurrentUser: Boolean,
+    historiaActiva: Boolean,
+    onFotoPerfilButton: (uri: Uri) -> Unit,
+    onClickHistoria: (String) -> Unit,
+    onClickSubirHistoria: () -> Unit,
+    idUsuario: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 24.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Box(
+                modifier = Modifier.size(210.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                // 🔵 Borde degradado (solo si hay historia activa)
+                if (historiaActiva) {
+                    Box(
+                        modifier = Modifier
+                            .size(210.dp)
+                            .clip(CircleShape)
+                            .background(
+                                brush = Brush.linearGradient(
+                                    colors = listOf(
+                                        Color(0xFF00FF99),
+                                        Color(0xFF00CC66)
+                                    )
+                                )
+                            )
+                    )
+                }
+
+                // 🟣 Imagen de perfil
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(fotoPerfilUrl)
+                        .crossfade(true)
+                        .build(),
+                    error = painterResource(R.drawable.user_icon),
+                    placeholder = painterResource(R.drawable.user_icon),
+                    contentDescription = stringResource(R.string.foto_de_perfil),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(200.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .then(
+                            if (!historiaActiva)
+                                Modifier.border(
+                                    2.dp,
+                                    MaterialTheme.colorScheme.outline,
+                                    CircleShape
+                                )
+                            else Modifier
+                        )
+                )
+
+                // 👁️ Ícono de ver historia
+                if (historiaActiva) {
+                    Icon(
+                        imageVector = Icons.Default.Visibility,
+                        contentDescription = "Ver historia",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .offset(x = (-8).dp, y = 8.dp)
+                            .size(28.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xAA000000))
+                            .clickable { onClickHistoria(idUsuario) }
+                    )
+                }
+
+                // ➕ Botón de agregar historia (solo si es el perfil del usuario actual)
+                if (isCurrentUser) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Agregar historia",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .offset(x = (-10).dp, y = (-10).dp)
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary)
+                            .clickable { onClickSubirHistoria() }
                     )
                 }
             }

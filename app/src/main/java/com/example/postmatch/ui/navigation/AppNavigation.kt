@@ -1,5 +1,6 @@
 package com.example.postmatch.ui.navigation
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
@@ -58,6 +59,8 @@ import com.example.postmatch.ui.Screens.reviews.ReviewsViewModel
 import com.example.postmatch.ui.Screens.reviewsFollow.ReviewsFollowScreen
 import com.example.postmatch.ui.Screens.reviewsFollow.ReviewsFollowViewModel
 import com.example.postmatch.ui.Screens.splash.SplashScreen
+import com.example.postmatch.ui.Screens.subirHistoria.SubirHistoriaScreen
+import com.example.postmatch.ui.Screens.subirHistoria.SubirHistoriaViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
@@ -84,6 +87,7 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
 
     object Historia : Screen(route = "historia/{idUsuario}")
 
+    object SubirHistoria : Screen(route = "subirHistoria")
 }
 
 // Modelo de item
@@ -319,8 +323,23 @@ fun AppNavigation(
                     navController.navigate(
                         Screen.Historia.route.replace("{idUsuario}", idUsuario)
                     )
+                },
+                onClickSubirHistoria = {
+                    Log.i("PerfilScreen", "onClickSubirHistoria antes del navController")
+                    navController.navigate(Screen.SubirHistoria.route)
+                    Log.i("PerfilScreen", "onClickSubirHistoria")
                 }
 
+            )
+        }
+
+        composable(route = Screen.SubirHistoria.route) {
+
+            val subirHistoriaViewModel: SubirHistoriaViewModel = hiltViewModel()
+
+            SubirHistoriaScreen(
+                subirHistoriaViewModel = subirHistoriaViewModel,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 
