@@ -108,7 +108,7 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
                 transaction.update(usuarioSeguirRef ,"numFollowers", FieldValue.increment(1))
 
             }
-        }
+        }.await()
     }
     override suspend fun getFollowersOfUserById(idUsuario: String): List<UsuarioDto> {
         val followersSnapshot = db.collection("users")

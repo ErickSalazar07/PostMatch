@@ -50,8 +50,8 @@ class FirebaseUserDataSourceTest {
         password = "password$i",
         fotoPerfilUrl = "fotoPerfilUrl$i",
         followed = false,
-        numFollowed = i,
-        numFollowers = i
+        numFollowed = 0,
+        numFollowers = 0
     )
 
     @Test
@@ -102,5 +102,21 @@ class FirebaseUserDataSourceTest {
         Truth.assertThat(storedUser.getString("nombre")).isEqualTo(newUser.nombre)
         Truth.assertThat(storedUser.getString("email")).isEqualTo(newUser.email)
         Truth.assertThat(storedUser.getString("fotoPerfilUrl")).isEqualTo(newUser.fotoPerfilUrl)
+    }
+
+    @Test
+    fun seguirTantoDejarDeSeguirUsuario_seguirUsuario_UsuarioSeguido() = runTest {
+        // Arrange
+        val idCurrentUser = "id1"
+        val idUserToFollow = "id2"
+
+        // Act
+        val currentUser = dataSource.getUsuarioById(idCurrentUser,idCurrentUser)
+        val targetUser = dataSource.getUsuarioById(idUserToFollow,idCurrentUser)
+
+        // Act
+        dataSource.seguirTantoDejarDeSeguirUsuario(currentUser.id, targetUser.id)
+        val targetUserResult = dataSource.getUsuarioById(targetUser.id,currentUser.id)
+        Truth.assertThat(targetUserResult.followed).isEqualTo(true)
     }
 }

@@ -63,26 +63,20 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
     }
 
     override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {
-        val reviewRef=  db.collection("reviews").document(reviewId)
-        val likesRef =  reviewRef.collection("likes").document(userId)
+        val reviewRef = db.collection("reviews").document(reviewId)
+        val likesRef = reviewRef.collection("likes").document(userId)
 
-        db.runTransaction { transaction ->
-
-
+        val result = db.runTransaction { transaction ->
             val likeDoc = transaction.get(likesRef)
 
-            if(likeDoc.exists()){
+            if (likeDoc.exists()) {
                 transaction.delete(likesRef)
-                transaction.update(reviewRef,"likesCount", FieldValue.increment(-1))
-
-
-            }else{
+                transaction.update(reviewRef, "likesCount", FieldValue.increment(-1))
+            } else {
                 transaction.set(likesRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
-                transaction.update(reviewRef,"likesCount", FieldValue.increment(1))
-
+                transaction.update(reviewRef, "likesCount", FieldValue.increment(1))
             }
-
-        }
+        }.await() ?: throw Exception("No se pudo completar la transacción de 'like' en Firebase")
     }
 
     override suspend fun listenReviews(): Flow<List<ReviewDto>> = callbackFlow {
