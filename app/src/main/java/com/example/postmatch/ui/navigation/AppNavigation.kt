@@ -367,10 +367,6 @@ fun AppNavigation(
         composable(route = Screen.Registro.route) {
             val registroViewModel: RegistroViewModel = hiltViewModel()
 
-            registroViewModel.setOnRegisterSuccess {
-                navController.navigate(Screen.Reviews.route)
-            }
-
             RegistroScreen(
                 registroViewModel = registroViewModel,
                 onSuccess = { navController.navigate(Screen.Reviews.route)}

@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +35,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashScreen(
     onSplashFinished: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("splashScreen")
 ) {
     // Animación: alpha (opacidad) y scale (tamaño)
     val alpha = remember { Animatable(0f) }
@@ -55,7 +56,7 @@ fun SplashScreen(
             )
         }
 
-        delay(2500) // Espera total antes de navegar
+        delay(1500) // Espera total antes de navegar
         onSplashFinished()
     }
 

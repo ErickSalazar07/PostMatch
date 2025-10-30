@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,7 +51,7 @@ fun ReviewDetailScreen(
     comentarioButtonClick: () -> Unit,
     likeButtonClick: () -> Unit,
     idReview: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("reviewDetailScreen")
 ) {
 
     LaunchedEffect(Unit) {
@@ -201,7 +202,8 @@ fun ReviewCard(
                 text = reviewInfo.titulo,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                modifier = Modifier.testTag("reviewCardTxtTitulo")
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -213,6 +215,7 @@ fun ReviewCard(
                         contentDescription = null,
                         tint = Color.Yellow,
                         modifier = Modifier.size(16.dp)
+                            .testTag("reviewCardIconCalificacion")
                     )
                 }
             }
@@ -224,7 +227,9 @@ fun ReviewCard(
                 text = reviewInfo.descripcion,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 12.sp,
-                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+                modifier = Modifier
+                    .padding(top = 4.dp, bottom = 8.dp)
+                    .testTag("reviewCardTxtDescripcion")
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {

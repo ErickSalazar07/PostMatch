@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -45,7 +46,7 @@ import com.example.postmatch.R
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("loginScreen")
 ) {
     val state by loginViewModel.uiState.collectAsState()
 
@@ -217,7 +218,7 @@ fun BotonesLogin(
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.verde_claro)
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("btnLogin")
         ) {
             Text(stringResource(R.string.log_in))
         }
@@ -227,7 +228,7 @@ fun BotonesLogin(
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("btnSignUp")
         ) {
             Text(stringResource(R.string.sign_up), color = MaterialTheme.colorScheme.onPrimary)
         }

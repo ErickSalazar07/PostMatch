@@ -6,5 +6,6 @@ data class RegistroState(
     val password: String = "",
     val urlFotoPerfil: String = "",
     val registrarButtonClick: () -> Unit = {},
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val success: Boolean = false
 )

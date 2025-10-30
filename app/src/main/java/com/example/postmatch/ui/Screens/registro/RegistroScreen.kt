@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,9 +30,15 @@ import com.example.postmatch.R
 fun RegistroScreen(
     registroViewModel: RegistroViewModel,
     onSuccess: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.testTag("registroScreen"),
 ) {
     val state by registroViewModel.uiState.collectAsState()
+
+    LaunchedEffect(state.success) {
+        if(state.success) {
+            onSuccess()
+        }
+    }
 
     Column(
         modifier = modifier
@@ -47,40 +54,44 @@ fun RegistroScreen(
         CampoTexto(
             label = stringResource(R.string.nombre),
             value = state.nombre,
-            onValueChange = registroViewModel::updateNombre
+            onValueChange = registroViewModel::updateNombre,
+            modifier = Modifier.testTag("txtFieldNombre")
         )
         Spacer(modifier = Modifier.height(30.dp))
 
         CampoTexto(
             label = stringResource(R.string.email),
             value = state.email,
-            onValueChange = registroViewModel::updateEmail
+            onValueChange = registroViewModel::updateEmail,
+            modifier = Modifier.testTag("txtFieldEmail")
         )
         Spacer(modifier = Modifier.height(30.dp))
 
         CampoTexto(
             label = stringResource(R.string.contrase_a),
             value = state.password,
-            onValueChange = registroViewModel::updatePassword
+            onValueChange = registroViewModel::updatePassword,
+            modifier = Modifier.testTag("txtFieldPassword")
         )
         Spacer(modifier = Modifier.height(30.dp))
 
         CampoTexto(
             label = stringResource(R.string.foto_de_perfil_url),
             value = state.urlFotoPerfil,
-            onValueChange = registroViewModel::updateUrlFotoPerfil
+            onValueChange = registroViewModel::updateUrlFotoPerfil,
+            modifier = Modifier.testTag("txtFieldUrlFotoPerfil")
         )
         if (state.errorMessage != null) {
             Text(
                 text = state.errorMessage!!,
-                color = Color.Red
+                color = Color.Red,
+                modifier = Modifier.testTag("txtMsgError")
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         BotonRegistrar( onClick = {
             registroViewModel.register()
-            onSuccess()
-        })
+        }, modifier = Modifier.testTag("btnRegistrar"))
 
     }
 }
@@ -136,14 +147,15 @@ fun EncabezadoRegistro(
 fun CampoTexto(
     label: String,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     TextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label, color = MaterialTheme.colorScheme.onPrimary) },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(Color.Transparent, RoundedCornerShape(32.dp)),
         visualTransformation = VisualTransformation.None,
@@ -160,10 +172,13 @@ fun CampoTexto(
 }
 
 @Composable
-fun BotonRegistrar(onClick: () -> Unit) {
+fun BotonRegistrar(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),

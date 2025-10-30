@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,7 +48,7 @@ import com.example.postmatch.data.ReviewInfo
 fun ReviewsScreen(
     reviewsViewModel: ReviewsViewModel,
     onReviewClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("reviewsScreen")
 ) {
     LaunchedEffect(Unit) {
         reviewsViewModel.getAllReviews()
@@ -141,7 +142,7 @@ fun ReviewCard(
     onReviewClick: (String) -> Unit,
     reviewInfo: ReviewInfo,
     onLikeClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("reviewCard")
 ) {
 
     Row(
@@ -177,11 +178,18 @@ fun ReviewCard(
                         imageVector = Icons.Default.FavoriteBorder,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp).clickable { Log.d("LIKES_DEBUG", "Click en corazón - reviewId=${reviewInfo.idReview}")
-                            onLikeClick(reviewInfo.idReview) }
+                        modifier = Modifier
+                            .size(16.dp)
+                            .clickable { onLikeClick(reviewInfo.idReview) }
+                            .testTag("reviewCardLikeButton")
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("${reviewInfo.numLikes}", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
+                    Text(
+                        text = "${reviewInfo.numLikes}",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = 12.sp,
+                        modifier = Modifier.testTag("reviewCardTxtLikeCount")
+                    )
 
                     Spacer(modifier = Modifier.width(16.dp))
 
@@ -211,6 +219,7 @@ fun ReviewCard(
                     .size(200.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .clickable { onReviewClick(reviewInfo.idReview) }
+                    .testTag("reviewImage")
             )
         }
 }

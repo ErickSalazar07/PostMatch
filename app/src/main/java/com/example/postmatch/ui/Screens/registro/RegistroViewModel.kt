@@ -20,7 +20,6 @@ class RegistroViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(RegistroState())
     val uiState: StateFlow<RegistroState> = _uiState
-    private var onRegisterSuccess: (() -> Unit)? = null
 
     fun updateNombre(nuevoNombre: String) {
         _uiState.update { it.copy(nombre = nuevoNombre) }
@@ -58,14 +57,14 @@ class RegistroViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authRepository.signUp(_uiState.value.email.trim(), _uiState.value.password.trim())
             if (result.isSuccess) {
+                _uiState.update { it.copy(errorMessage = null, success = true) }
                 showState()
                  val userId = authRepository.currentUser?.uid
-
                 userRepository.registerUser(
                     nombre = state.nombre,
                     email = state.email,
                     userId = userId!!,
-                    fotoPerfilUrl = "",
+                    fotoPerfilUrl = state.urlFotoPerfil,
                     password = state.password,
                 )
             } else {
@@ -74,9 +73,6 @@ class RegistroViewModel @Inject constructor(
         }
     }
 
-    fun setOnRegisterSuccess(callback: () -> Unit) {
-        onRegisterSuccess = callback
-    }
 
     fun showState() {
         Log.d("RegistroViewModel","Nombre: ${uiState.value.nombre}")
