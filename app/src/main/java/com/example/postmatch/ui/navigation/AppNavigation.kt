@@ -98,12 +98,12 @@ fun BottomNavBar(
     val userId: String = currentUser?.uid ?: ""
 
     val items = listOf(
-        BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
+        BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "inicio"),
         BottomNavItem(Screen.ReviewsFollow.route,  Icons.Filled.FilterList, "seguidas"),
         BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "reviewsFollow"),   // Cambiado
         //BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
-        BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
-        BottomNavItem(Screen.Perfil.route.replace("{idUsuario}", userId), Icons.Filled.Person, "Perfil")
+        BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "notificaciones"),
+        BottomNavItem(Screen.Perfil.route.replace("{idUsuario}", userId), Icons.Filled.Person, "perfil")
 
     )
 

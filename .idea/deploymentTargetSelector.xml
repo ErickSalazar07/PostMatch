@@ -2,21 +2,10 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
+      <SelectionState runConfigName="casoDeUso02() (1)">
         <option name="selectionMode" value="DROPDOWN" />
-<<<<<<< Updated upstream
-=======
-        <DropdownSelection timestamp="2025-10-23T01:10:07.932135600Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=9885e6494b524a474e" />
-            </handle>
-          </Target>
-        </DropdownSelection>
-        <DialogSelection />
->>>>>>> Stashed changes
       </SelectionState>
-      <SelectionState runConfigName="navigate_fromStart_toLogin()">
+      <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

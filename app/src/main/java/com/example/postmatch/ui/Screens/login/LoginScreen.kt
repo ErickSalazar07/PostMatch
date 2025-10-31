@@ -115,13 +115,15 @@ fun FormLogin(
         FieldLogin(
             label = stringResource(R.string.usuario),
             textDataField = usuario,
-            onTextDataFieldChange = onUsuarioChange
+            onTextDataFieldChange = onUsuarioChange,
+            modifier = Modifier.testTag("txtFieldUsuario")
         )
 
         FieldLogin(
             label = stringResource(R.string.correo),
             textDataField = correo,
-            onTextDataFieldChange = onCorreoChange
+            onTextDataFieldChange = onCorreoChange,
+            modifier = Modifier.testTag("txtFieldCorreo")
         )
 
         PasswordField(
@@ -129,7 +131,8 @@ fun FormLogin(
             textDataField = password,
             passwordVisible = passwordVisible,
             onTextDataFieldChange = onPasswordChange,
-            onPasswordVisibleChange = onPasswordVisibleChange
+            onPasswordVisibleChange = onPasswordVisibleChange,
+            modifier = Modifier.testTag("txtFieldPassword")
         )
     }
 }

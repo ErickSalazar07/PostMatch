@@ -66,7 +66,9 @@ class RegistroNewUsuarioE2E {
         if (usuario != null) {
             Firebase.auth.signOut()
         }
-        usuario?.delete()?.await()
+        val idCurrentUser = usuario?.uid ?: return@runTest
+        usuario.delete().await()
+        Firebase.firestore.collection("users").document(idCurrentUser).delete().await()
     }
 
 

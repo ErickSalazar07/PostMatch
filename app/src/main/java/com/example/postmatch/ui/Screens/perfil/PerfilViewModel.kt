@@ -89,15 +89,15 @@ class PerfilViewModel @Inject constructor(
 
 
 
-    fun cargarUsuarioActual() {
+    fun cargarPrimerUsuario() {
         viewModelScope.launch {
             val firebaseUser = authRepository.currentUser
             if (firebaseUser != null) {
-                val perfilUsuarioResult = usuarioRepository.getUsuarioById(firebaseUser.uid)
+                val perfilUsuarioResult = usuarioRepository.getUsuarios()
                 if (perfilUsuarioResult.isSuccess) {
                     _uiState.update {
                         it.copy(
-                            usuarioInfo = perfilUsuarioResult.getOrDefault(UsuarioInfo()),
+                            usuarioInfo = perfilUsuarioResult.getOrDefault(emptyList()).first(),
                             isCurrentUser = true
                         )
                     }
@@ -131,7 +131,7 @@ class PerfilViewModel @Inject constructor(
     }
 
     init {
-        cargarUsuarioActual()
+        cargarPrimerUsuario()
     }
 
 }

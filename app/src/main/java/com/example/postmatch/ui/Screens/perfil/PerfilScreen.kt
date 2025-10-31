@@ -47,6 +47,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -269,6 +270,7 @@ fun TextoIzquierda(
 fun CajaInfoNumFollow(
     numFollow: Int,
     idLabelFollow: Int,
+    testTag: String,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -284,7 +286,8 @@ fun CajaInfoNumFollow(
                 text = numFollow.toString(),
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.testTag(testTag)
             )
             Text(
                 text = stringResource(idLabelFollow),
@@ -310,13 +313,15 @@ fun InformacionCuenta(
 
         CajaInfoNumFollow(
             numFollow = seguidores,
-            idLabelFollow = R.string.seguidores
+            idLabelFollow = R.string.seguidores,
+            testTag = "numSeguidores"
         )
         Spacer(modifier = Modifier.width(24.dp))
         // Caja de Seguidos
         CajaInfoNumFollow(
             numFollow = seguidos,
-            idLabelFollow = R.string.seguidos
+            idLabelFollow = R.string.seguidos,
+            testTag = "numSeguidos"
         )
     }
 }
@@ -419,14 +424,16 @@ fun ImagenPerfil(
                 text = nombrePerfil,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.testTag("txtPerfilNombre")
             )
 
             // Usuario
             Text(
                 text = arrobaPerfil,
                 fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.testTag("txtPerfilCorreo")
             )
             Text(
                 text = oficioPerfil,
@@ -440,7 +447,8 @@ fun ImagenPerfil(
 @Composable
 fun SeguirButton(
     seguido: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val textoBoton = if (seguido) "Siguiendo" else "Seguir"
     val colorFondo = if (seguido) Color.Gray else MaterialTheme.colorScheme.primary
@@ -451,9 +459,10 @@ fun SeguirButton(
             containerColor = colorFondo
         ),
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = 8.dp)
             .height(45.dp)
+            .testTag("seguirButton")
     ) {
         Text(
             text = textoBoton,

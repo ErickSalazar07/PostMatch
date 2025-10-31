@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,7 +51,7 @@ import com.example.postmatch.data.local.LocalNotificacionProvider
 fun NotificacionesScreen(
     notificacionesViewModel: NotificacionesViewModel,
     onNotificacionClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("notificacionesScreen")
 ) {
     val state by notificacionesViewModel.uiState.collectAsState()
 
@@ -155,7 +156,8 @@ fun ItemNotificacion(
                 Log.d("ItemNotificacion", "Notificación seleccionada: ${notificacionData.idUsuario}")
                 onNotificacionClick(notificacionData.idUsuario)
             }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .testTag("itemUsuarioNotificacionButton"),
         verticalAlignment = Alignment.CenterVertically
 
     ){
