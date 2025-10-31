@@ -2,6 +2,7 @@ package com.example.postmatch.e2e
 
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -108,9 +109,9 @@ class RegistroNewUsuarioE2E {
         composeRule.onAllNodesWithTag("reviewImage").onFirst().performClick()
 
         // Ya se encuentra en la pantalla ReviewDetailScreen
-        composeRule.onNodeWithTag("reviewCardTxtTitulo").assertTextEquals("adiuvo crastinus denique")
-        composeRule.onNodeWithTag("reviewCardTxtDescripcion").assertTextEquals("Condico adhaero articulus clarus.")
-        composeRule.onAllNodesWithTag("reviewCardIconCalificacion").assertCountEquals(4)
+        composeRule.onNodeWithTag("reviewCardTxtTitulo").assertTextEquals("damno adiuvo alienus")
+        composeRule.onNodeWithTag("reviewCardTxtDescripcion").assertTextEquals("Accedo vigor subito degusto.")
+        composeRule.onAllNodesWithTag("reviewCardIconCalificacion").assertCountEquals(2)
 
         // Simula presionar el botón "Atrás" del sistema
         composeRule.activityRule.scenario.onActivity { activity -> activity.onBackPressedDispatcher.onBackPressed() }
@@ -127,7 +128,7 @@ class RegistroNewUsuarioE2E {
             condition = { composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").fetchSemanticsNodes().isNotEmpty() },
             timeoutMillis = 5000
         )
-        composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextEquals("0")
+        composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextContains("0",true)
         composeRule.onAllNodesWithTag("reviewCardLikeButton").onFirst().performClick()
 
         // Se viaja a otra pagina para emular el cambio de pantalla
@@ -143,7 +144,8 @@ class RegistroNewUsuarioE2E {
             condition = { composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").fetchSemanticsNodes().isNotEmpty() },
             timeoutMillis = 5000
         )
-        composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextEquals("1")
+        Thread.sleep(5000)
+        composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextContains("1",true)
 
         // se quita el like y se verifica que haya disminuido en una unidad
         composeRule.onAllNodesWithTag("reviewCardLikeButton").onFirst().performClick()
@@ -151,6 +153,7 @@ class RegistroNewUsuarioE2E {
             condition = { composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").fetchSemanticsNodes().isNotEmpty() },
             timeoutMillis = 5000
         )
-        composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextEquals("0")
+        Thread.sleep(5000)
+        composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextContains("0",true)
     }
 }

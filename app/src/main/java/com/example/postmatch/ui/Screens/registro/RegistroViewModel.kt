@@ -121,10 +121,10 @@ class RegistroViewModel @Inject constructor(
     }
 
     fun showState() {
-        Log.d("RegistroViewModel","Nombre: ${uiState.value.nombre}")
-        Log.d("RegistroViewModel","Email: ${uiState.value.email}")
-        Log.d("RegistroViewModel","Password: ${uiState.value.password}")
-        Log.d("RegistroViewModel","URL Foto Perfil: ${uiState.value.urlFotoPerfil}")
+        //Log.d("RegistroViewModel","Nombre: ${uiState.value.nombre}")
+        //Log.d("RegistroViewModel","Email: ${uiState.value.email}")
+        //Log.d("RegistroViewModel","Password: ${uiState.value.password}")
+        //Log.d("RegistroViewModel","URL Foto Perfil: ${uiState.value.urlFotoPerfil}")
     }
 
 }

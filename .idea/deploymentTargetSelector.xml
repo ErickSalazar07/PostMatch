@@ -2,10 +2,10 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="casoDeUso02() (1)">
+      <SelectionState runConfigName="navigate_fromStart_toLogin()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="app">
+      <SelectionState runConfigName="RegistroNewUsuarioE2E">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
