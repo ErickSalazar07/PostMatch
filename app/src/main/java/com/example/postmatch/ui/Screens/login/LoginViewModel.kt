@@ -3,9 +3,12 @@ package com.example.postmatch.ui.Screens.login
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.postmatch.data.injection.IoDispatcher
 import com.example.postmatch.data.repository.AuthRepository
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +17,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor (
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
@@ -49,7 +53,7 @@ class LoginViewModel @Inject constructor (
                 _uiState.update { it.copy(errorMessage = null) }
             } else {
                 val errorMsg = result.exceptionOrNull()?.message ?: "Error desconocido"
-                Log.e("LoginViewModel", "Login error")
+                //Log.e("LoginViewModel", "Login error")
                 _uiState.update { it.copy(errorMessage = errorMsg) }
             }
         }
@@ -73,8 +77,8 @@ class LoginViewModel @Inject constructor (
 
 
     private fun showState() {
-        Log.d("LoginViewModel", "usuario: ${_uiState.value.usuario}")
-        Log.d("LoginViewModel", "correo: ${_uiState.value.correo}")
-        Log.d("LoginViewModel", "password: ${_uiState.value.password}")
+        //Log.d("LoginViewModel", "usuario: ${_uiState.value.usuario}")
+        //Log.d("LoginViewModel", "correo: ${_uiState.value.correo}")
+        //Log.d("LoginViewModel", "password: ${_uiState.value.password}")
     }
 }

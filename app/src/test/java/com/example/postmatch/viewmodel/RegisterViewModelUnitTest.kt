@@ -126,6 +126,29 @@ class RegisterViewModelUnitTest {
         coVerify(exactly = 0) { userRepository.registerUser(any(), any(), any(), any(), any()) }
     }
 
+    @Test
+    fun register_callsAuthRepositoryWithCorrectParameters() = runTest {
+        val testEmail = "test@test.com"
+        val testPassword = "123456"
+
+        viewmodel.updateEmail(testEmail)
+        viewmodel.updatePassword(testPassword)
+        viewmodel.updateNombre("test")
+        viewmodel.updateUrlFotoPerfil("test")
+
+        coEvery { authRepository.signUp(testEmail, testPassword) } returns Result.success(Unit)
+        coEvery { authRepository.currentUser?.uid } returns "testUserId"
+        coEvery { userRepository.registerUser(any(), any(), any(), any(), any()) } returns Result.success(Unit)
+
+        viewmodel.registerUserOnline()
+        advanceUntilIdle()
+
+        // Verificar que se llamó con los parámetros exactos
+        coVerify(exactly = 1) { authRepository.signUp(testEmail, testPassword) }
+    }
+
+
+
 
 
 
