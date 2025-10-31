@@ -58,7 +58,8 @@ class RegistroViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch(ioDispatcher) {
+        //viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch() {
             val result = authRepository.signUp(_uiState.value.email.trim(), _uiState.value.password.trim())
             if (result.isSuccess) {
                 _uiState.update { it.copy(errorMessage = null, success = true) }

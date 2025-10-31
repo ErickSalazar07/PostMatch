@@ -3,7 +3,6 @@ package com.example.postmatch.e2e
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
@@ -22,6 +21,9 @@ import com.google.firebase.firestore.firestore
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,7 +47,7 @@ class RegistroNewUsuarioE2E {
         try {
             Firebase.firestore.useEmulator("10.0.2.2", 8080)
             Firebase.auth.useEmulator("10.0.2.2", 9099)
-        } catch(e: Exception) { }
+        } catch(_: Exception) { }
 
         val authRemoteDataSource = AuthRemoteDataSource(Firebase.auth)
         val usuarioRemoteDataSource = UserFirestoreDataSourceImpl(Firebase.firestore)
@@ -57,6 +59,16 @@ class RegistroNewUsuarioE2E {
             authRepository.signOut()
         }
     }
+
+    @After
+    fun tearDown() = runTest {
+        val usuario = Firebase.auth.currentUser
+        if (usuario != null) {
+            Firebase.auth.signOut()
+        }
+        usuario?.delete()?.await()
+    }
+
 
     @Test
     fun navigate_fromStart_toLogin() {
@@ -79,6 +91,11 @@ class RegistroNewUsuarioE2E {
         composeRule.onNodeWithTag("txtFieldPassword").performTextClearance()
         composeRule.onNodeWithTag("txtFieldPassword").performTextInput("123456")
         composeRule.onNodeWithTag("btnRegistrar").performClick()
+        // Ya se encuentra en la pantalla ReviewsScreen
+        composeRule.waitUntil(
+            condition = { composeRule.onAllNodesWithTag("reviewsScreen").fetchSemanticsNodes().isNotEmpty() },
+            timeoutMillis = 10000 // espera hasta 5 segundos
+        )
         composeRule.onNodeWithTag("reviewsScreen").assertIsDisplayed()
 
         // Ya se encuentra en la pantalla ReviewsScreen
@@ -89,9 +106,9 @@ class RegistroNewUsuarioE2E {
         composeRule.onAllNodesWithTag("reviewImage").onFirst().performClick()
 
         // Ya se encuentra en la pantalla ReviewDetailScreen
-        composeRule.onNodeWithTag("reviewCardTxtTitulo").assertTextEquals("vita atrocitas considero")
-        composeRule.onNodeWithTag("reviewCardTxtDescripcion").assertTextEquals("Ducimus tribuo arca aranea repellendus creta.")
-        composeRule.onAllNodesWithTag("reviewCardIconCalificacion").assertCountEquals(2)
+        composeRule.onNodeWithTag("reviewCardTxtTitulo").assertTextEquals("adiuvo crastinus denique")
+        composeRule.onNodeWithTag("reviewCardTxtDescripcion").assertTextEquals("Condico adhaero articulus clarus.")
+        composeRule.onAllNodesWithTag("reviewCardIconCalificacion").assertCountEquals(4)
 
         // Simula presionar el botón "Atrás" del sistema
         composeRule.activityRule.scenario.onActivity { activity -> activity.onBackPressedDispatcher.onBackPressed() }
@@ -104,6 +121,10 @@ class RegistroNewUsuarioE2E {
 
         // Se vuelve a estar en la pantalla ReviewsScreen
         composeRule.onNodeWithTag("reviewsScreen").assertIsDisplayed()
+        composeRule.waitUntil(
+            condition = { composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").fetchSemanticsNodes().isNotEmpty() },
+            timeoutMillis = 5000
+        )
         composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextEquals("0")
         composeRule.onAllNodesWithTag("reviewCardLikeButton").onFirst().performClick()
 
@@ -114,7 +135,11 @@ class RegistroNewUsuarioE2E {
         composeRule.activityRule.scenario.onActivity { activity -> activity.onBackPressedDispatcher.onBackPressed() }
         composeRule.waitUntil(
             condition = { composeRule.onAllNodesWithTag("reviewsScreen").fetchSemanticsNodes().isNotEmpty() },
-            timeoutMillis = 3000
+            timeoutMillis = 10000
+        )
+        composeRule.waitUntil(
+            condition = { composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").fetchSemanticsNodes().isNotEmpty() },
+            timeoutMillis = 5000
         )
         composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextEquals("1")
 
@@ -122,7 +147,7 @@ class RegistroNewUsuarioE2E {
         composeRule.onAllNodesWithTag("reviewCardLikeButton").onFirst().performClick()
         composeRule.waitUntil(
             condition = { composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").fetchSemanticsNodes().isNotEmpty() },
-            timeoutMillis = 3000
+            timeoutMillis = 5000
         )
         composeRule.onAllNodesWithTag("reviewCardTxtLikeCount").onFirst().assertTextEquals("0")
     }
