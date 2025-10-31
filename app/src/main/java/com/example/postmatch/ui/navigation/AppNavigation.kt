@@ -45,6 +45,8 @@ import com.example.postmatch.ui.Screens.configuracionPerfil.ConfiguracionPerfilV
 import com.example.postmatch.ui.Screens.crearReview.CrearReviewScreen
 import com.example.postmatch.ui.Screens.crearReview.CrearReviewViewModel
 import com.example.postmatch.ui.Screens.follow.FollowViewModel
+import com.example.postmatch.ui.Screens.live.LiveMatchesScreen
+import com.example.postmatch.ui.Screens.live.LiveMatchesViewModel
 import com.example.postmatch.ui.Screens.login.LoginViewModel
 import com.example.postmatch.ui.Screens.modificarPerfil.ModificarPerfilScreen
 import com.example.postmatch.ui.Screens.modificarPerfil.ModificarPerfilViewModel
@@ -62,6 +64,8 @@ import com.example.postmatch.ui.Screens.splash.SplashScreen
 import com.example.postmatch.ui.Screens.subirHistoria.SubirHistoriaScreen
 import com.example.postmatch.ui.Screens.subirHistoria.SubirHistoriaViewModel
 import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.material.icons.filled.SportsSoccer
+
 
 sealed class Screen(val route: String) { // sealed class para rutas de las pantallas
     object Login : Screen(route = "login")
@@ -88,6 +92,9 @@ sealed class Screen(val route: String) { // sealed class para rutas de las panta
     object Historia : Screen(route = "historia/{idUsuario}")
 
     object SubirHistoria : Screen(route = "subirHistoria")
+
+    object LiveMatches : Screen("liveMatches")
+
 }
 
 // Modelo de item
@@ -108,10 +115,13 @@ fun BottomNavBar(
     val items = listOf(
         BottomNavItem(Screen.Reviews.route, Icons.Filled.Home, "Inicio"),
         BottomNavItem(Screen.ReviewsFollow.route,  Icons.Filled.FilterList, "seguidas"),
+        BottomNavItem(Screen.LiveMatches.route, Icons.Filled.SportsSoccer, "En vivo"),
         BottomNavItem(Screen.Buscador.route, Icons.Filled.Search, "reviewsFollow"),   // Cambiado
         //BottomNavItem(Screen.CrearReview.route, Icons.Filled.AddBox, "Agregar"),    // Cambiado
         BottomNavItem(Screen.Notificaciones.route, Icons.Filled.Notifications, "Notificaciones"),
         BottomNavItem(Screen.Perfil.route.replace("{idUsuario}", userId), Icons.Filled.Person, "Perfil")
+
+
 
     )
 
@@ -487,6 +497,12 @@ fun AppNavigation(
                 onSuccess = { navController.navigate(Screen.Reviews.route)}
             )
         }
+
+        composable(route = Screen.LiveMatches.route) {
+            val viewModel: LiveMatchesViewModel = hiltViewModel()
+            LiveMatchesScreen(viewModel = viewModel)
+        }
+
     }
 }
 
