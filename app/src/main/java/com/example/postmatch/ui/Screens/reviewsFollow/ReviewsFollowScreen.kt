@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -111,7 +112,8 @@ fun SectionFollowReviews(
             ReviewFollowCard(
                 reviewInfo = reviews[index],
                 onReviewClick = onReviewClick,
-                onLikeClick = onLikeClick
+                onLikeClick = onLikeClick,
+                modifier = Modifier.testTag("reviewFollowItem")
             )
         }
     }
@@ -144,7 +146,8 @@ fun ReviewFollowCard(
                 text = reviewInfo.titulo,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                modifier = Modifier.testTag("reviewFollowItemTitulo")
             )
             Text(
                 text = reviewInfo.descripcion,

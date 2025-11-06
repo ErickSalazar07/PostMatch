@@ -1,6 +1,7 @@
 package com.example.postmatch.e2e
 
 import androidx.compose.runtime.currentRecomposeScope
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -17,6 +18,7 @@ import com.example.postmatch.data.datasource.impl.firestore.UserFirestoreDataSou
 import com.example.postmatch.data.repository.AuthRepository
 import com.example.postmatch.data.repository.UsuarioRepository
 import com.example.postmatch.ui.navigation.Screen
+import com.google.common.truth.Truth.assertThat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -109,13 +111,33 @@ class CasoDeUso02 {
         Thread.sleep(3000)
 
         // vamos al perfil de ese otro usuario
-        composeRule.onNodeWithTag("txtPerfilCorreo").assertTextEquals("jeffrey@example.com")
+        composeRule.onNodeWithTag("txtPerfilCorreo").assertTextEquals("justice@example.com")
+        composeRule.waitUntil(5000){
+            composeRule.onAllNodesWithTag("numSeguidores").fetchSemanticsNodes().isNotEmpty()
+        }
+        Thread.sleep(3000)
         composeRule.onAllNodesWithTag("numSeguidores").onFirst().assertTextEquals("0")
+        composeRule.waitUntil(5000){
+            composeRule.onAllNodesWithTag("seguirButton").fetchSemanticsNodes().isNotEmpty()
+        }
         composeRule.onNodeWithTag("seguirButton").performClick()
 
         composeRule.waitUntil(5000){
             composeRule.onAllNodesWithTag("numSeguidores").fetchSemanticsNodes().isNotEmpty()
         }
+        Thread.sleep(3000)
         composeRule.onNodeWithTag("numSeguidores").assertTextEquals("1")
+        composeRule.waitUntil(
+            condition = { composeRule.onAllNodesWithContentDescription(Screen.ReviewsFollow.route).fetchSemanticsNodes().isNotEmpty() },
+            timeoutMillis = 5000 // 5 segundos de espera máxima
+        )
+        composeRule.onNodeWithContentDescription(Screen.ReviewsFollow.route).performClick()
+        Thread.sleep(3000)
+        composeRule.waitUntil(
+            condition = { composeRule.onAllNodesWithTag("reviewFollowItem").fetchSemanticsNodes().isNotEmpty() },
+            timeoutMillis = 5000 // 5 segundos de espera máxima
+        )
+        val reviewCards = composeRule.onAllNodesWithTag("reviewFollowItem").fetchSemanticsNodes()
+        assertThat(reviewCards.size).isAtLeast(1)
     }
 }

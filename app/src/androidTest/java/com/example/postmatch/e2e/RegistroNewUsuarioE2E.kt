@@ -109,9 +109,9 @@ class RegistroNewUsuarioE2E {
         composeRule.onAllNodesWithTag("reviewImage").onFirst().performClick()
 
         // Ya se encuentra en la pantalla ReviewDetailScreen
-        composeRule.onNodeWithTag("reviewCardTxtTitulo").assertTextEquals("damno adiuvo alienus")
-        composeRule.onNodeWithTag("reviewCardTxtDescripcion").assertTextEquals("Accedo vigor subito degusto.")
-        composeRule.onAllNodesWithTag("reviewCardIconCalificacion").assertCountEquals(2)
+        composeRule.onNodeWithTag("reviewCardTxtTitulo").assertTextEquals("caput varietas contego")
+        composeRule.onNodeWithTag("reviewCardTxtDescripcion").assertTextEquals("Crudelis volubilis aufero adinventitias causa umquam conscendo acceptus.")
+        composeRule.onAllNodesWithTag("reviewCardIconCalificacion").assertCountEquals(4)
 
         // Simula presionar el botón "Atrás" del sistema
         composeRule.activityRule.scenario.onActivity { activity -> activity.onBackPressedDispatcher.onBackPressed() }
