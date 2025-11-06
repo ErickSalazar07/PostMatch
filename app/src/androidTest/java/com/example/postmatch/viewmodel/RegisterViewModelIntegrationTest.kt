@@ -92,7 +92,7 @@ class RegisterViewModelIntegrationTest {
     @Test
     fun register_success_createsUserAndStoresInFirestore() = runTest {
         // Arrange
-        val email = "test_integration@test.com"
+        val email = "test_integration_${System.currentTimeMillis()}@test.com" // Email único para evitar conflictos
         val password = "123456"
         val nombre = "Test User"
         val urlFoto = "https://fakeurl.com/photo.jpg"
@@ -105,6 +105,9 @@ class RegisterViewModelIntegrationTest {
         // Act
         viewmodel.registerUserOnline()
 
+        // CRÍTICO: Esperar a que todas las coroutines terminen
+        testScheduler.advanceUntilIdle()
+
         // Assert
         val state = viewmodel.uiState.value
         assertThat(state.errorMessage).isNull()
@@ -116,7 +119,11 @@ class RegisterViewModelIntegrationTest {
         assertThat(currentUser?.email).isEqualTo(email)
 
         // Verificar que se creó el documento del usuario en Firestore
-        val doc = Firebase.firestore.collection("usuarios").document(currentUser!!.uid).get().await()
+        val doc = Firebase.firestore.collection("usuarios")
+            .document(currentUser!!.uid)
+            .get()
+            .await()
+
         assertThat(doc.exists()).isTrue()
         assertThat(doc.getString("nombre")).isEqualTo(nombre)
     }
