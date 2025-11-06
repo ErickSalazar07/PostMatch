@@ -51,6 +51,29 @@ class RegisterViewModelIntegrationTest {
     }
 
     @Test
+    fun register_failure_showsErrorMessage() = runTest {
+        // Arrange
+        val invalidEmail = "bademail"
+        val password = "123456"
+        viewmodel.updateEmail(invalidEmail)
+        viewmodel.updatePassword(password)
+        viewmodel.updateNombre("Invalid User")
+        viewmodel.updateUrlFotoPerfil("https://fakeurl.com/photo.jpg")
+
+        // Act
+        viewmodel.registerUserOnline()
+
+        // Assert
+        val state = viewmodel.uiState.value
+        assertThat(state.errorMessage).isNotNull()
+        assertThat(state.success).isFalse()
+    }
+
+
+
+    /*
+
+    @Test
     fun register_sucess_createUserAndUpdateUI() = runTest {
 
 
@@ -63,14 +86,41 @@ class RegisterViewModelIntegrationTest {
 
         val state = viewmodel.uiState.value
         assertThat(state.errorMessage).isNull()
+        }
 
+     */
+    @Test
+    fun register_success_createsUserAndStoresInFirestore() = runTest {
+        // Arrange
+        val email = "test_integration@test.com"
+        val password = "123456"
+        val nombre = "Test User"
+        val urlFoto = "https://fakeurl.com/photo.jpg"
 
+        viewmodel.updateEmail(email)
+        viewmodel.updatePassword(password)
+        viewmodel.updateNombre(nombre)
+        viewmodel.updateUrlFotoPerfil(urlFoto)
 
+        // Act
+        viewmodel.registerUserOnline()
 
+        // Assert
+        val state = viewmodel.uiState.value
+        assertThat(state.errorMessage).isNull()
+        assertThat(state.success).isTrue()
 
+        // Verificar que el usuario se creó en Firebase Auth
+        val currentUser = Firebase.auth.currentUser
+        assertThat(currentUser).isNotNull()
+        assertThat(currentUser?.email).isEqualTo(email)
 
-
+        // Verificar que se creó el documento del usuario en Firestore
+        val doc = Firebase.firestore.collection("usuarios").document(currentUser!!.uid).get().await()
+        assertThat(doc.exists()).isTrue()
+        assertThat(doc.getString("nombre")).isEqualTo(nombre)
     }
+
 
 
     @After
