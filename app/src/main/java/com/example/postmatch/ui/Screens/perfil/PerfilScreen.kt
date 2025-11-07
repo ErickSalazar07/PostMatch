@@ -1,7 +1,5 @@
 package com.example.postmatch.ui.Screens.perfil
 
-import android.net.Uri
-import android.util.Log
 import androidx.compose.material3.AlertDialog
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -62,6 +60,31 @@ import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
 import androidx.compose.ui.graphics.Brush
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.ArrowBackIosNew
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 
 
 @Composable
@@ -83,96 +106,107 @@ fun PerfilScreen(
     val mostrarDialogo = remember { mutableStateOf(false) }
     val mostrandoSeguidores = remember { mutableStateOf(true) }
 
-
-    LazyColumn(
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        // 🔹 Encabezado
-        item {
-            PerfilHeader(
-                onConfiguracionButtonClick = configuracionButtonClick,
-                onReviewButtonClick = reviewButtonClick
-            )
-        }
-
-        // 🔹 Información del perfil
-        item {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-            ) {
-                ImagenPerfil(
-                    fotoPerfilUrl = state.fotoPerfilUrl,
-                    nombrePerfil = state.usuarioInfo.nombre,
-                    arrobaPerfil = state.usuarioInfo.email,
-                    onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
-                    oficioPerfil = "Futbolista",
-                    isCurrentUser = state.isCurrentUser,
-                    idUsuario = idPerfilUsuario,
-                    onClickHistoria = onClickHistoria ,
-                    onClickSubirHistoria = onClickSubirHistoria,
-                    historiaActiva = state.usuarioInfo.historiaActiva
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // 🔹 Botón seguir (solo si no es el usuario actual)
-                if (!state.isCurrentUser) {
-                    SeguirButton(
-                        seguido = state.usuarioInfo.followed,
-                        onClick = {
-                            perfilViewModel.seguirTantoDejarDeSeguirUsuario(idPerfilUsuario)
-                        }
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
                     )
+                )
+            )
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 24.dp)
+        ) {
+            item {
+                PerfilHeader(
+                    onConfiguracionButtonClick = configuracionButtonClick,
+                    onReviewButtonClick = reviewButtonClick
+                )
+            }
+
+            item {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                ) {
+                    ImagenPerfil(
+                        fotoPerfilUrl = state.fotoPerfilUrl,
+                        nombrePerfil = state.usuarioInfo.nombre,
+                        arrobaPerfil = state.usuarioInfo.email,
+                        onFotoPerfilButton = perfilViewModel::uploadProfileImageToFirebase,
+                        oficioPerfil = "Futbolista",
+                        isCurrentUser = state.isCurrentUser,
+                        idUsuario = idPerfilUsuario,
+                        onClickHistoria = onClickHistoria,
+                        onClickSubirHistoria = onClickSubirHistoria,
+                        historiaActiva = state.usuarioInfo.historiaActiva
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    if (!state.isCurrentUser) {
+                        SeguirButton(
+                            seguido = state.usuarioInfo.followed,
+                            onClick = {
+                                perfilViewModel.seguirTantoDejarDeSeguirUsuario(idPerfilUsuario)
+                            }
+                        )
+                    }
                 }
             }
-        }
 
-        // 🔹 Estadísticas del perfil
-        item {
-            InformacionCuenta(
-                seguidores = state.usuarioInfo.numFollowers,
-                seguidos = state.usuarioInfo.numFollowed,
-                onClickSeguidores = {
-                    mostrandoSeguidores.value = true
-                    mostrarDialogo.value = true
-                    perfilViewModel.getSeguidoresYSeguidos(idPerfilUsuario)
-                },
-                onClickSeguidos = {
-                    mostrandoSeguidores.value = false
-                    mostrarDialogo.value = true
-                    perfilViewModel.getSeguidoresYSeguidos(idPerfilUsuario)
-                }
-            )
+            item {
+                InformacionCuenta(
+                    seguidores = state.usuarioInfo.numFollowers,
+                    seguidos = state.usuarioInfo.numFollowed,
+                    onClickSeguidores = {
+                        mostrandoSeguidores.value = true
+                        mostrarDialogo.value = true
+                        perfilViewModel.getSeguidoresYSeguidos(idPerfilUsuario)
+                    },
+                    onClickSeguidos = {
+                        mostrandoSeguidores.value = false
+                        mostrarDialogo.value = true
+                        perfilViewModel.getSeguidoresYSeguidos(idPerfilUsuario)
+                    }
+                )
+            }
 
-        }
+            item {
+                TextoIzquierda(stringResource(R.string.rese_as))
+            }
 
-        // 🔹 Título de reseñas
-        item {
-            TextoIzquierda(stringResource(R.string.rese_as))
-        }
-
-        // 🔹 Lista de reseñas
-        items(state.reviews) { review ->
-            ItemReseniaPerfil(
-                reseniaPerfil = review,
-                onDeleteReview = { perfilViewModel.onDeleteReview(review.idReview) },
-                onClickReview = { /* acción ver reseña */ },
-                onReviewClick = { onReviewClick(review.idReview) },
-                isCurrentUser = state.isCurrentUser
-            )
+            items(state.reviews) { review ->
+                ItemReseniaPerfil(
+                    reseniaPerfil = review,
+                    onDeleteReview = { perfilViewModel.onDeleteReview(review.idReview) },
+                    onClickReview = { },
+                    onReviewClick = { onReviewClick(review.idReview) },
+                    isCurrentUser = state.isCurrentUser
+                )
+            }
         }
     }
 
     if (mostrarDialogo.value) {
         AlertDialog(
             onDismissRequest = { mostrarDialogo.value = false },
+            containerColor = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(24.dp),
             title = {
-                Text(if (mostrandoSeguidores.value) "Seguidores" else "Seguidos")
+                Text(
+                    text = if (mostrandoSeguidores.value) "Seguidores" else "Seguidos",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    fontFamily = FontFamily.SansSerif
+                )
             },
             text = {
                 val listaUsuarios = if (mostrandoSeguidores.value)
@@ -181,39 +215,73 @@ fun PerfilScreen(
                     state.seguidosList
 
                 if (listaUsuarios.isEmpty()) {
-                    Text("No hay usuarios en esta lista.")
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No hay usuarios en esta lista.",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 15.sp,
+                            fontFamily = FontFamily.SansSerif
+                        )
+                    }
                 } else {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = Modifier.heightIn(max = 400.dp)
+                    ) {
                         items(listaUsuarios) { usuario ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 6.dp)
+                                    .padding(vertical = 10.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                                    .padding(12.dp)
                             ) {
                                 AsyncImage(
                                     model = usuario.fotoPerfil,
                                     contentDescription = null,
                                     modifier = Modifier
-                                        .size(40.dp)
+                                        .size(50.dp)
                                         .clip(CircleShape)
+                                        .border(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f), CircleShape),
+                                    contentScale = ContentScale.Crop
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(usuario.nombre, fontWeight = FontWeight.Medium)
+                                Spacer(modifier = Modifier.width(14.dp))
+                                Text(
+                                    text = usuario.nombre,
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontFamily.SansSerif
+                                )
                             }
                         }
                     }
                 }
             },
             confirmButton = {
-                Button(onClick = { mostrarDialogo.value = false }) {
-                    Text("Cerrar")
+                Button(
+                    onClick = { mostrarDialogo.value = false },
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    modifier = Modifier.height(48.dp)
+                ) {
+                    Text(
+                        text = "Cerrar",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp
+                    )
                 }
             }
         )
     }
 }
-
 
 @Composable
 fun ItemReseniaPerfil(
@@ -224,118 +292,137 @@ fun ItemReseniaPerfil(
     isCurrentUser: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp))
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
-        // Sección izquierda 70%
-        Column(
+        Row(
             modifier = Modifier
-                .weight(0.7f)
-                .padding(end = 8.dp)
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = modifier
-                    .padding(bottom = 10.dp)
-            ) {
-                repeat(reseniaPerfil.calificacion) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.estrella),
-                        tint = Color.Yellow,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-
-            // Título
-            Text(
-                text = reseniaPerfil.titulo,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            // Descripción
-            Text(
-                text = reseniaPerfil.descripcion,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            // Fila de botones (modificar y eliminar)
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if(isCurrentUser) {
-                    IconButton(
-                        onClick = { onReviewClick(reseniaPerfil.idReview) },
-                        modifier = Modifier.size(24.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Modificar reseña",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-
-                    IconButton(
-                        onClick = { onDeleteReview(reseniaPerfil.idReview) },
-                        modifier = Modifier.size(24.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Eliminar reseña",
-                            tint = MaterialTheme.colorScheme.error
-                        )
-                    }
-                }
-            }
-        }
-
-        // Sección derecha 30% (imagen)
-        Box(
-            modifier = Modifier
-                .weight(0.3f)
-                .aspectRatio(1f)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ricardo_icon),
-                contentDescription = stringResource(R.string.imagen_rese_a),
-                contentScale = ContentScale.Crop,
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(8.dp))
-            )
+                    .weight(0.65f)
+                    .padding(end = 16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(bottom = 12.dp),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    repeat(reseniaPerfil.calificacion) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = stringResource(R.string.estrella),
+                            tint = Color(0xFFFFB800),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    repeat(5 - reseniaPerfil.calificacion) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = stringResource(R.string.estrella),
+                            tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+
+                Text(
+                    text = reseniaPerfil.titulo,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontFamily = FontFamily.SansSerif,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = reseniaPerfil.descripcion,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontFamily = FontFamily.SansSerif,
+                    lineHeight = 20.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                if (isCurrentUser) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(
+                            onClick = { onReviewClick(reseniaPerfil.idReview) },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = "Modificar reseña",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(22.dp)
+                            )
+                        }
+
+                        IconButton(
+                            onClick = { onDeleteReview(reseniaPerfil.idReview) },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Eliminar reseña",
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(22.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(0.35f)
+                    .aspectRatio(1f)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ricardo_icon),
+                    contentDescription = stringResource(R.string.imagen_rese_a),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
         }
     }
 }
-
 
 @Composable
 fun TextoIzquierda(
     texto: String,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Text(
+        text = texto,
+        color = MaterialTheme.colorScheme.onBackground,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = texto,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
-        )
-    }
+            .padding(horizontal = 20.dp, vertical = 20.dp)
+    )
 }
 
 @Composable
@@ -344,25 +431,35 @@ fun CajaInfoNumFollow(
     idLabelFollow: Int,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Card(
         modifier = modifier
-            .size(100.dp)
-            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp)),
-        contentAlignment = Alignment.Center
+            .width(140.dp)
+            .height(90.dp),
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
         ) {
             Text(
                 text = numFollow.toString(),
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.SansSerif
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(idLabelFollow),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 12.sp
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = FontFamily.SansSerif
             )
         }
     }
@@ -377,7 +474,9 @@ fun InformacionCuenta(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 24.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -386,7 +485,7 @@ fun InformacionCuenta(
             idLabelFollow = R.string.seguidores,
             modifier = Modifier.clickable { onClickSeguidores() }
         )
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.width(28.dp))
         CajaInfoNumFollow(
             numFollow = seguidos,
             idLabelFollow = R.string.seguidos,
@@ -395,180 +494,61 @@ fun InformacionCuenta(
     }
 }
 
-
-
-
 @Composable
 fun PerfilHeader(
     onConfiguracionButtonClick: () -> Unit,
-    onReviewButtonClick:()->Unit,
+    onReviewButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = Color.Transparent
     ) {
-        // Icono de volver a la izquierda
-        IconButton(
-            onClick = onReviewButtonClick, // aquí va el click del back
-            modifier = Modifier.align(Alignment.CenterStart)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.ArrowBackIosNew,
-                contentDescription = stringResource(R.string.volver),
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .size(28.dp)
-                    .align(Alignment.CenterStart),
-
-                )
-        }
-
-        // Texto centrado
-        Text(
-            text = stringResource(R.string.perfil),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            modifier = Modifier.align(Alignment.Center)
-        )
-        IconButton(
-            onClick = onConfiguracionButtonClick,
-            modifier = Modifier.align(Alignment.CenterEnd)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(R.string.settings),
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .size(28.dp)
-            )
-        }
-    }
-}
-
-/*
-@Composable
-fun ImagenPerfil(
-    fotoPerfilUrl: String?,
-    nombrePerfil: String,
-    arrobaPerfil: String,
-    oficioPerfil: String,
-    isCurrentUser: Boolean,
-    historiaActiva: Boolean, // añadimos este parámetro
-    onFotoPerfilButton: (uri: Uri) -> Unit,
-    onClickHistoria: (String) -> Unit,
-    idUsuario: String,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(vertical = 24.dp)
-    ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .height(64.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
-
-            Box(
-                modifier = Modifier.size(210.dp), // Espacio para el borde + foto
-                contentAlignment = Alignment.Center
+            IconButton(
+                onClick = onReviewButtonClick,
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .size(44.dp)
             ) {
-                // 🔵 Borde degradado (solo si hay historia activa)
-                if (historiaActiva) {
-                    Box(
-                        modifier = Modifier
-                            .size(210.dp)
-                            .clip(CircleShape)
-                            .background(
-                                brush = Brush.linearGradient(
-                                    colors = listOf(
-                                        Color(0xFF00FF99), // Verde brillante
-                                        Color(0xFF00CC66)  // Verde más oscuro
-                                    )
-                                )
-                            )
-                    )
-                }
-
-                // 🟣 Imagen de perfil
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(fotoPerfilUrl)
-                        .crossfade(true)
-                        .build(),
-                    error = painterResource(R.drawable.user_icon),
-                    placeholder = painterResource(R.drawable.user_icon),
-                    contentDescription = stringResource(R.string.foto_de_perfil),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(200.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surface)
-                        .then(
-                            if (!historiaActiva)
-                                Modifier.border(
-                                    2.dp,
-                                    MaterialTheme.colorScheme.outline,
-                                    CircleShape
-                                )
-                            else Modifier
-                        )
+                Icon(
+                    imageVector = Icons.Rounded.ArrowBackIosNew,
+                    contentDescription = stringResource(R.string.volver),
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(24.dp)
                 )
-
-                // 👁️ Ícono de ver historia
-                if (historiaActiva) {
-                    Icon(
-                        imageVector = Icons.Default.Visibility,
-                        contentDescription = "Ver historia",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .offset(x = (-8).dp, y = 8.dp)
-                            .size(28.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xAA000000))
-                            .clickable { onClickHistoria(idUsuario) } //Aquí se ejecuta la función para navegar a historias
-                    )
-                }
             }
 
-            // 📸 Botón de cambiar foto (solo si es el usuario actual)
-            if (isCurrentUser) PickImageButton(action = onFotoPerfilButton)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Nombre
             Text(
-                text = nombrePerfil,
+                text = stringResource(R.string.perfil),
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground
+                fontSize = 26.sp,
+                fontFamily = FontFamily.SansSerif,
+                modifier = Modifier.align(Alignment.Center)
             )
 
-            // Usuario
-            Text(
-                text = arrobaPerfil,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            // Oficio
-            Text(
-                text = oficioPerfil,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            IconButton(
+                onClick = onConfiguracionButtonClick,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .size(44.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.settings),
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
         }
     }
 }
-*/
 
 @Composable
 fun ImagenPerfil(
@@ -584,123 +564,143 @@ fun ImagenPerfil(
     idUsuario: String,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(vertical = 24.dp)
+            .padding(vertical = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.size(180.dp),
+            contentAlignment = Alignment.Center
         ) {
-
-            Box(
-                modifier = Modifier.size(210.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                // 🔵 Borde degradado (solo si hay historia activa)
-                if (historiaActiva) {
-                    Box(
-                        modifier = Modifier
-                            .size(210.dp)
-                            .clip(CircleShape)
-                            .background(
-                                brush = Brush.linearGradient(
-                                    colors = listOf(
-                                        Color(0xFF00FF99),
-                                        Color(0xFF00CC66)
-                                    )
+            if (historiaActiva) {
+                Box(
+                    modifier = Modifier
+                        .size(180.dp)
+                        .clip(CircleShape)
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFF667eea),
+                                    Color(0xFF764ba2),
+                                    Color(0xFFf093fb)
                                 )
                             )
-                    )
-                }
-
-                // 🟣 Imagen de perfil
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(fotoPerfilUrl)
-                        .crossfade(true)
-                        .build(),
-                    error = painterResource(R.drawable.user_icon),
-                    placeholder = painterResource(R.drawable.user_icon),
-                    contentDescription = stringResource(R.string.foto_de_perfil),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(200.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surface)
-                        .then(
-                            if (!historiaActiva)
-                                Modifier.border(
-                                    2.dp,
-                                    MaterialTheme.colorScheme.outline,
-                                    CircleShape
-                                )
-                            else Modifier
                         )
                 )
+            }
 
-                // 👁️ Ícono de ver historia
-                if (historiaActiva) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(fotoPerfilUrl)
+                    .crossfade(true)
+                    .build(),
+                error = painterResource(R.drawable.user_icon),
+                placeholder = painterResource(R.drawable.user_icon),
+                contentDescription = stringResource(R.string.foto_de_perfil),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(170.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surface)
+                    .then(
+                        if (!historiaActiva)
+                            Modifier.border(
+                                3.dp,
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                                CircleShape
+                            )
+                        else Modifier
+                    )
+            )
+
+            if (historiaActiva) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(x = 0.dp, y = 8.dp)
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFF667eea),
+                                    Color(0xFF764ba2)
+                                )
+                            )
+                        )
+                        .clickable { onClickHistoria(idUsuario) },
+                    contentAlignment = Alignment.Center
+                ) {
                     Icon(
                         imageVector = Icons.Default.Visibility,
                         contentDescription = "Ver historia",
                         tint = Color.White,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .offset(x = (-8).dp, y = 8.dp)
-                            .size(28.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xAA000000))
-                            .clickable { onClickHistoria(idUsuario) }
-                    )
-                }
-
-                // ➕ Botón de agregar historia (solo si es el perfil del usuario actual)
-                if (isCurrentUser) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Agregar historia",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .offset(x = (-10).dp, y = (-10).dp)
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
-                            .clickable { onClickSubirHistoria() }
+                        modifier = Modifier.size(22.dp)
                     )
                 }
             }
 
-            // 📸 Botón de cambiar foto (solo si es el usuario actual)
-            if (isCurrentUser) PickImageButton(action = onFotoPerfilButton)
+            if (isCurrentUser) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset(x = 0.dp, y = 0.dp)
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary)
+                        .clickable { onClickSubirHistoria() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Agregar historia",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+        }
 
-            Spacer(modifier = Modifier.height(8.dp))
+        if (isCurrentUser) {
+            Spacer(modifier = Modifier.height(16.dp))
+            PickImageButton(action = onFotoPerfilButton)
+        }
 
-            // Nombre
-            Text(
-                text = nombrePerfil,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            // Usuario
-            Text(
-                text = arrobaPerfil,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        Text(
+            text = nombrePerfil,
+            fontWeight = FontWeight.Bold,
+            fontSize = 26.sp,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontFamily = FontFamily.SansSerif
+        )
 
-            // Oficio
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = arrobaPerfil,
+            fontSize = 15.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontFamily = FontFamily.SansSerif
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+            modifier = Modifier.padding(horizontal = 16.dp)
+        ) {
             Text(
                 text = oficioPerfil,
                 fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                fontWeight = FontWeight.Medium,
+                fontFamily = FontFamily.SansSerif,
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
             )
         }
     }
@@ -712,32 +712,43 @@ fun SeguirButton(
     onClick: () -> Unit
 ) {
     val textoBoton = if (seguido) "Siguiendo" else "Seguir"
-    val colorFondo = if (seguido) Color.Gray else MaterialTheme.colorScheme.primary
+    val colores = if (seguido) {
+        ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    } else {
+        ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = Color.White
+        )
+    }
 
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = colorFondo
-        ),
-        shape = RoundedCornerShape(12.dp),
+        colors = colores,
+        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .padding(vertical = 8.dp)
-            .height(45.dp)
+            .height(50.dp)
+            .widthIn(min = 160.dp),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = if (seguido) 0.dp else 4.dp
+        )
     ) {
         Text(
             text = textoBoton,
-            color = Color.White,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily.SansSerif
         )
     }
 }
 
 @Composable
 fun PickImageButton(
-    action: (uri:Uri) -> Unit
+    action: (uri: Uri) -> Unit
 ) {
-
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -746,11 +757,27 @@ fun PickImageButton(
             action(uri)
         }
     }
-    Button(
-        onClick = {
-            launcher.launch("image/*")
-        }
+
+    OutlinedButton(
+        onClick = { launcher.launch("image/*") },
+        shape = RoundedCornerShape(14.dp),
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary),
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = MaterialTheme.colorScheme.primary
+        ),
+        modifier = Modifier.height(46.dp)
     ) {
-        Text(text = "Seleccionar Imagen")
+        Icon(
+            imageVector = Icons.Default.PhotoCamera,
+            contentDescription = null,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "Cambiar Foto",
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily.SansSerif
+        )
     }
 }

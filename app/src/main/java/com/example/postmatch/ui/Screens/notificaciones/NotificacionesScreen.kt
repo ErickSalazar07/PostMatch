@@ -45,6 +45,24 @@ import com.example.postmatch.R
 import com.example.postmatch.data.NotificacionInfo
 import com.example.postmatch.data.UsuarioInfo
 import com.example.postmatch.data.local.LocalNotificacionProvider
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import androidx.compose.ui.draw.shadow
+
 
 @Composable
 fun NotificacionesScreen(
@@ -54,28 +72,37 @@ fun NotificacionesScreen(
 ) {
     val state by notificacionesViewModel.uiState.collectAsState()
 
-
     when {
         // 🔹 Estado de carga
         state.isLoading -> {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary,
+                    strokeWidth = 4.dp
+                )
             }
         }
 
         // 🔹 Error en la carga
         state.errorMessage != null -> {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = state.errorMessage ?: "Error desconocido",
                     color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Center
+                    )
                 )
             }
         }
@@ -104,40 +131,38 @@ fun NotificacionesHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 20.dp, vertical = 14.dp)
     ) {
-        // Texto centrado
         Text(
             text = stringResource(R.string.notificaciones),
             color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            modifier = Modifier.align(Alignment.Center)
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.5.sp
+            ),
+            modifier = Modifier.align(Alignment.CenterStart)
         )
-
-        // Icono a la derecha
     }
 }
-
 
 @Composable
 fun SeccionNotificaciones(
     modifier: Modifier = Modifier,
     onNotificacionClick: (String) -> Unit,
-    listaNotificaciones: List<UsuarioInfo> // Define el tipo correctamente aquí
+    listaNotificaciones: List<UsuarioInfo>
 ) {
-    // Usamos LazyColumn para listas dinámicas y de mayor rendimiento
     LazyColumn(
         modifier = modifier
+            .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(listaNotificaciones) { notificacion -> // Usamos 'items' para iterar sobre la lista
+        items(listaNotificaciones) { notificacion ->
             ItemNotificacion(
                 notificacion,
                 onNotificacionClick = onNotificacionClick
-            ) // Componente que recibe cada notificación
+            )
         }
     }
 }
@@ -147,24 +172,27 @@ fun ItemNotificacion(
     notificacionData: UsuarioInfo,
     onNotificacionClick: (String) -> Unit,
     modifier: Modifier = Modifier
-){
-    Row(
+) {
+    Card(
         modifier = modifier
             .fillMaxWidth()
             .clickable {
                 Log.d("ItemNotificacion", "Notificación seleccionada: ${notificacionData.idUsuario}")
                 onNotificacionClick(notificacionData.idUsuario)
             }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-
-    ){
-        Box(
+            .shadow(2.dp, RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Row(
             modifier = Modifier
-                .size(50.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape),
-            contentAlignment = Alignment.Center
-        ){
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Imagen de perfil
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(notificacionData.fotoPerfil)
@@ -175,17 +203,36 @@ fun ItemNotificacion(
                 contentDescription = stringResource(R.string.foto_de_perfil),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(200.dp)
+                    .size(52.dp)
                     .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             )
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Column(modifier = Modifier.weight(1f)){
-            Text(text = "A ${notificacionData.nombre} le gustó tu reseña", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
-            Text("hace 2 semanas", fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground)
+
+            Spacer(modifier = Modifier.width(14.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "A ${notificacionData.nombre} le gustó tu reseña",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "hace 2 semanas",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
         }
     }
 }
+
+
 
 @Composable
 @Preview//(showBackground= true)
