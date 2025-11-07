@@ -53,67 +53,51 @@ class RegisterViewModelIntegrationTest {
     }
 
     @Test
-    fun register_failure_showsErrorMessage() = runTest {
+    fun register_withShortPassword_showsValidationError() = runTest {
         // Arrange
-        val invalidEmail = "bademail"
-        val password = "123456"
-        viewmodel.updateEmail(invalidEmail)
-        viewmodel.updatePassword(password)
-        viewmodel.updateNombre("Invalid User")
-        viewmodel.updateUrlFotoPerfil("https://fakeurl.com/photo.jpg")
+        val validEmail = "test@example.com"
+        val shortPassword = "12345" // Menos de 6 caracteres
+
+        viewmodel.updateEmail(validEmail)
+        viewmodel.updatePassword(shortPassword)
+        viewmodel.updateNombre("Test User")
+        viewmodel.updateUrlFotoPerfil("https://example.com/photo.jpg")
 
         // Act
-        viewmodel.registerUserOnline()
-
-        // Assert
-        val state = viewmodel.uiState.value
-        assertThat(state.errorMessage).isNotNull()
-        assertThat(state.success).isFalse()
-    }
-
-
-
-    /*
-
-    @Test
-    fun register_sucess_createUserAndUpdateUI() = runTest {
-
-
-        viewmodel.updateEmail("test@test.com")
-        viewmodel.updatePassword("123456")
-        viewmodel.updateNombre("test")
-        viewmodel.updateUrlFotoPerfil("test")
-
-        viewmodel.registerUserOnline()
-
-        val state = viewmodel.uiState.value
-        assertThat(state.errorMessage).isNull()
-        }
-
-     */
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun register_success_updatesUiState() = runTest {
-        // Arrange
-        val email = "simple_test@test.com"
-        val password = "123456"
-
-        viewmodel.updateEmail(email)
-        viewmodel.updatePassword(password)
-        viewmodel.updateNombre("Test")
-        viewmodel.updateUrlFotoPerfil("https://test.com/photo.jpg")
-
-        // Act
-        viewmodel.registerUserOnline()
+        viewmodel.register()
         advanceUntilIdle()
 
         // Assert
         val state = viewmodel.uiState.value
-        assertThat(state.success).isTrue()
-        assertThat(state.errorMessage).isNull()
+        assertThat(state.errorMessage).isEqualTo("La contraseña debe tener al menos 6 caracteres")
+        assertThat(state.success).isFalse()
+
+        // Verifica que no se creó ningún usuario
+        val currentUser = Firebase.auth.currentUser
+        assertThat(currentUser).isNull()
     }
 
+    @Test
+    fun register_withEmptyFields_showsValidationError() = runTest {
+        // Arrange - Dejar campos vacíos
+        viewmodel.updateEmail("")
+        viewmodel.updatePassword("password123")
+        viewmodel.updateNombre("")
+        viewmodel.updateUrlFotoPerfil("https://example.com/photo.jpg")
 
+        // Act
+        viewmodel.register()
+        advanceUntilIdle()
+
+        // Assert
+        val state = viewmodel.uiState.value
+        assertThat(state.errorMessage).isEqualTo("Todos los campos son obligatorios")
+        assertThat(state.success).isFalse()
+
+        // Verifica que no se creó ningún usuario
+        val currentUser = Firebase.auth.currentUser
+        assertThat(currentUser).isNull()
+    }
 
     @After
     fun tearDown() = runTest{
