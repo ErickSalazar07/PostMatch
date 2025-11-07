@@ -62,7 +62,7 @@ class RegisterViewModelIntegrationTest {
         viewmodel.updateUrlFotoPerfil("https://fakeurl.com/photo.jpg")
 
         // Act
-        viewmodel.registerUserOnline()
+        viewmodel.register()
 
         // Assert
         val state = viewmodel.uiState.value
@@ -71,44 +71,73 @@ class RegisterViewModelIntegrationTest {
     }
 
 
-
-    /*
-
     @Test
-    fun register_sucess_createUserAndUpdateUI() = runTest {
-
-
-        viewmodel.updateEmail("test@test.com")
-        viewmodel.updatePassword("123456")
-        viewmodel.updateNombre("test")
-        viewmodel.updateUrlFotoPerfil("test")
-
-        viewmodel.registerUserOnline()
-
-        val state = viewmodel.uiState.value
-        assertThat(state.errorMessage).isNull()
-        }
-
-     */
-    @Test
-    fun register_success_updatesUiState() = runTest {
+    fun register_withShortPassword_showsValidationError() = runTest {
         // Arrange
-        val email = "simple_test@test.com"
-        val password = "123456"
+        val validEmail = "test@example.com"
+        val shortPassword = "12345" // Menos de 6 caracteres
 
-        viewmodel.updateEmail(email)
-        viewmodel.updatePassword(password)
-        viewmodel.updateNombre("Test")
-        viewmodel.updateUrlFotoPerfil("https://test.com/photo.jpg")
+        viewmodel.updateEmail(validEmail)
+        viewmodel.updatePassword(shortPassword)
+        viewmodel.updateNombre("Test User")
+        viewmodel.updateUrlFotoPerfil("https://example.com/photo.jpg")
 
         // Act
-        viewmodel.registerUserOnline()
+        viewmodel.register()
         advanceUntilIdle()
 
         // Assert
         val state = viewmodel.uiState.value
-        assertThat(state.success).isTrue()
-        assertThat(state.errorMessage).isNull()
+        assertThat(state.errorMessage).isEqualTo("La contraseña debe tener al menos 6 caracteres")
+        assertThat(state.success).isFalse()
+
+        // Verifica que no se creó ningún usuario
+        val currentUser = Firebase.auth.currentUser
+        assertThat(currentUser).isNull()
+    }
+
+    @Test
+    fun register_withEmptyFields_showsValidationError() = runTest {
+        // Arrange - Dejar campos vacíos
+        viewmodel.updateEmail("")
+        viewmodel.updatePassword("password123")
+        viewmodel.updateNombre("")
+        viewmodel.updateUrlFotoPerfil("https://example.com/photo.jpg")
+
+        // Act
+        viewmodel.register()
+        advanceUntilIdle()
+
+        // Assert
+        val state = viewmodel.uiState.value
+        assertThat(state.errorMessage).isEqualTo("Todos los campos son obligatorios")
+        assertThat(state.success).isFalse()
+
+        // Verifica que no se creó ningún usuario
+        val currentUser = Firebase.auth.currentUser
+        assertThat(currentUser).isNull()
+    }
+
+    @Test
+    fun register_withDuplicateEmail_showsErrorMessage() = runTest {
+        // Arrange - Crear un usuario primero
+        val duplicateEmail = "duplicate_${System.currentTimeMillis()}@example.com"
+        Firebase.auth.createUserWithEmailAndPassword(duplicateEmail, "password123").await()
+
+        // Intentar registrar con el mismo email
+        viewmodel.updateEmail(duplicateEmail)
+        viewmodel.updatePassword("password456")
+        viewmodel.updateNombre("Another User")
+        viewmodel.updateUrlFotoPerfil("https://example.com/photo.jpg")
+
+        // Act
+        viewmodel.register()
+        advanceUntilIdle()
+
+        // Assert
+        val state = viewmodel.uiState.value
+        assertThat(state.errorMessage).isEqualTo("Error al registrar usuario")
+        assertThat(state.success).isFalse()
     }
 
 
