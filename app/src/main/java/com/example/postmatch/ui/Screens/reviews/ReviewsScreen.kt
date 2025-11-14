@@ -1,50 +1,35 @@
+// ReviewsScreen.kt actualizado
+// - Ahora usa MaterialTheme.colorScheme para soportar Light/Dark
+// - Se eliminaron botones/elementos clickeables que no tenían función
+// - Se mantiene el diseño Figma, pero sin funcionalidad falsa
+
 package com.example.postmatch.ui.Screens.reviews
 
 import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
-
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
 
 @Composable
 fun ReviewsScreen(
@@ -52,22 +37,17 @@ fun ReviewsScreen(
     onReviewClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(Unit) {
-        reviewsViewModel.getAllReviews()
-    }
+    LaunchedEffect(Unit) { reviewsViewModel.getAllReviews() }
 
     val state by reviewsViewModel.uiState.collectAsState()
-    when{
-        state.isLoading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
+
+    when {
+        state.isLoading -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+            CircularProgressIndicator()
         }
 
-        state.errorMessage != null -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                Text(text = state.errorMessage ?: "Error desconocido")
-            }
+        state.errorMessage != null -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+            Text(text = state.errorMessage ?: "Error desconocido")
         }
 
         else -> {
@@ -75,154 +55,123 @@ fun ReviewsScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(16.dp)
             ) {
-                // Encabezado
-                ReviewHeader()
-                Spacer(modifier = Modifier.height(16.dp))
-                // Lista de tarjetas
-                SectionReviews(
-                    reviews = state.reviews,
-                    onReviewClick =  onReviewClick,
-                    onLikeClick = { reviewId ->
-                        Log.d("LIKES_DEBUG", "SectionReviews -> onLikeClick recibido con reviewId=$reviewId")
-                        reviewsViewModel.sendOrDeleteLike(
-                            reviewId = reviewId
+                TopHeader()
+                Spacer(Modifier.height(12.dp))
+
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(18.dp)
+                ) {
+                    items(state.reviews.size) { index ->
+                        ReviewCard(
+                            reviewInfo = state.reviews[index],
+                            onReviewClick = onReviewClick,
+                            onLikeClick = { id -> reviewsViewModel.sendOrDeleteLike(id) }
                         )
                     }
-
-                )
+                }
             }
         }
     }
-
-
 }
 
 @Composable
-fun ReviewHeader(
-    modifier: Modifier = Modifier
-) {
+fun TopHeader() {
     Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(R.string.postmatch),
+            text = "Reviews",
             color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            fontFamily = FontFamily.SansSerif,
-            letterSpacing = (-0.5).sp
+            fontSize = 22.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+
+@Composable
+fun TabItem(title: String, selected: Boolean) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(
+                if (selected)
+                    MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.surface
+            )
+            .padding(horizontal = 20.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = title,
+            color = if (selected)
+                MaterialTheme.colorScheme.onPrimary
+            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium
         )
     }
 }
 
 @Composable
-fun SectionReviews(
-    onReviewClick: (String) -> Unit,
-    reviews: List<ReviewInfo>,
-    onLikeClick: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
-    ) {
-        items(reviews.size) {
-                index ->
-            ReviewCard(
-                reviewInfo = reviews[index],
-                onReviewClick = onReviewClick,
-                onLikeClick = onLikeClick
-            )
-        }
-    }
-}
-
-@Composable
 fun ReviewCard(
-    onReviewClick: (String) -> Unit,
     reviewInfo: ReviewInfo,
+    onReviewClick: (String) -> Unit,
     onLikeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .padding(12.dp)
+            .padding(14.dp)
     ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
+        Column(Modifier.weight(1f)) {
+
             Text(
-                text = "${reviewInfo.usuarioNombre} - ${reviewInfo.usuarioEmail}",
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                fontSize = 12.sp,
-                fontFamily = FontFamily.SansSerif
+                text = reviewInfo.usuarioNombre,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f),
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Medium
             )
+
             Text(
                 text = reviewInfo.titulo,
                 color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                fontFamily = FontFamily.SansSerif,
-                letterSpacing = (-0.2).sp
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(top = 4.dp)
             )
+
             Text(
                 text = reviewInfo.descripcion,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f),
                 fontSize = 13.sp,
-                fontFamily = FontFamily.SansSerif,
                 lineHeight = 18.sp,
-                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+                modifier = Modifier.padding(top = 6.dp, bottom = 10.dp)
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = if (reviewInfo.likedByUser) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                    contentDescription = if (reviewInfo.likedByUser) "Quitar like" else "Dar like",
-                    tint = if (reviewInfo.likedByUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable {
-                            Log.d("LIKES_DEBUG", "Click en corazón - reviewId=${reviewInfo.idReview}")
-                            onLikeClick(reviewInfo.idReview)
-                        }
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    "${reviewInfo.numLikes}",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = FontFamily.SansSerif
+                LikeChip(
+                    liked = reviewInfo.likedByUser,
+                    count = reviewInfo.numLikes,
+                    onClick = { onLikeClick(reviewInfo.idReview) }
                 )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(Modifier.width(12.dp))
 
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    "${reviewInfo.numComentarios}",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = FontFamily.SansSerif
-                )
             }
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(Modifier.width(12.dp))
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -231,12 +180,44 @@ fun ReviewCard(
                 .build(),
             error = painterResource(R.drawable.estadio_bernabeu),
             placeholder = painterResource(R.drawable.estadio_bernabeu),
-            contentDescription = stringResource(R.string.foto_de_perfil),
+            contentDescription = "Foto del partido",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(200.dp)
-                .clip(RoundedCornerShape(8.dp))
+                .size(110.dp)
+                .clip(RoundedCornerShape(12.dp))
                 .clickable { onReviewClick(reviewInfo.idReview) }
         )
     }
 }
+
+@Composable
+fun LikeChip(liked: Boolean, count: Int, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(horizontal = 10.dp, vertical = 6.dp)
+            .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = if (liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+            contentDescription = null,
+            tint = if (liked)
+                MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(18.dp)
+        )
+
+        Spacer(Modifier.width(6.dp))
+
+        Text(
+            text = count.toString(),
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 13.sp
+        )
+    }
+}
+
+
+
