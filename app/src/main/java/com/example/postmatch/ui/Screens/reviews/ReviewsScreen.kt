@@ -60,6 +60,35 @@ fun ReviewsScreen(
                 TopHeader()
                 Spacer(Modifier.height(12.dp))
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        onClick = { reviewsViewModel.sortByMostLiked() },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text("Más likeados")
+                    }
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Button(
+                        onClick = { reviewsViewModel.sortByMostRecent() },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        )
+                    ) {
+                        Text("Más recientes")
+                    }
+                }
+
+
+
                 LazyColumn(
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 12.dp)
@@ -70,7 +99,8 @@ fun ReviewsScreen(
                         ReviewCard(
                             reviewInfo = state.reviews[index],
                             onReviewClick = onReviewClick,
-                            onLikeClick = { id -> reviewsViewModel.sendOrDeleteLike(id) }
+                            onLikeClick = { id -> reviewsViewModel.sendOrDeleteLike(id) },
+                            onClickSort = { reviewsViewModel.sortByMostLiked() }
                         )
                     }
                 }
@@ -111,6 +141,7 @@ fun ReviewCard(
     reviewInfo: ReviewInfo,
     onReviewClick: (String) -> Unit,
     onLikeClick: (String) -> Unit,
+    onClickSort: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -150,7 +181,8 @@ fun ReviewCard(
                 LikeChip(
                     liked = reviewInfo.likedByUser,
                     count = reviewInfo.numLikes,
-                    onClick = { onLikeClick(reviewInfo.idReview) }
+                    onClick = { onLikeClick(reviewInfo.idReview) },
+                    onClickSort = { onClickSort() }
                 )
 
                 Spacer(Modifier.width(12.dp))
@@ -178,7 +210,7 @@ fun ReviewCard(
 }
 
 @Composable
-fun LikeChip(liked: Boolean, count: Int, onClick: () -> Unit) {
+fun LikeChip(liked: Boolean, count: Int, onClick: () -> Unit, onClickSort: () -> Unit) {
 
     val chipBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
     val iconTint = if (liked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
@@ -188,7 +220,8 @@ fun LikeChip(liked: Boolean, count: Int, onClick: () -> Unit) {
             .clip(RoundedCornerShape(50))
             .background(chipBackground)
             .padding(horizontal = 10.dp, vertical = 6.dp)
-            .clickable { onClick() },
+            .clickable {
+                onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
