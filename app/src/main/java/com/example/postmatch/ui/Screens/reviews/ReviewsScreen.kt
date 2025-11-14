@@ -155,7 +155,6 @@ fun ReviewCard(
 
                 Spacer(Modifier.width(12.dp))
 
-                CommentsChip(count = reviewInfo.numComentarios)
             }
         }
 
