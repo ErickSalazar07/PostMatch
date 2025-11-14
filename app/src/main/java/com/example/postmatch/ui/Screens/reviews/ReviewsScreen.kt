@@ -1,8 +1,3 @@
-// ReviewsScreen.kt actualizado
-// - Ahora usa MaterialTheme.colorScheme para soportar Light/Dark
-// - Se eliminaron botones/elementos clickeables que no tenían función
-// - Se mantiene el diseño Figma, pero sin funcionalidad falsa
-
 package com.example.postmatch.ui.Screens.reviews
 
 import android.util.Log
@@ -29,7 +24,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.postmatch.R
 import com.example.postmatch.data.ReviewInfo
-import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import com.example.postmatch.ui.theme.*
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ChatBubbleOutline
+
 
 @Composable
 fun ReviewsScreen(
@@ -43,11 +41,14 @@ fun ReviewsScreen(
 
     when {
         state.isLoading -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
 
         state.errorMessage != null -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-            Text(text = state.errorMessage ?: "Error desconocido")
+            Text(
+                text = state.errorMessage ?: "Error desconocido",
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
 
         else -> {
@@ -84,38 +85,23 @@ fun TopHeader() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Spacer(Modifier.width(24.dp))
+
         Text(
             text = "Reviews",
             color = MaterialTheme.colorScheme.onBackground,
             fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold
         )
-    }
-}
 
-
-@Composable
-fun TabItem(title: String, selected: Boolean) {
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(
-                if (selected)
-                    MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.surface
-            )
-            .padding(horizontal = 20.dp, vertical = 8.dp)
-    ) {
-        Text(
-            text = title,
-            color = if (selected)
-                MaterialTheme.colorScheme.onPrimary
-            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
+        Icon(
+            imageVector = Icons.Filled.Settings,
+            contentDescription = "Settings",
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.size(24.dp)
         )
     }
 }
@@ -134,6 +120,7 @@ fun ReviewCard(
             .background(MaterialTheme.colorScheme.surface)
             .padding(14.dp)
     ) {
+
         Column(Modifier.weight(1f)) {
 
             Text(
@@ -168,6 +155,7 @@ fun ReviewCard(
 
                 Spacer(Modifier.width(12.dp))
 
+                CommentsChip(count = reviewInfo.numComentarios)
             }
         }
 
@@ -192,10 +180,14 @@ fun ReviewCard(
 
 @Composable
 fun LikeChip(liked: Boolean, count: Int, onClick: () -> Unit) {
+
+    val chipBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+    val iconTint = if (liked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(50))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(chipBackground)
             .padding(horizontal = 10.dp, vertical = 6.dp)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
@@ -203,9 +195,7 @@ fun LikeChip(liked: Boolean, count: Int, onClick: () -> Unit) {
         Icon(
             imageVector = if (liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
             contentDescription = null,
-            tint = if (liked)
-                MaterialTheme.colorScheme.primary
-            else MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = iconTint,
             modifier = Modifier.size(18.dp)
         )
 
@@ -218,6 +208,4 @@ fun LikeChip(liked: Boolean, count: Int, onClick: () -> Unit) {
         )
     }
 }
-
-
 
