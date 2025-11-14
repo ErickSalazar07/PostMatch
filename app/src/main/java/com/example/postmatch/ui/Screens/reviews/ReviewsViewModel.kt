@@ -87,6 +87,14 @@ class ReviewsViewModel @Inject constructor(
         }
     }
 
+    fun getSortedReviews() {
+        val currentReviews = _uiState.value.reviews
+
+        val sorted = currentReviews.sortedByDescending { it.calificacion }
+
+        _uiState.update { it.copy(reviews = sorted) }
+    }
+
     init {
         _uiState.update { it.copy(reviews = emptyList()) }
     }

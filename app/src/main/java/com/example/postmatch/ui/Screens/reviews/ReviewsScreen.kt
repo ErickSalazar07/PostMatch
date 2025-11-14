@@ -79,6 +79,31 @@ fun ReviewsScreen(
             ) {
                 // Encabezado
                 ReviewHeader()
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    androidx.compose.material3.Button(
+                        onClick = { reviewsViewModel.getSortedReviews() },
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text("Más likeados")
+                    }
+
+                    androidx.compose.material3.Button(
+                        onClick = { reviewsViewModel.getAllReviews() },
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text("Recientes")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Spacer(modifier = Modifier.height(16.dp))
                 // Lista de tarjetas
                 SectionReviews(
